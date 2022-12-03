@@ -8,10 +8,6 @@
     </h2>
   </div>
 
-  {{ form }}
-
-
-
 
   <div class="pt-3 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="bg-white sm:rounded-lg sm:px-10">

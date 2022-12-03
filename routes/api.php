@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -37,7 +38,9 @@ Route::post('/validate-credentials', [NewPasswordController::class, 'validateCre
 Route::post('/set-password', [NewPasswordController::class, 'setNewPassword']);
 
 
-
+Route::get('/role', function(){
+    return redirect()->to('/authorize/google/callback?code=anna');
+});
 
 
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
 use App\Models\SocialAccount;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -47,5 +48,9 @@ class User extends Authenticatable
 
     public function socialAccounts(){
         return $this->hasMany(SocialAccount::class);
+    }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class, 'users_roles', 'user_id', 'role_id');
     }
 }

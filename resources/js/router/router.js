@@ -32,6 +32,20 @@ const routes = [
         component: ()=> import('../views/DashboardPage.vue'),
         meta: {middleware: "auth"}
     },
+    {
+        name: 'token-catcher',
+        path: '/authorize/google/callback',
+        component: ()=> import('../views/SocialAccountTokenCatcher.vue'),
+        meta: {middleware: "guest"}
+       
+    },
+    {
+        name: 'forgotpassword',
+        path: '/forgot-password',
+        component: ()=> import('../views/ForgotPassword.vue'),
+        meta: {middleware: "guest"}
+       
+    },
 ];
 
 

@@ -32,9 +32,9 @@
 
           <div class="flex items-center">
             <div class="text-sm">
-              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"
-                >Forgot your password?</a
-              >
+              <router-link :to="{name: 'forgotpassword'}" class="font-medium text-indigo-600 hover:text-indigo-500"
+                >Forgot your password?</router-link>
+              
             </div>
           </div>
           <div class="min-h-16">
@@ -165,6 +165,7 @@ export default {
           if (err.response.status === 422) {
             this.validationError = err.response.data.errors;
           } else {
+            
             this.$emit("hasRequestError", {
               statusCode: String(err.response.status),
               message: err.response.statusText,
@@ -180,8 +181,8 @@ export default {
       this.isLoginWithGoogleLoading = true;
       await axios.get("api/authorize/google/redirect").then((res) => {
 
-        console.log(res.data);
-        //   window.location.href = res.data.data.url;
+        console.log(res.data); 
+          window.location.href = res.data.data.url;
         })
         .catch((err) => {
           this.$emit("hasRequestError", {

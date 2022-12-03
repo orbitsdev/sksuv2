@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -30,8 +31,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $guest = Role::where('name', 'guest')->pluck('id')->first();
+        $user->roles()->attach($guest);
+
         $token = $user->createToken('chrome')->plainTextToken;
-        return new AuthResource(['user'=> $user,'token'=> $token]);
+        return new AuthResource(['user' => $user, 'token' => $token]);
     }
 
     public function login(Request $request)
@@ -49,25 +53,24 @@ class AuthController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-        $token = $user->createToken( $request->device_name)->plainTextToken;
-        return new AuthResource(['user'=> $user,'token'=> $token]);
+        $token = $user->createToken($request->device_name)->plainTextToken;
+        return new AuthResource(['user' => $user, 'token' => $token]);
     }
 
 
     public function logout(Request $request)
     {
 
-        $accessToken = $request->bearerToken();
-        if ($accessToken) {
 
+
+        $accessToken = $request->bearerToken();
+        if($accessToken){
+   
             $token = PersonalAccessToken::findToken($accessToken);
             $token->delete();
             $request->user()->tokens()->delete();
         }
-        // Get access token from database
-
         // Revoke token
         return new AuthResource(['success']);
-
     }
 }

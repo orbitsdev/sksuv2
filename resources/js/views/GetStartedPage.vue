@@ -153,7 +153,7 @@
     
     <teleport to="#app" v-if="(showForm == 'login')" >
       <BaseDialog
-      :show="showTheForm"
+      :show="!!showForm"
         @close="closeTheForm"
         :width="'400'"
         :transition="'slide-fade-down'"
@@ -166,7 +166,7 @@
     </teleport>
     <teleport to="#app" v-if="(showForm == 'register')">
       <BaseDialog
-      :show="show"
+      :show="!!showForm"
         @close="closeTheForm"
         :width="'400'"
         :transition="'scale'"
