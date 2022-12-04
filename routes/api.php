@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\NewPasswordController;
+use App\Http\Controllers\Mail\NewPasswordMailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,14 +34,14 @@ Route::get('/authorize/{provider}/redirect', [GoogleController::class ,'redirect
 Route::get('/authorize/{provider}/callback', [GoogleController::class ,'handleProviderCallback']);
 
 // PASSWORD RESET
-Route::post('/request-password-reset', [NewPasswordController::class, 'sendEmailForPasswordReset']);
-Route::post('/validate-credentials', [NewPasswordController::class, 'validateCredentials']);
-Route::post('/set-password', [NewPasswordController::class, 'setNewPassword']);
-
+Route::post('/request-password-reset', [NewPasswordMailController::class, 'sendEmailForPasswordReset']);
+Route::post('/set-password', [NewPasswordMailController::class, 'setNewPassword']);
 
 Route::get('/role', function(){
     return redirect()->to('/authorize/google/callback?code=anna');
 });
+
+
 
 
 

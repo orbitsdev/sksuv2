@@ -24,7 +24,7 @@
           v-model="form.password"
         />
         <BaseInputPassword
-        :label="'Password'"
+        :label="'Confirm Password'"
           :show="showPasswordConfirmation"
           @showPassword="(showPasswordConfirmation = !showPasswordConfirmation)"
           v-model="form.password_confirmation"

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 //     return view('app');
 // });
 
+Route::get('/mail', function(){
+
+    $user = User::first();
+    $domain = 'http://127.0.0.1:8000';
+    $token = uniqid();
+    $set_new_password_url =  $domain."/set-new-password?mail=".$user->mail."&token=".$token;
+
+    
+    return new ResetPassword($user, $token, $set_new_password_url,);
+});
 
 
 Route::get('/{any}' , function(){

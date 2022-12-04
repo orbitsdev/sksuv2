@@ -46,6 +46,20 @@ const routes = [
         meta: {middleware: "guest"}
        
     },
+    {
+        name: 'setnewpassword',
+        path: '/set-new-password',
+        component: ()=> import('../views/SetNewPasswordPage.vue'),
+        meta: {middleware: "guest"}
+       
+    },
+    {
+        name: 'password-request-sent',
+        path: '/password-request-sent',
+        component: ()=> import('../views/PasswordRequestSent.vue'),
+        meta: {middleware: "guest"}
+       
+    },
 ];
 
 
