@@ -182,6 +182,7 @@ export default {
       await axios.get("api/authorize/google/redirect").then((res) => {
 
         console.log(res.data); 
+        // window.open(res.data.data.url, 'Google Signin', 'width=500px', 'height=500px')
           window.location.href = res.data.data.url;
         })
         .catch((err) => {

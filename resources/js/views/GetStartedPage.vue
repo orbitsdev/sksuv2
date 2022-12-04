@@ -10,7 +10,7 @@
               <span class="sr-only">Your Company</span>
               <img
                 class="h-8 w-auto sm:h-10"
-                src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=600"
+                src="/assets/sksu1.png"
                 alt=""
               />
             </a>
@@ -38,7 +38,7 @@
             <!-- <router-link  class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700"> 
               Signup
             </router-link> -->
-            <SquareButton @click="showTheForm('login')"> Sign up</SquareButton>
+            <SquareButton @click="showTheForm('login')"> Get Started </SquareButton>
           </div>
         </div>
 

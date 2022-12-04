@@ -115,7 +115,7 @@ emits: ['hasRequestError', 'close', 'showLogin'],
       form: {
         first_name: "brian",
         last_name: "orbino",
-        email: "email@gmail.com",
+        email: "admin@gmail.com",
         password: "@admin123",
         password_confirmation: "@admin123",
       },
