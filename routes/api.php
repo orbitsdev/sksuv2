@@ -4,9 +4,11 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
+use App\Http\Controllers\RolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,7 @@ use App\Http\Controllers\Mail\NewPasswordMailController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->load('roles');
 });
 
 
@@ -36,10 +38,17 @@ Route::get('/authorize/{provider}/callback', [GoogleController::class ,'handlePr
 // PASSWORD RESET
 Route::post('/request-password-reset', [NewPasswordMailController::class, 'sendEmailForPasswordReset']);
 Route::post('/set-password', [NewPasswordMailController::class, 'setNewPassword']);
-
 Route::get('/role', function(){
     return redirect()->to('/authorize/google/callback?code=anna');
 });
+
+Route::post('file/upload', [FilePondController::class, 'uploadToTemporaryStorage']);
+Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage']);
+// FILEPOND
+
+
+// PUBLIC
+Route::get('/roles', [RolesController::class, 'getAllRoles']);
 
 
 

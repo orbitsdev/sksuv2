@@ -4,7 +4,7 @@ export default {
     
     setUserDetails(state, payload){
         
-        state.currentUser = payload;
+        state.Auth = payload;
         console.log(payload);
     }
 }

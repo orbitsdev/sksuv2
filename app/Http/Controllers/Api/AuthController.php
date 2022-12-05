@@ -16,6 +16,8 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+
+        // return new AuthResource($request->all());
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -31,8 +33,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $guest = Role::where('name', 'guest')->pluck('id')->first();
-        $user->roles()->attach($guest);
+
+        if ($request->role != null) {
+            $role = Role::where('name', $request->role)->pluck('id')->first();
+            $user->roles()->attach($role);
+        }
+
+
+
 
         $token = $user->createToken('chrome')->plainTextToken;
         return new AuthResource(['user' => $user, 'token' => $token]);
@@ -46,7 +54,7 @@ class AuthController extends Controller
             'device_name' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('roles')->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -64,8 +72,8 @@ class AuthController extends Controller
 
 
         $accessToken = $request->bearerToken();
-        if($accessToken){
-   
+        if ($accessToken) {
+
             $token = PersonalAccessToken::findToken($accessToken);
             $token->delete();
             $request->user()->tokens()->delete();

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">{{ label}}</label>
+        <label for="email" class="block text-base font-medium text-gray-700">{{ label}}</label>
         <div class="mt-1">
         
           <input 
@@ -9,8 +9,8 @@
           :placeholder="showPlaceholder ? label : '' "
           @input="$emit('update:modelValue', $event.target.value)"
           :class="[{
-            'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm': (hasError == false || hasError == null), 
-            'block w-full appearance-none rounded-md border-2 border-red-600 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-red-600 focus:outline-none focus:ring-red-600 sm:text-sm': !!hasError,
+            'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-base': (hasError == false || hasError == null), 
+            'block w-full appearance-none rounded-md border-2 border-red-600 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-red-600 focus:outline-none focus:ring-red-600 sm:text-base': !!hasError,
         
         }]"
           />    

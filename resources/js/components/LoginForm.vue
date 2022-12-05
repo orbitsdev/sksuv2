@@ -140,19 +140,8 @@ export default {
       await axios
         .post("api/login", this.form)
         .then((res) => {
-          const userDetails = {
-            first_name: res.data.data.user.first_name,
-            last_name: res.data.data.user.last_name,
-            email: res.data.data.user.email,
-            email: res.data.data.user.email,
-            token: res.data.data.token,
-          };
-
-          if (userDetails.token != null) {
-            localStorage.setItem("token", userDetails.token);
-          }
-
-          this.$store.commit("setUserDetails", userDetails);
+              
+          localStorage.setItem("token", res.data.data.token);
           this.$emit("close");
           window.location.reload(true);
           this.form = {

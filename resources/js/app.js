@@ -19,6 +19,10 @@ import BaseInputPassword from './components/BaseInputPassword.vue';
 import WideButton from './components/WideButton.vue';
 import RequestError from './components/RequestError.vue';
 import BaseErrorDialog from './components/BaseErrorDialog.vue';
+import BaseCard from './components/BaseCard.vue';
+import TableButton from './components/TableButton.vue';
+import FilePondBase from './components/FilePondBase.vue';
+import FormHeader from './components/FormHeader.vue';
 
 // LOTTIE
 import Vue3Lottie from 'vue3-lottie'
@@ -46,6 +50,10 @@ app.component("BaseInputPassword", BaseInputPassword);
 app.component("WideButton", WideButton);
 app.component("RequestError", RequestError);
 app.component("BaseErrorDialog", BaseErrorDialog);
+app.component("BaseCard", BaseCard);
+app.component("TableButton", TableButton);
+app.component("FilePondBase", FilePondBase);
+app.component("FormHeader", FormHeader);
 
 
 router.isReady().then(()=>{

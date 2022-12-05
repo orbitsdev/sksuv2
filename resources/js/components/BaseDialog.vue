@@ -5,6 +5,7 @@
     :title="title" 
     :width="width" 
     :transition="transition" 
+    :persistent="preventClose"
     dialog-class="dialog-wrapper m-0 " 
     overlay-color="rgba(0,0,0,0.5)" 
     title-class="text-lg text-green-600" 
@@ -26,7 +27,7 @@
 
 <script>
     export default {
-
+        
         imits: ['close'],
         props: {
             show: {
@@ -50,6 +51,11 @@
                 type: String,
                 default: 'slide-fade-down',
             },
+            preventClose: {    
+                type: Boolean,
+                default: true,
+                required:false
+            }
 
 
 
