@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
+            $table->string('owned_by');
             $table->text('folder');
-            $table->string('filename');
+            $table->string('file_name');
             $table->string('file_type');
             $table->timestamps();
         });

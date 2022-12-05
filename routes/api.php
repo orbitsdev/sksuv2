@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\GoogleController;
+use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\RolesController;
@@ -46,6 +47,9 @@ Route::post('file/upload', [FilePondController::class, 'uploadToTemporaryStorage
 Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage']);
 // FILEPOND
 
+// OSAS
+
+Route::apiResource('schools', ManageSchoolController::class);
 
 // PUBLIC
 Route::get('/roles', [RolesController::class, 'getAllRoles']);

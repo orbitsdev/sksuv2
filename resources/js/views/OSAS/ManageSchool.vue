@@ -3,7 +3,7 @@
         <div class="sm:flex-auto">
         </div>
         <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none my-2">
-          <TableButton> Add User</TableButton>
+          <TableButton @click="(showForm = true)"> Add User</TableButton>
         </div>
     </div>
   <BaseCard>
@@ -65,13 +65,30 @@
         </tbody>
       </table>
       <teleport to="#app">
-        <BaseDialog :show="!!showForm" :width="'600'" :preventClose="false">
+        <BaseDialog :show="!!showForm" :width="'600'" :preventClose="true">
           <template #c-content>
-              <SchoolForm/>
+              <SchoolForm @close="closeForm" @hasRequestError="showErrorDialog" />
           </template>
         </BaseDialog>
       </teleport>
-  
+
+      <teleport to="#app">
+        <BaseErrorDialog
+          :show="requestError != null"
+          :width="'400'"
+          :transition="'slide-fade-down'"
+        >
+          <template #c-content>
+            <RequestError
+              :statusCode="requestError.statusCode"
+              @close="closeErrorDialog"
+              :message="requestError.message"
+            />
+          </template>
+          <template #c-actions> </template>
+        </BaseErrorDialog>
+      </teleport>
+
   </BaseCard>
 </template>
 
@@ -84,8 +101,26 @@ export default {
   data() {
     return {
       showForm:true,
+      requestError: null,
     }
   },
+
+  methods: {
+    showErrorDialog(error) {
+      this.requestError = error;
+    },
+
+    
+    closeErrorDialog() {
+      this.requestError = null;
+    },
+    showError(){
+
+    },
+    closeForm(){
+      this.showForm = false;
+    }
+  }
 };
 </script>
 

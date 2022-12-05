@@ -12,6 +12,7 @@ export default {
 
     state(){
         return {
+            
             Auth: {
                 first_name: 'brian',
                 first_name: 'orbs',

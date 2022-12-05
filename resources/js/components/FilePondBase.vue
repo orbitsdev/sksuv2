@@ -1,16 +1,9 @@
 <template>
-    <hr>
-    {{ passFiletype }}
-    <hr>
-    {{ maxSize }}
-    <hr>
-    {{ fileType }}
-    <hr>
-    {{ insertFile }}
-    <hr>
-    {{ multiple }}
-    <hr>
-    <!-- {{ fileType }} -->
+  <hr />
+  {{ fileType }}
+  <hr />
+
+  {{ multiple }}
   <file-pond
     credits="false"
     name="files"
@@ -23,7 +16,7 @@
     :accepted-file-types="fileType"
     :itemInsertLocation="insertFile"
     @init="handleFilePondInit"
-    @initFile="handleFilePondInitFile"
+    @initfile="handleFilePondInitFile"
     @processfiles="handleFilePondProcessFiles"
     :files="files"
     :server="{
@@ -39,14 +32,14 @@
         onerror: handleFilePondError,
         timeout: 7000,
       },
-       revert: handleFilePondRevert,
+      revert: handleFilePondRevert,
     }"
-   
   />
   <!-- :accepted-file-types="fileType" -->
 </template>
 
 <script>
+import { ref } from "vue";
 import vueFilePond from "vue-filepond";
 
 // Import plugins
@@ -64,7 +57,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import "filepond-plugin-get-file/dist/filepond-plugin-get-file.min.css";
 import "filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css";
 import "filepond-plugin-image-overlay/dist/filepond-plugin-image-overlay.css";
-import axiosApi from '../api/axiosApi';
+import axiosApi from "../api/axiosApi";
 
 // Create FilePond component
 const FilePond = vueFilePond(
@@ -74,32 +67,74 @@ const FilePond = vueFilePond(
   FilePondPluginFileValidateSize,
   FilePondPluginFilePoster,
   FilePondPluginImageOverlay
-//   FilePondPluginGetFile,
-//   FilePondPluginPdfPreview
+  //   FilePondPluginGetFile,
+  //   FilePondPluginPdfPreview
 );
 
 export default {
-  created() {
-    this.setFileType();
-    this.authtoken = localStorage.getItem("token");
-  },
-  data() {
+  setup(props, context) {
+    const authtoken = localStorage.getItem("token");
+    const loading = ref(false);
+    const form = ref({
+      name: "",
+    });
+    const files = ref([]);
+
+    // FILEPOND METHODS
+    function handleFilePondInit() {}
+    function handleFilePondLoad(response) {
+      if (response != "") {
+        const res = JSON.parse(response);
+        const file = res.data;
+        context.emit("fileIsUploaded", file);
+        return file.folder;
+      }
+    }
+    function handleFilePondInitFile(file) {
+      context.emit("fileIsUploading", true);
+    }
+    function handleFilePondProcessFiles() {
+      context.emit("fileIsUploading", false);
+    }
+    function handleFilePondError(response) {}
+
+    function handleFilePondRevert(folder, load, error) {
+      axiosApi
+        .delete("api/file/delete", {
+          data: {
+            folder: folder,
+          },
+        })
+        .then((res) => {
+          context.emit("fileIsDeleted", res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      load();
+    }
+
     return {
-     authtoken: null,
-      files: [],
-      fileType:
-        "image/*, application/msword, application/pdf,  text/plain , application/json, application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      authtoken,
+      files,
+      handleFilePondInit,
+      handleFilePondLoad,
+      handleFilePondInitFile,
+      handleFilePondProcessFiles,
+      handleFilePondError,
+      handleFilePondRevert,
     };
   },
-
+  emits: ["fileIsUploaded", "fileIsDeleted", "fileIsUploading"],
   components: {
     FilePond,
   },
   props: {
-    passFiletype: {
+    fileType: {
       type: String,
-      required: false,
-      default: "all",
+      default:
+        "image/*, application/msword, application/pdf,  text/plain , application/json, application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      required: true,
     },
     multiple: {
       type: Boolean,
@@ -119,62 +154,6 @@ export default {
       type: Boolean,
       required: false,
       default: true,
-    },
-  },
-  methods: {
-    handleFilePondInit() {},
-    handleFilePondLoad(response) {
-        
-        console.log(response);
-        if(response != ''){
-            
-            const res = JSON.parse(response);
-            const file = res.data;
-            console.log(res.data);
-            console.log(res.data);
-            return file.folder;
-            
-        }
-    },
-    handleFilePondInitFile(file) {
-      console.log("loading");
-    },
-    handleFilePondProcessFiles() {
-      console.log("complete loadin");
-    },
-    handleFilePondError(response) {},
-    handleFilePondRevert(folder, load, error) {
-        axiosApi.delete('api/file/delete',{
-            data:{
-                'folder': folder
-            }
-        }).then(res=>{
-            console.log(res);
-        }).catch(err=>{
-            console.log(err);
-        })
-      load();
-    },
-
-    setFileType() {
-      if (this.passFiletype == "image") {
-        this.fileType = "image/*";
-      }
-      if (this.passFiletype == "pdf") {
-        this.fileType = "application/pdf, application/x-download, application/*";
-      }
-
-      if (this.passFiletype == "pdf|docx" || this.passFiletype == "pdf|docs") {
-        this.fileType =
-          "application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-      }
-
-      if (this.passFiletype == "json") {
-        this.fileType = "application/json";
-      }
-      if (this.passFiletype == "text") {
-        this.fileType = "text/plain";
-      }
     },
   },
 };

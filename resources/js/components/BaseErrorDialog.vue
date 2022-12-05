@@ -1,6 +1,8 @@
 <template>
-    <w-dialog 
-    v-model="show" 
+    <div>
+
+        <w-dialog 
+        v-model="show" 
     :title="title" 
     :width="width" 
     persistent
@@ -20,6 +22,7 @@
   
   
 </w-dialog>
+</div>
 </template>
 
 <script>

@@ -20,21 +20,22 @@ class FilePondController extends Controller
 
 
             $image = $request->file('files');
-            $filename = $image->getClientOriginalName();
+            $file_name = $image->getClientOriginalName();
             $folder = uniqid() . strtotime(now());
-            $filetype =  $image->getClientMimeType();
+            $file_type =  $image->getClientMimeType();
 
 
-            if ($image->storeAs('tmp/' . $folder, $filename, 'public_uploads')) {
+            if ($image->storeAs('tmp/' . $folder, $file_name, 'public_uploads')) {
                 TemporaryStorage::create([
                     'folder' => $folder,
-                    'filename' => $filename
+                    'file_name' => $file_name,
+                    'file_type' => $file_type,
                 ]);
             } else {
                 return response()->json('failed to upload', 400);
             }
 
-            return new FilePondResource(['folder' => $folder, 'filename' => $filename, 'type'=> $filetype]);
+            return new FilePondResource(['folder' => $folder, 'file_name' => $file_name, 'file_type'=> $file_type]);
         }
         return '';
     }
@@ -47,7 +48,7 @@ class FilePondController extends Controller
  
         if (Storage::disk('public_uploads')->deleteDirectory('tmp/' . $file->folder)) {
             TemporaryStorage::where('folder', $file->folder)->delete();
-            return response()->json(['success']);
+            return new FilePondResource(['folder' => $file->folder, 'file_name' => $file->file_name, 'file_type'=> $file->file_type]);
          } else {
             return response()->json(['failed']);
          }

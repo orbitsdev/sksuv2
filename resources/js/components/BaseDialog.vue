@@ -1,8 +1,12 @@
 <template>
-    <w-dialog 
+    <div>
 
+        <w-dialog 
+    @close="this.$emit('close')"
+        
     v-model="show" 
     :title="title" 
+    
     :width="width" 
     :transition="transition" 
     :persistent="preventClose"
@@ -23,6 +27,7 @@
   
   
 </w-dialog>
+</div>
 </template>
 
 <script>
@@ -53,8 +58,8 @@
             },
             preventClose: {    
                 type: Boolean,
-                default: true,
-                required:false
+                default: false,
+                required:false,
             }
 
 

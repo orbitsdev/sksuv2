@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       form: {
-        email: "admin@gmail.com",
+        email: "osas@gmail.com",
         password: "@admin123",
         device_name: "chrome",
       },

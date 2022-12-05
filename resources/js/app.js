@@ -23,10 +23,15 @@ import BaseCard from './components/BaseCard.vue';
 import TableButton from './components/TableButton.vue';
 import FilePondBase from './components/FilePondBase.vue';
 import FormHeader from './components/FormHeader.vue';
+import LinearLoader from './components/LinearLoader.vue';
 
 // LOTTIE
 import Vue3Lottie from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
+
+// SWEET ALERT
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 // WAVE UI
 import WaveUI from 'wave-ui';
@@ -37,6 +42,7 @@ new WaveUI(app, {});
 app.use(router);
 app.use(store);
 app.use(Vue3Lottie);
+app.use(VueSweetalert2);
 app.component("App", App);
 
 // GLOBAL COMPONENT
@@ -54,6 +60,7 @@ app.component("BaseCard", BaseCard);
 app.component("TableButton", TableButton);
 app.component("FilePondBase", FilePondBase);
 app.component("FormHeader", FormHeader);
+app.component("LinearLoader", LinearLoader);
 
 
 router.isReady().then(()=>{

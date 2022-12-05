@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ref , computed , watch} from "vue";
+import { ref , computed , watch, onMounted} from "vue";
 export default {
   setup() {
     const data = ref(["vue", "laravel"]);
@@ -38,7 +38,9 @@ export default {
     const fullname = computed(function(){
         return first_name.value +' ' + last_name.value ; 
     })
-
+    onMounted(function(){
+        console.log('mounted');
+    });
     watch(age, function(oldValue, newValue){
             console.log(oldValue,newValue); 
     })
