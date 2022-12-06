@@ -49,6 +49,10 @@ Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage
 
 // OSAS
 
+
+Route::post('schools/search', [ManageSchoolController::class,'search']);
+Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
+Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
 Route::apiResource('schools', ManageSchoolController::class);
 
 // PUBLIC

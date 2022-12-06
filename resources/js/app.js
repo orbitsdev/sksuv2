@@ -24,6 +24,8 @@ import TableButton from './components/TableButton.vue';
 import FilePondBase from './components/FilePondBase.vue';
 import FormHeader from './components/FormHeader.vue';
 import LinearLoader from './components/LinearLoader.vue';
+import TableLoader from './components/TableLoader.vue';
+import FileChip from './components/FileChip.vue';
 
 // LOTTIE
 import Vue3Lottie from 'vue3-lottie'
@@ -61,6 +63,8 @@ app.component("TableButton", TableButton);
 app.component("FilePondBase", FilePondBase);
 app.component("FormHeader", FormHeader);
 app.component("LinearLoader", LinearLoader);
+app.component("TableLoader", TableLoader);
+app.component("FileChip", FileChip);
 
 
 router.isReady().then(()=>{

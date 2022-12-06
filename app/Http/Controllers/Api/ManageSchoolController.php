@@ -5,13 +5,80 @@ namespace App\Http\Controllers\Api;
 use App\Models\File;
 use App\Models\School;
 use Illuminate\Http\Request;
+use App\Models\TemporaryStorage;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SchoolResource;
-use App\Models\TemporaryStorage;
 use Illuminate\Support\Facades\Storage;
 
 class ManageSchoolController extends Controller
 {
+
+    public function search(Request $request)
+    {
+        $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files')->get();
+        return new SchoolResource($schools);
+    }
+
+    public function deleteSelectedSchool(Request $request)
+    {
+
+        $selectedSchoolId = $request->input('selectedSchool');
+
+        $schools = School::whereIn('id', $selectedSchoolId)->get();
+
+        // check if it has schools
+        if (count($schools) > 0) {
+            // lopp schools
+            foreach ($schools as $school) {
+                //check if it has files
+                if (count($school->files) > 0) {
+                    // loop files
+                    foreach ($school->files as $file) {
+                        // delete database
+                        File::where('folder', $file->folder)->delete();
+                        $fileFolder = 'files/' . $file->owned_by . '/' . $file->folder;
+                        Storage::disk('public_uploads')->deleteDirectory($fileFolder);
+                    }
+                    $school->files()->detach();
+                }
+            }
+
+            School::whereIn('id', $selectedSchoolId)->delete();
+            return response()->json(['success'], 200);
+        } else {
+
+            return response()->json(['No Reocord Found '], 400);
+        }
+    }
+    public function deleteAll(Request $request)
+    {
+
+        $schools = School::all();
+
+        foreach ($schools as $school) {
+
+            if (count($school->files) > 0) {
+
+
+                foreach ($school->files as $file) {
+
+                    File::where('folder', $file['folder'])->delete();
+                    $filesFolder = 'files/' . $file['owned_by'] . '/' . $file['folder'];
+                    Storage::disk('public_uploads')->deleteDirectory($filesFolder);
+                }
+
+
+                $school->files()->detach();
+            }
+        }
+
+        if (DB::table('schools')->delete()) {
+            return response()->json(['success'], 200);
+        } else {
+            return response()->json(['failed'], 400);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +86,7 @@ class ManageSchoolController extends Controller
      */
     public function index()
     {
-        //
+        return new SchoolResource(School::with('files')->paginate(20));
     }
 
     /**
@@ -44,40 +111,41 @@ class ManageSchoolController extends Controller
             'name' => 'required',
         ]);
 
-        $files =  $request->input('files');
+        $files = $request->input('files');
 
         $school = School::create([
-            'name' => $request->name
+            'name'=> $request->input('name')
         ]);
 
+
         if (count($files) > 0) {
-           $saveFile =  File::create([
-                'owned_by' => 'schools',
-                'folder' => $files["folder"],
-                'file_name' => $files["file_name"],
-                'file_type' => $files["file_type"],
-            ]);
 
-    
-        
-            $school->files()->attach($saveFile->id);
-           
-            $fromTemporaryFolder = 'tmp/' . $saveFile['folder'] . '/' . $saveFile['file_name'];
-            $toFilesFolder = 'files/'.$saveFile['owned_by'].'/'. $saveFile['folder'] . '/' . $saveFile['file_name'];
-            $temporaryFolderPath ='tmp/'.$saveFile['folder']; 
+            $filesId = [];
+
+            foreach ($files  as $file) {
+                
+                $createdfile = File::create([
+                    'owned_by' => 'schools',
+                    'folder' => $file["folder"],
+                    'file_name' => $file["file_name"],
+                    'file_type' => $file["file_type"],
+                ]);
+
+                $fromTemporaryFolder = 'tmp/' . $createdfile['folder'] . '/' . $createdfile['file_name'];
+                $toFilesFolder = 'files/' . $createdfile['owned_by'] . '/' . $createdfile['folder'] . '/' . $createdfile['file_name'];
+                $temporaryFolderPath = 'tmp/' . $createdfile['folder'];
+                Storage::disk('public_uploads')->copy($fromTemporaryFolder, $toFilesFolder);
+                Storage::disk('public_uploads')->deleteDirectory($temporaryFolderPath);
+                $fileId[] = $createdfile->id;
+            }
+
+            if(count($fileId) > 0){
+                $school->files()->sync($fileId);
+            }
             
-            Storage::disk('public_uploads')->copy($fromTemporaryFolder, $toFilesFolder);
-            Storage::disk('public_uploads')->deleteDirectory($temporaryFolderPath);
-            TemporaryStorage::where('folder', $saveFile['folder'])->delete();
-
-            return response()->json($files, 200);
         }
 
-        if ($school) {
-            return response()->json([$request->all()], 200);
-        } else {
-            return response()->json(['failed'], 400);
-        }
+        return response()->json(['success', $fileId], 200);
     }
 
     /**
@@ -109,9 +177,87 @@ class ManageSchoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+    public function inserNewFile($files)
     {
-        //
+        foreach ($files as $file) {
+            // INSERT NEW FILES 
+            if (File::where('folder', $file['folder'])->doesntExist()) {
+                $newFIle = File::create([
+                    'owned_by' => 'schools',
+                    'folder' => $files["folder"],
+                    'file_name' => $files["file_name"],
+                    'file_type' => $files["file_type"],
+                ]);
+
+                $fromTemporaryFolder = 'tmp/' . $newFIle['folder'] . '/' . $newFIle['file_name'];
+                $toFilesFolder = 'files/' . $newFIle['owned_by'] . '/' . $newFIle['folder'] . '/' . $newFIle['file_name'];
+                $temporaryFolderPath = 'tmp/' . $newFIle['folder'];
+                Storage::disk('public_uploads')->copy($fromTemporaryFolder, $toFilesFolder);
+                Storage::disk('public_uploads')->deleteDirectory($temporaryFolderPath);
+                TemporaryStorage::where('folder', $newFIle['folder'])->delete();
+            }
+        }
+    }
+
+    public function removeDatabaseFile(School $school)
+    {
+
+        // Check if ha data
+
+        if (count($school->files) > 0) {
+            $folders = [];
+            foreach ($school->files as $file) {
+                $folders[] = $file['folder'];
+                $fileFolder = '/files' . '/' . $file['owned_by'] . '/' . $file['folder'];
+                Storage::disk('public_uploads')->deleteDirectory($fileFolder);
+            }
+            File::whereIn('folder', $folders)->delete();
+            $school->files()->detach();
+        }
+    }
+
+    public function update(Request $request, School $school)
+
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $school->update([
+            'name'=> $request->input('name')
+        ]);
+            
+        $schoolfiles = $request->input('files');        
+
+
+        if(count($schoolfiles) > 0){
+            $createdfileid  = [];
+            foreach($schoolfiles as $file){
+               $createdfile =  File::create([
+                    'owned_by' => 'schools',
+                    'folder' => $file["folder"],
+                    'file_name' => $file["file_name"],
+                    'file_type' => $file["file_type"],
+                ]);
+
+                $createdfileid[] = $createdfile['id'];
+                $fromtemporaryfolder = 'tmp/'.$createdfile['folder'].'/'.$createdfile['file_name'];
+                $tofilefolder = 'files/'.$createdfile['owned_by'].'/'.$createdfile['folder'].'/'.$createdfile['file_name'];
+                $tempFolder = 'tmp/'.$createdfile['folder'];
+                Storage::disk('public_uploads')->copy($fromtemporaryfolder, $tofilefolder);
+                Storage::disk('public_uploads')->deleteDirectory($tempFolder);
+                
+                
+            }
+            $school->files()->sync($createdfileid);
+
+        }
+
+
+
+        return response()->json([$createdfileid, $school->files], 200);
+        
     }
 
     /**
@@ -122,6 +268,20 @@ class ManageSchoolController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $school = School::where('id', $id)->first();
+
+        if (count($school->files) > 0) {
+
+            foreach ($school->files as $file) {
+                File::where('folder', $file->folder)->delete();
+                Storage::disk('public_uploads')->deleteDirectory('files/' . $file->owned_by . '/' . $file->folder);
+            }
+
+            $school->files()->detach();
+        }
+
+        $school->delete();
+
+        return new SchoolResource(['success']);
     }
 }

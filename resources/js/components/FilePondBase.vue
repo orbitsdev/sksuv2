@@ -1,9 +1,9 @@
 <template>
-  <hr />
+  <!-- <hr />
   {{ fileType }}
   <hr />
 
-  {{ multiple }}
+  {{ multiple }} -->
   <file-pond
     credits="false"
     name="files"

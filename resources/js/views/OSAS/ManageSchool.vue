@@ -1,126 +1,363 @@
 <template>
-<div class="sm:flex sm:items-center ">
-        <div class="sm:flex-auto">
+  <div class="my-1 p-3 flex items-center justify-space-between">
+    <div class="">
+      <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-2 "
+        >
+          <!-- Heroicon name: mini/magnifying-glass -->
+          <svg
+            class="h-6 w-6 "
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+              clip-rule="evenodd"
+            />
+          </svg>
         </div>
-        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none my-2">
-          <TableButton @click="(showForm = true)"> Add User</TableButton>
-        </div>
+        <input
+        v-model="search"
+          class="block h-full w-full border-transparent py-2   pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-base"
+          placeholder="Search"
+          type="search"
+          name="search"
+        />
+      </div>
+      <!-- <input
+        type="text"
+        class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-grey-500 focus:outline-none focus:ring-indigo-500 sm:text-base"
+        placeholder="Search..."
+      /> -->
     </div>
-  <BaseCard>
-    <table class="min-w-full divide-y divide-gray-300">
-        <thead class="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-            >
-              School
-            </th>
-            
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-            >
-              School Image
-            </th>
-           
-            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-              <span class="sr-only">Edit</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
-          <tr>
-            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-              <div class="flex items-center">
-               
-                <div class="ml-4">
-                  <div class="font-medium text-gray-900">Sultan Kudarat State University  ( Isulan )</div>
 
+    <div class="">
+      <TableButton
+        class="mr-2"
+        v-if="selectedSchool.length > 0"
+        @click="deleteSelectedSchool"
+      >
+        <i class="fa-regular fa-trash-can mr-2"></i> Selected ( {{ selectedSchool.length }} )
+      </TableButton>
+
+      <TableButton
+        class="mr-2"
+        v-if="schools.length > 0 && selectedSchool.length <= 0"
+        @click="deleteAllRecord"
+      >
+        <i class="fa-regular fa-trash-can mr-2"></i> Delete All
+      </TableButton>
+      <TableButton @click="showTheForm"> Add User</TableButton>
+    </div>
+  </div>
+
+
+  <BaseCard class="shadow-lg border relative">
+    <TableLoader v-if="isFetching" />
+    <table class="min-w-full divide-y divide-gray-300">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8"></th>
+
+          <th
+            scope="col"
+            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+          >
+            SCHOOL
+          </th>
+
+          <th
+            scope="col"
+            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+          >
+            FEATURED IMAGE
+          </th>
+
+          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+            <span class="sr-only">Edit</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        <tr v-for="school in schools" :key="school.id">
+          <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+            <!-- Selected row marker, only show when row is selected. -->
+            <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
+
+            <input
+              v-model="selectedSchool"
+              type="checkbox"
+              :value="school.id"
+              class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
+            />
+          </td>
+          <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+            <div class="flex items-center">
+              <div class="">
+                <div class="font-medium text-gray-900">
+                  {{ school.name.toUpperCase() }}
                 </div>
               </div>
-            </td>
-            
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <!-- <span
-                class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-                >Active</span
-              > -->
-              <div class="h-11 w-11 flex-shrink-0">
-                <img
-                  class="h-11 w-11 rounded"
-                  src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            </div>
+          </td>
+
+          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <div class="flex-shrink-0">
+                <div v-if="school.files.length > 0" class="flex">
+                 <img class="h-20 w-20 mx-2"  v-for="(file, index) in school.files" :key="index" :src="'/uploads/files/schools/'+ file.folder +'/'+ file.file_name"/>
+                  <!-- <img v-for="(file , index) in schools.files " :key="index"
+                  class="object-fill h-28 w-28"
+                  :src="'/uploads/files/schools/' + file.folder + '/' + file.file_name
+                  "
                   alt=""
-                />
-              </div>
-            </td>
-          
-            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                <button type="button" class="inline-flex items-center rounded-md border outline:none  border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1   disabled:cursor-not-allowed disabled:opacity-30 mr-1"><i class="fa-regular fa-pen-to-square"></i></button>
-                <button type="button" class="inline-flex items-center rounded-md border outline:none  border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1   disabled:cursor-not-allowed disabled:opacity-30 mr-1"><i class="fa-regular fa-trash-can"></i></button>
-            </td>
-          </tr>
+                /> -->
+                </div>
+             
+            </div>
+          </td>
 
-          <!-- More people... -->
-        </tbody>
-      </table>
-      <teleport to="#app">
-        <BaseDialog :show="!!showForm" :width="'600'" :preventClose="true">
-          <template #c-content>
-              <SchoolForm @close="closeForm" @hasRequestError="showErrorDialog" />
-          </template>
-        </BaseDialog>
-      </teleport>
+          <td
+            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+          >
+            <button
+              @click="selectSchool(school ,'update')"
+              type="button"
+              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+            >
+              <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+            <button
+              :disabled="(selectedSchool.length > 0)"
+              @click="selectSchool(school, 'delete')"
+              type="button"
+              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+            >
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+        </tr>
 
-      <teleport to="#app">
-        <BaseErrorDialog
-          :show="requestError != null"
-          :width="'400'"
-          :transition="'slide-fade-down'"
-        >
-          <template #c-content>
-            <RequestError
-              :statusCode="requestError.statusCode"
-              @close="closeErrorDialog"
-              :message="requestError.message"
-            />
-          </template>
-          <template #c-actions> </template>
-        </BaseErrorDialog>
-      </teleport>
+        <!-- More people... -->
+      </tbody>
+    </table>
+    <teleport to="#app">
+      <BaseDialog :show="!!showForm" :width="'600'" :preventClose="true">
+        <template #c-content>
+          <SchoolForm :schoolData="schoolData" :isUpdateMode="isUpdateMode"  @close="closeForm" @hasRequestError="showErrorDialog" />
+        </template>
+      </BaseDialog>
+    </teleport>
 
+    <teleport to="#app">
+      <BaseErrorDialog
+        :show="requestError != null"
+        :width="'400'"
+        :transition="'slide-fade-down'"
+      >
+        <template #c-content>
+          <RequestError
+            :statusCode="requestError.statusCode"
+            @close="closeErrorDialog"
+            :message="requestError.message"
+          />
+        </template>
+        <template #c-actions> </template>
+      </BaseErrorDialog>
+    </teleport>
   </BaseCard>
 </template>
 
 <script>
-import SchoolForm from  './SchoolForm.vue';
+import SchoolForm from "./SchoolForm.vue";
+import { ref } from "vue";
+import axiosApi from "../../api/axiosApi";
 export default {
   components: {
     SchoolForm,
   },
+
+  watch: {
+    search(oldeValue , newValue){
+        this.searchSchool();
+    },
+
+  },
+  created() {
+    this.loadSchool();
+  },
+
   data() {
     return {
-      showForm:true,
+      search: '',
+      schools: [],
+      selectedSchool: [],
+      showForm: false,
       requestError: null,
-    }
+      isFetching: false,
+      schoolData: null,
+      isUpdateMode: false,
+    };
   },
 
   methods: {
+    showTheForm(){
+      this.schoolData = {};
+      this.showForm = true;
+      this.isUpdateMode = false;
+    },
+
+    clearSelectedSchool(){
+        this.selectedSchool = [];
+    },
+    async searchSchool(){
+      
+      axiosApi.post('api/schools/search', {
+        search: this.search
+      }).then(res=>{
+        // console.log(res.data.data);
+
+        this.schools = res.data.data;
+          // this.schools = res.data;
+        // this.loadSchool();
+      });
+
+    },
+    async deleteSelectedSchool() {
+      this.customConfirmationDialog({
+        passFunction: async () => {
+          await axiosApi
+            .post("api/schools/delete-selected", {
+              selectedSchool: this.selectedSchool,
+            })
+            .then((res) => {
+              console.log(res);
+              this.loadSchool();
+              this.selectedSchool = [];
+              this.$swal("Deleted!", "Your data has been deleted.", "success");
+            })
+            .catch((err) => {
+              console.log(err);
+              this.requestError = err;
+            });
+        },
+      });
+    },
+
+    async deleteAllRecord() {
+      this.customConfirmationDialog({
+        passFunction: async () => {
+          await axiosApi
+            .post("api/schools/delete-all")
+            .then((res) => {
+              this.loadSchool();
+              this.$swal("Deleted!", "Your data has been deleted.", "success");
+              
+            })
+            .catch((err) => {
+              this.requestError = err;
+            });
+        },
+      });
+    },
+
+    async loadSchool() {
+      this.isFetching = true;
+      await axiosApi
+        .get("api/schools")
+        .then((res) => {
+          console.log(res.data);
+          this.schools = res.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.isFetching = false;
+        });
+    },
+
+    async selectSchool(school, action) {
+     
+
+      if(action === "update"){
+
+        this.schoolData = {}
+         const schoolData = {
+          id: school.id,
+          name: school.name,
+          files: school.files.length > 0 ? [...school.files] : [],
+          created_at: school.created_at,
+          update_at: school.update_at,
+        }
+        
+        
+        this.schoolData = schoolData;
+        this.isUpdateMode = true;
+        this.showForm  = true;
+      
+      }
+      if (action == "delete") {
+        this.isUpdateMode = false;
+        this.customConfirmationDialog({
+          passFunction: () => {
+            this.deletesSchool(school.id);
+          },
+        });
+      }
+    },
+    async deletesSchool(schoolId) {
+      axiosApi
+        .delete("api/schools/" + schoolId)
+        .then((res) => {
+          this.loadSchool();
+          this.$swal("Deleted!", "Your data has been deleted.", "success");
+        })
+        .catch((err) => {
+          this.requestError = err;
+        });
+    },
+
+    customConfirmationDialog({
+      title = "Are you sure?",
+      text = "You won't be able to revert this!",
+      icon = "warning",
+      confirmButtonText = "Yes, delete it!",
+      passFunction,
+      passCancelFunction,
+    }) {
+      this.$swal({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: confirmButtonText,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          passFunction();
+        }
+      });
+    },
     showErrorDialog(error) {
       this.requestError = error;
     },
 
-    
     closeErrorDialog() {
       this.requestError = null;
     },
-    showError(){
-
-    },
-    closeForm(){
+    showError() {},
+    closeForm(isSchoolAdded) {
+      if (isSchoolAdded) {
+        this.loadSchool();
+      }
       this.showForm = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

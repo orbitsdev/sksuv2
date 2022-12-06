@@ -2,7 +2,7 @@
   <section>
     <div>
       <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-      <div class="relative z-40 md:hidden" role="dialog" aria-modal="true">
+      <div class="relative z-40 hidden" role="dialog" aria-modal="true">
         <!--
       Off-canvas menu backdrop, show/hide based on off-canvas menu state.
 
@@ -597,10 +597,15 @@ export default {
             localStorage.removeItem("token");
             window.location.reload(true);
           }
+
           this.requestError = {
             statusCode: String(err.response.status),
             message: err.response.statusText,
           };
+
+          localStorage.removeItem('token');
+          window.location.reload(true);
+          
         })
         .finally(() => {
           this.isLogout = false;
