@@ -1,11 +1,10 @@
 <template>
-  <div class="my-1 p-3 flex items-center justify-space-between">
+  <!-- <div class="my-1 p-3 flex items-center justify-space-between">
     <div class="">
       <div class="relative w-full text-gray-400 focus-within:text-gray-600">
         <div
           class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-2 "
         >
-          <!-- Heroicon name: mini/magnifying-glass -->
           <svg
             class="h-6 w-6 "
             xmlns="http://www.w3.org/2000/svg"
@@ -28,11 +27,7 @@
           name="search"
         />
       </div>
-      <!-- <input
-        type="text"
-        class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-grey-500 focus:outline-none focus:ring-indigo-500 sm:text-base"
-        placeholder="Search..."
-      /> -->
+     
     </div>
 
     <div class="">
@@ -53,10 +48,39 @@
       </TableButton>
       <TableButton @click="showTheForm"> Add User</TableButton>
     </div>
-  </div>
-
+  </div> -->
 
   <BaseCard class="shadow-lg border relative">
+    <BaseTableSetup>
+       
+      <template #search-area>
+        <div class="flex ">
+          <BaseSearchInput v-model="search" class="mx-1"/>
+          <BaseFilter class="mx-1" />
+        </div>
+      </template>
+      <template #actions-area>
+        <div class="">
+          <TableButton
+            class="mr-2"
+            v-if="selectedSchool.length > 0"
+            @click="deleteSelectedSchool"
+          >
+            <i class="fa-regular fa-trash-can mr-2"></i> Selected (
+            {{ selectedSchool.length }} )
+          </TableButton>
+          <input type="file" ref="attachment" @change="uploadFile"/> Upload Image 
+          <TableButton
+            class="mr-2"
+            v-if="schools.length > 0 && selectedSchool.length <= 0"
+            @click="deleteAllRecord"
+          >
+            <i class="fa-regular fa-trash-can mr-2"></i> Delete All
+          </TableButton>
+          <TableButton @click="showTheForm"> <i class="fa-solid fa-plus mr-2"></i>  Add School </TableButton>
+        </div>
+      </template>
+    </BaseTableSetup>
     <TableLoader v-if="isFetching" />
     <table class="min-w-full divide-y divide-gray-300">
       <thead class="bg-gray-50">
@@ -107,16 +131,20 @@
 
           <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <div class="flex-shrink-0">
-                <div v-if="school.files.length > 0" class="flex">
-                 <img class="h-20 w-20 mx-2"  v-for="(file, index) in school.files" :key="index" :src="'/uploads/files/schools/'+ file.folder +'/'+ file.file_name"/>
-                  <!-- <img v-for="(file , index) in schools.files " :key="index"
+              <div v-if="school.files.length > 0" class="flex">
+                <img
+                  class="h-20 w-20 mx-2"
+                  v-for="(file, index) in school.files"
+                  :key="index"
+                  :src="'/uploads/files/schools/' + file.folder + '/' + file.file_name"
+                />
+                <!-- <img v-for="(file , index) in schools.files " :key="index"
                   class="object-fill h-28 w-28"
                   :src="'/uploads/files/schools/' + file.folder + '/' + file.file_name
                   "
                   alt=""
                 /> -->
-                </div>
-             
+              </div>
             </div>
           </td>
 
@@ -124,14 +152,14 @@
             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
           >
             <button
-              @click="selectSchool(school ,'update')"
+              @click="selectSchool(school, 'update')"
               type="button"
               class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
             >
               <i class="fa-regular fa-pen-to-square"></i>
             </button>
             <button
-              :disabled="(selectedSchool.length > 0)"
+              :disabled="selectedSchool.length > 0"
               @click="selectSchool(school, 'delete')"
               type="button"
               class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
@@ -144,10 +172,16 @@
         <!-- More people... -->
       </tbody>
     </table>
+    <!-- <Pagination v-model="page" :records="200" :per-page="25" @paginate="myCallback"/> -->
     <teleport to="#app">
       <BaseDialog :show="!!showForm" :width="'600'" :preventClose="true">
         <template #c-content>
-          <SchoolForm :schoolData="schoolData" :isUpdateMode="isUpdateMode"  @close="closeForm" @hasRequestError="showErrorDialog" />
+          <SchoolForm
+            :schoolData="schoolData"
+            :isUpdateMode="isUpdateMode"
+            @close="closeForm"
+            @hasRequestError="showErrorDialog"
+          />
         </template>
       </BaseDialog>
     </teleport>
@@ -175,24 +209,30 @@
 import SchoolForm from "./SchoolForm.vue";
 import { ref } from "vue";
 import axiosApi from "../../api/axiosApi";
+
+
 export default {
   components: {
     SchoolForm,
   },
 
   watch: {
-    search(oldeValue , newValue){
-        this.searchSchool();
+    search(oldeValue, newValue) {
+      this.searchSchool();
     },
-
   },
   created() {
-    this.loadSchool();
+    // this.loadSchool();
+    this.getToken();
   },
 
   data() {
     return {
-      search: '',
+      arrays:{
+        config: []
+      },
+      page: 1,
+      search: "",
       schools: [],
       selectedSchool: [],
       showForm: false,
@@ -200,31 +240,87 @@ export default {
       isFetching: false,
       schoolData: null,
       isUpdateMode: false,
+
     };
   },
 
   methods: {
-    showTheForm(){
+    uploadFile(){
+        
+      var client = new OSS(this.arrays.config);
+ 
+       var file =  this.$refs.attachment.files[0];
+       console.log('file data', file)
+       client.multipartUpload('temp/file/'+ file.name , file, {
+        parallel: 4,
+        progress : function(per, cpt, res) {
+          console.log('percentage ', per)
+          console.log('cpt ', cpt)
+          console.log('res ', res)
+        },
+        partclientSize : 1 * 1024 * 1024,
+       });
+      //  console.lo  g(OSS);
+      // client =  new OSS({
+      //   hellow: '',
+      // });
+      //   console.log(client);
+       
+      //   var client = new OSS({
+      //     accessKeyId: this.arrays.config.stsId,
+      //     accessKeySecret: this.arrays.config.stsKey,
+      //     region: this.arrays.config.region,
+      //     stsToken: this.arrays.config.stsToken,
+      //     bucket: this.arrays.config.bucket,
+      //       });
+
+      //       console.log(client)
+      //   return;
+      //   client.multipartUpload('/test/upload/', file, function(percentage, checkpoint){
+      //   console.log(percentage);
+      //   console.log(checkpoint);
+
+      // } ,{
+      //   accessKeyId: this.arrays.config.stsId,
+      //   accessKeySecret: this.arrays.config.stsKey,
+      //   region: this.arrays.config.region,
+      //   stsToken: this.arrays.config.stsToken,
+      //   bucket: this.arrays.config.bucket,
+      // } );
+
+    },
+  
+
+    async  getToken(){
+
+      await axiosApi.get("api/oss/token").then(({ data   }) => {
+        console.log(data);
+         this.arrays.config = data.data;
+      });
+    }, 
+
+
+    showTheForm() {
       this.schoolData = {};
       this.showForm = true;
       this.isUpdateMode = false;
     },
 
-    clearSelectedSchool(){
-        this.selectedSchool = [];
+    clearSelectedSchool() {
+      this.selectedSchool = [];
     },
-    async searchSchool(){
-      
-      axiosApi.post('api/schools/search', {
-        search: this.search
-      }).then(res=>{
-        // console.log(res.data.data);
+    async searchSchool() {
+      axiosApi
+        .post("api/schools/search", {
+          search: this.search,
+        })
+        .then((res) => {
+          // console.log(res.data.data);
 
-        this.schools = res.data.data;
+          this.schools = res.data.data;
           // this.schools = res.data;
-        // this.loadSchool();
-      });
-
+          // this.loadSchool();
+        });
     },
     async deleteSelectedSchool() {
       this.customConfirmationDialog({
@@ -255,7 +351,6 @@ export default {
             .then((res) => {
               this.loadSchool();
               this.$swal("Deleted!", "Your data has been deleted.", "success");
-              
             })
             .catch((err) => {
               this.requestError = err;
@@ -281,24 +376,19 @@ export default {
     },
 
     async selectSchool(school, action) {
-     
-
-      if(action === "update"){
-
-        this.schoolData = {}
-         const schoolData = {
+      if (action === "update") {
+        this.schoolData = {};
+        const schoolData = {
           id: school.id,
           name: school.name,
           files: school.files.length > 0 ? [...school.files] : [],
           created_at: school.created_at,
           update_at: school.update_at,
-        }
-        
-        
+        };
+
         this.schoolData = schoolData;
         this.isUpdateMode = true;
-        this.showForm  = true;
-      
+        this.showForm = true;
       }
       if (action == "delete") {
         this.isUpdateMode = false;

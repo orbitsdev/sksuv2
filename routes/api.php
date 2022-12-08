@@ -4,6 +4,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\ManageSchoolController;
@@ -47,17 +48,21 @@ Route::post('file/upload', [FilePondController::class, 'uploadToTemporaryStorage
 Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage']);
 // FILEPOND
 
-// OSAS
-
-
+// MANAGE SCHOOL
 Route::post('schools/search', [ManageSchoolController::class,'search']);
 Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
 Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
 Route::apiResource('schools', ManageSchoolController::class);
 
+
+// ALIBABA
+Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
 // PUBLIC
 Route::get('/roles', [RolesController::class, 'getAllRoles']);
 
+
+// ALIBABA
+Route::get('/oss/token', [CloudStorageController::class ,'getAccessToken']);
 
 
 

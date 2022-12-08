@@ -1,6 +1,10 @@
 
 
+
+
+
 import { createApp } from "vue";
+import './bootstrap';
 let app = createApp({});
 
 
@@ -26,7 +30,14 @@ import FormHeader from './components/FormHeader.vue';
 import LinearLoader from './components/LinearLoader.vue';
 import TableLoader from './components/TableLoader.vue';
 import FileChip from './components/FileChip.vue';
+import BaseTableSetup from './components/BaseTableSetup.vue';
+import BaseSearchInput from './components/BaseSearchInput.vue';
+import BaseFilter from './components/BaseFilter.vue';
 
+import axios from 'axios';
+window.axios = axios;
+// PAGINATION
+import Pagination from 'v-pagination-3';
 // LOTTIE
 import Vue3Lottie from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
@@ -65,6 +76,11 @@ app.component("FormHeader", FormHeader);
 app.component("LinearLoader", LinearLoader);
 app.component("TableLoader", TableLoader);
 app.component("FileChip", FileChip);
+app.component('Pagination', Pagination);
+app.component('BaseTableSetup', BaseTableSetup);
+app.component('BaseSearchInput', BaseSearchInput);
+app.component('BaseFilter', BaseFilter);
+
 
 
 router.isReady().then(()=>{

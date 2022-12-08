@@ -11,19 +11,18 @@
     </div>
 
 
-    <!-- {{ schoolData }}
-    {{ isUpdateMode }} -->
-
-        {{ form }}
-    <div class="py-2" v-if="isUpdateMode && initialFiles.length > 0">
+      {{ existingFile }}
+      <hr>
+      {{ fileToBeRemove }}
+    <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
       <label for="cover-photo" class="block text-base font-medium text-gray-700"
         >Your Files
       </label>
       <div class="py-2 flex flex-wrap">
         <FileChip
-          @click="removeInitialFiles(file.id)"
+          @click="removeExistingFile(file.id)"
           class="m-1"
-          v-for="(file, index) in initialFiles"
+          v-for="(file, index) in existingFile"
           :key="file.id"
         >
           {{ file.file_name }}
@@ -86,8 +85,10 @@ export default {
     if(this.isUpdateMode){
       this.form = {
         name: this.schoolData.name,
-        files: this.schoolData.files,
+        files: [],
       }
+
+      this.existingFile = this.schoolData.files;
     }
    
   },
@@ -114,7 +115,8 @@ export default {
         name: "",
         files: [],
       },
-      initialFiles: [],
+      existingFile: [],
+      fileToBeRemove: [],
       isLoading: false,
       isUploading: false,
       validationError: {},
@@ -123,10 +125,14 @@ export default {
   },
 
   methods: {
-    removeInitialFiles(id) {
+    removeExistingFile(id) {  
 
-      this.form.files =this.form.files.filter((item) => item.id != id);
-      this.initialFiles = this.initialFiles.filter((item) => item.id != id);
+      const  file =  this.existingFile.find(file=>  file.id == id);
+      this.existingFile =  this.existingFile.filter(file=>  file.id != id);
+      this.fileToBeRemove.push(file);
+      console.log(this.fileToBeRemove);
+        // console.log(this.existingFile);
+
     },
 
     handleSubmit() {
@@ -139,14 +145,14 @@ export default {
     },
     async updateSchool() {
 
-
-
-      this.isLoading = true;
       await axiosApi
-        .put("api/schools/" + this.schoolData.id, this.form)
+        .put("api/schools/" + this.schoolData.id, {
+          ...this.form,
+          filetoberemove: this.fileToBeRemove
+        })
         .then((res) => {
-            console.log('UPDATE');
-            console.log(res.data);
+
+ 
           this.showToast({title: 'Succesfully Update'});
           this.form = {
             name: "",
@@ -167,6 +173,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+
     },
     handleLoading(value) {
       this.isUploading = value;
@@ -203,12 +210,7 @@ export default {
       const newfile = response;
       this.form.files.push(newfile);
 
-      if(this.isUpdateMode){
-        if(this.initialFiles.length > 0){
-          this.form.files =   this.form.files.concat(this.initialFiles);
-          
-        }
-      }
+      
 
 
     },

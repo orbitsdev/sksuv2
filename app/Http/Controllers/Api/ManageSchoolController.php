@@ -114,16 +114,15 @@ class ManageSchoolController extends Controller
         $files = $request->input('files');
 
         $school = School::create([
-            'name'=> $request->input('name')
+            'name' => $request->input('name')
         ]);
 
 
         if (count($files) > 0) {
 
-            $filesId = [];
 
             foreach ($files  as $file) {
-                
+
                 $createdfile = File::create([
                     'owned_by' => 'schools',
                     'folder' => $file["folder"],
@@ -136,16 +135,12 @@ class ManageSchoolController extends Controller
                 $temporaryFolderPath = 'tmp/' . $createdfile['folder'];
                 Storage::disk('public_uploads')->copy($fromTemporaryFolder, $toFilesFolder);
                 Storage::disk('public_uploads')->deleteDirectory($temporaryFolderPath);
-                $fileId[] = $createdfile->id;
+                TemporaryStorage::where('folder', $createdfile['folder'])->delete();
+                $school->files()->attach($createdfile->id);
             }
-
-            if(count($fileId) > 0){
-                $school->files()->sync($fileId);
-            }
-            
         }
 
-        return response()->json(['success', $fileId], 200);
+        return response()->json(['success',   $school->files], 200);
     }
 
     /**
@@ -209,7 +204,7 @@ class ManageSchoolController extends Controller
             $folders = [];
             foreach ($school->files as $file) {
                 $folders[] = $file['folder'];
-                $fileFolder = '/files' . '/' . $file['owned_by'] . '/' . $file['folder'];
+                $fileFolder = 'files/' . $file['owned_by'] . '/' . $file['folder'];
                 Storage::disk('public_uploads')->deleteDirectory($fileFolder);
             }
             File::whereIn('folder', $folders)->delete();
@@ -225,39 +220,61 @@ class ManageSchoolController extends Controller
         ]);
 
         $school->update([
-            'name'=> $request->input('name')
+            'name' => $request->input('name'),
         ]);
-            
-        $schoolfiles = $request->input('files');        
 
+        $filetoberemove = $request->input('filetoberemove');
 
-        if(count($schoolfiles) > 0){
-            $createdfileid  = [];
-            foreach($schoolfiles as $file){
-               $createdfile =  File::create([
-                    'owned_by' => 'schools',
-                    'folder' => $file["folder"],
-                    'file_name' => $file["file_name"],
-                    'file_type' => $file["file_type"],
-                ]);
+        $filestoadded = $request->input('files');
+        if (count($filestoadded) > 0) {
 
-                $createdfileid[] = $createdfile['id'];
-                $fromtemporaryfolder = 'tmp/'.$createdfile['folder'].'/'.$createdfile['file_name'];
-                $tofilefolder = 'files/'.$createdfile['owned_by'].'/'.$createdfile['folder'].'/'.$createdfile['file_name'];
-                $tempFolder = 'tmp/'.$createdfile['folder'];
-                Storage::disk('public_uploads')->copy($fromtemporaryfolder, $tofilefolder);
-                Storage::disk('public_uploads')->deleteDirectory($tempFolder);
-                
-                
+            $this->storeNewFiles($filestoadded, $school);
+        }
+
+        if (count($filetoberemove) > 0) {
+            $filecollection = [];
+
+            foreach ($filetoberemove as $file) {
+                $filecollection[] = $file['id'];
             }
-            $school->files()->sync($createdfileid);
 
+            $databasefile  = File::whereIn('id', $filecollection)->get();
+            foreach ($databasefile as $file) {
+
+                $filefolder  = 'files/schools/' . $file['folder'];
+                Storage::disk('public_uploads')->deleteDirectory($filefolder);
+                $school->files()->detach($file['id']);
+            }
+            File::whereIn('id', $filecollection)->delete();
         }
 
 
 
-        return response()->json([$createdfileid, $school->files], 200);
-        
+
+
+        return response()->json(['success'], 200);
+    }
+
+
+    public function storeNewFiles($filestoadded,  School $school)
+    {
+        foreach ($filestoadded as $file) {
+            $newfile  =  File::create([
+                'owned_by' => 'schools',
+                'folder' => $file["folder"],
+                'file_name' => $file["file_name"],
+                'file_type' => $file["file_type"],
+            ]);
+
+            $fromTemporaryFolder = 'tmp/' . $newfile['folder'] . '/' . $newfile['file_name'];
+            $toLocalFiles = 'files/schools/' . $newfile['folder'] . '/' . $newfile['file_name'];
+            $tempFolder = 'tmp/' . $newfile['folder'];
+ 
+            Storage::disk('public_uploads')->copy($fromTemporaryFolder, $toLocalFiles);
+            Storage::disk('public_uploads')->deleteDirectory($tempFolder);
+            TemporaryStorage::where('folder', $newfile['folder'])->delete();
+            $school->files()->attach($newfile['id']);
+        }
     }
 
     /**

@@ -545,6 +545,8 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+     
+
       showLogoutButton: false,
       isLogout: false,
       requestError: null,
