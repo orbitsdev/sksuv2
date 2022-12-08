@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\GoogleController;
+use App\Http\Controllers\Api\GoogleDriveStorageController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
@@ -64,6 +65,10 @@ Route::get('/roles', [RolesController::class, 'getAllRoles']);
 // ALIBABA
 Route::get('/oss/token', [CloudStorageController::class ,'getAccessToken']);
 
+
+// GOOGLE DRIVE
+Route::post('google-drive-upload', [GoogleDriveStorageController::class, 'fileUpload']);
+Route::post('google-drive-get-files', [GoogleDriveStorageController::class, 'getFiles']);
 
 
 

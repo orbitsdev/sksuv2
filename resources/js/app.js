@@ -34,8 +34,11 @@ import BaseTableSetup from './components/BaseTableSetup.vue';
 import BaseSearchInput from './components/BaseSearchInput.vue';
 import BaseFilter from './components/BaseFilter.vue';
 
+
+import axiosApi from "./api/axiosApi";
 import axios from 'axios';
 window.axios = axios;
+window.axiosApi = axiosApi;
 // PAGINATION
 import Pagination from 'v-pagination-3';
 // LOTTIE

@@ -1,7 +1,9 @@
 <?php
 
+
 use App\Models\User;
 use App\Mail\ResetPassword;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,16 @@ Route::get('/mail', function(){
 
     
     return new ResetPassword($user, $token, $set_new_password_url,);
+});
+
+
+
+
+
+Route::get('/google/storage/upload', function(Request $request){
+        
+    dd($request->file('thing'));
+
 });
 
 

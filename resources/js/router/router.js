@@ -9,6 +9,12 @@ import store from '../store/store';
 
 const routes = [
     {
+        name: 'googledriveupload',
+        path: '/google',
+        component: ()=> import('../testproject/GoogleDriveUploadPage.vue'),
+        
+    },
+    {
         name: 'getstarted',
         path: '/',
         component: ()=> import('../views/GetStartedPage.vue'),
