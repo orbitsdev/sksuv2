@@ -50,132 +50,132 @@
     </div>
   </div> -->
 
-  <BaseCard class="shadow-lg border relative">
-    <BaseTableSetup>
-       
-      <template #search-area>
-        <div class="flex ">
-          <BaseSearchInput v-model="search" class="mx-1"/>
-          <BaseFilter class="mx-1" />
-        </div>
-      </template>
-      <template #actions-area>
-        <div class="">
-          <TableButton
-            class="mr-2"
-            v-if="selectedSchool.length > 0"
-            @click="deleteSelectedSchool"
-          >
-            <i class="fa-regular fa-trash-can mr-2"></i> Selected (
-            {{ selectedSchool.length }} )
+  <!-- v-if="schools.length > 0 && selectedSchool.length <= 0" -->
+
+  
+  <BaseCard class="relative"  :subtitle="'Manage Schools'">
+    <template #header > 
+      <BaseTableSetup>
+        <template #searchs-area> 
+          <TableButton class="mr-2" @click="showTheForm"> <i class="fa-solid fa-plus mr-1"></i> Add School  </TableButton>
+          <BaseSearchInput  :placeholder="'Search Name ...'" v-model="search"/>     
+        </template>
+        <template #filters-area> 
+
+          <!-- <BaseFilter class="mx-1"/>
+          <BaseFilter class="mx-1"/> -->
+
+        </template>
+        <template #actions-area>
+          <TableButton v-if="selectedSchool.length > 0"  :mode="true" class="mr-2" @click="deleteSelectedSchool">    <i class="fa-regular fa-trash-can mr-2"></i> Selected ({{ selectedSchool.length }} )
           </TableButton>
-        
-          <TableButton
-            class="mr-2"
-            v-if="schools.length > 0 && selectedSchool.length <= 0"
-            @click="deleteAllRecord"
-          >
-            <i class="fa-regular fa-trash-can mr-2"></i> Delete All
+          <TableButton v-if="(!selectedSchool.length > 0 && schools.length > 0)" :mode="true" @click="deleteAllRecord" >    <i class="fa-regular fa-trash-can mr-1 "></i>  <span class="block">Delete All</span>
           </TableButton>
-          <TableButton @click="showTheForm"> <i class="fa-solid fa-plus mr-2"></i>  Add School </TableButton>
-        </div>
-      </template>
-    </BaseTableSetup>
-    <TableLoader v-if="isFetching" />
-    <table class="min-w-full divide-y divide-gray-300">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8"></th>
-
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-          >
-            SCHOOL
-          </th>
-
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
-          >
-            FEATURED IMAGE
-          </th>
-
-          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-            <span class="sr-only">Edit</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 bg-white">
-        <tr v-for="school in schools" :key="school.id">
-          <td class="relative w-12 px-6 sm:w-16 sm:px-8">
-            <!-- Selected row marker, only show when row is selected. -->
-            <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
-
-            <input
-              v-model="selectedSchool"
-              type="checkbox"
-              :value="school.id"
-              class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
-            />
-          </td>
-          <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-            <div class="flex items-center">
-              <div class="">
-                <div class="font-medium text-gray-900">
-                  {{ school.name.toUpperCase() }}
-                </div>
-              </div>
-            </div>
-          </td>
-
-          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            <div class="flex-shrink-0">
-              <div v-if="school.files.length > 0" class="flex">
-
-                <div  v-for="(file, index) in school.files" :key="index">
-                  <a :href="'https://skswbrsa.oss-ap-southeast-6.aliyuncs.com/files/schools/'+file.folder + '/' + file.file_name">view</a>
-                <img
-                class="h-20 w-20 mx-2"
+        </template>
                
-                :src="'https://skswbrsa.oss-ap-southeast-6.aliyuncs.com/files/schools/' + file.folder + '/' + file.file_name"
+      
+      </BaseTableSetup>
+    </template>
+    
+    <div class="relative">
+
+      <TableLoader v-if="isFetching"  />
+      <table class="min-w-full divide-y  divide-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8"></th>
+  
+            <th
+              scope="col"
+              class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+            >
+              SCHOOL
+            </th>
+  
+            <th
+              scope="col"
+              class="px-3 py-3.5 text-left text-base font-semibold text-gray-900"
+            >
+              FEATURED IMAGE
+            </th>
+  
+            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+              <span class="sr-only">Edit</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr v-for="school in schools" :key="school.id">
+            <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+              <!-- Selected row marker, only show when row is selected. -->
+              <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
+  
+              <input
+                v-model="selectedSchool"
+                type="checkbox"
+                :value="school.id"
+                class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
               />
+            </td>
+            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+              <div class="flex items-center">
+                <div class="">
+                  <div class="font-medium text-gray-900">
+                    {{ school.name.toUpperCase() }}
+                  </div>
                 </div>
-               
-                <!-- <img v-for="(file , index) in schools.files " :key="index"
-                  class="object-fill h-28 w-28"
-                  :src="'/uploads/files/schools/' + file.folder + '/' + file.file_name
-                  "
-                  alt=""
-                /> -->
               </div>
-            </div>
-          </td>
-
-          <td
-            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-          >
-            <button
-              @click="selectSchool(school, 'update')"
-              type="button"
-              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+            </td>
+  
+            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <div class="flex-shrink-0">
+                <div v-if="school.files.length > 0" class="flex">
+  
+                  <div  v-for="(file, index) in school.files" :key="index">
+                    <a :href="'https://skswbrsa.oss-ap-southeast-6.aliyuncs.com/files/schools/'+file.folder + '/' + file.file_name">view</a>
+                  <img
+                  class="h-20 w-20 mx-2"
+                 
+                  :src="'https://skswbrsa.oss-ap-southeast-6.aliyuncs.com/files/schools/' + file.folder + '/' + file.file_name"
+                />
+                  </div>
+                 
+                  <!-- <img v-for="(file , index) in schools.files " :key="index"
+                    class="object-fill h-28 w-28"
+                    :src="'/uploads/files/schools/' + file.folder + '/' + file.file_name
+                    "
+                    alt=""
+                  /> -->
+                </div>
+              </div>
+            </td>
+  
+            <td
+              class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
             >
-              <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-            <button
-              :disabled="selectedSchool.length > 0"
-              @click="selectSchool(school, 'delete')"
-              type="button"
-              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-            >
-              <i class="fa-regular fa-trash-can"></i>
-            </button>
-          </td>
-        </tr>
-
-        <!-- More people... -->
-      </tbody>
-    </table>
+              <button
+                @click="selectSchool(school, 'update')"
+                type="button"
+                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+              >
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+              <button
+                :disabled="selectedSchool.length > 0"
+                @click="selectSchool(school, 'delete')"
+                type="button"
+                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+              >
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+  
+          <!-- More people... -->
+        </tbody>
+      </table>
+    </div>
+   
     <!-- <Pagination v-model="page" :records="200" :per-page="25" @paginate="myCallback"/> -->
     <teleport to="#app">
       <BaseDialog :show="!!showForm" :width="'600'" :preventClose="true">

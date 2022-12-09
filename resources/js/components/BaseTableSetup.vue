@@ -1,10 +1,10 @@
 
 
 <template>
-   <div class="p-4 bg-white flex justify-between items-center">
-    <div><slot name="search-area"></slot></div>    
-    <div><slot name="filters-area"></slot></div>    
-    <div><slot name="actions-area"></slot></div>    
+   <div class="flex justify-between py-2  my-2">
+       <div class="flex "><slot name="searchs-area"></slot></div>    
+       <div class="flex justify-center "><slot name="filters-area"></slot></div>    
+       <div class="flex justify-end "><slot name="actions-area"></slot></div>    
    </div>
 </template>
 

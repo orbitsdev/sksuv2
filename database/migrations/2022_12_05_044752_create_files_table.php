@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('folder');
             $table->string('file_name');
             $table->string('file_type');
+            $table->string('url');
             $table->timestamps();
         });
     }

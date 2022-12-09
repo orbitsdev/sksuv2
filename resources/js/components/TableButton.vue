@@ -1,19 +1,10 @@
 <template>
 
-  <button
-  v-if="!mode"
-    type="button"
-    class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none sm:w-auto"
-  >
-    <slot> Click Me </slot>
-  </button>
-  <button
-  v-else
-    type="button"
-    class="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none sm:w-auto"
-  >
-    <slot> Click Me </slot>
-  </button>
+
+  <button   v-if="!mode"
+   type="button" class="flex items-center justify-center rounded-lg border border-green-600  bg-green-50  text-green-800    px-4 py-2 text-sm font-extrabold hover:text-white  hover:shadow-lg hover:bg-green-800  focus:outline-none  sm:w-auto"><slot>Click Me</slot></button>
+  <button v-else
+   type="button" class="flex items-center justify-center rounded-sm border  bg-white px-4 py-2 text-sm font-medium text-grey-500 shadow-sm hover:bg-gray-50 hover:shadow-lg focus:outline-none  sm:w-auto"><slot>Click Me</slot></button>
 </template>
 
 <script>

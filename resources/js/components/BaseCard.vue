@@ -1,8 +1,22 @@
 
 
 <template>
-    <div class="w-full min-h-full shadow  bg-white">
-        <slot>
+    <div class="w-full min-h-full bg-white shadow border  p-3 ">
+        
+        <h2 v-if="!!title" class="text-2xl font-medium  ">
+            {{ title }}
+        </h2>
+        <h3 v-if="!!subtitle" class="text-base font-bold ">
+            {{ subtitle }}
+        </h3>
+        <slot name="header">
+            <div class="">
+                
+                <p class="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo nulla dicta saepe illum debitis sed ducimus corrupti voluptates iste quasi deserunt, tempore suscipit accusamus blanditiis, perspiciatis autem iusto ullam harum? </p>
+
+            </div>
+        </slot>
+        <slot >
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea laudantium qui recusandae ullam porro beatae ex dicta autem, error consequuntur! Soluta eius aut laborum repudiandae obcaecati quibusdam eaque! Consectetur, excepturi!
         </slot>
     </div>
@@ -10,6 +24,22 @@
 
 <script>
     export default {
+
+        props: {
+
+            title:{
+                type:String,
+                required: false,
+                default: ''
+            },
+            
+            subtitle: {
+                type: String,
+                default: '',
+                required: false,
+            },
+            
+        },
         
     }
 </script>
