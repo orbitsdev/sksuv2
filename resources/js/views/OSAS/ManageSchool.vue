@@ -77,9 +77,18 @@
       </BaseTableSetup>
     </template>
 
-    <BaseTable :thdata="['School Name', 'Featured Image', '']" :isFetching="isFetching">
+    <BaseTable :thdata="[' ' ,'School Name', 'Featured Image', '']" :isFetching="isFetching">
       <template  #data>
         <tr v-for="school in schools" :key="school.id">
+          <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+
+            <input
+              v-model="selectedSchool"
+              type="checkbox"
+              :value="school.id"
+              class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
+            />
+          </td>
           <td class="whitespace-nowrap py-4  text-sm ">
             <div class="flex items-center">
         
@@ -345,6 +354,7 @@ export default {
       this.selectedSchool = [];
     },
     async searchSchool() {
+      
       axiosApi
         .post("api/schools/search", {
           search: this.search,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FormHeader>Add School</FormHeader>
+    <FormHeader> {{ isUpdateMode ? 'Update Shool' : 'Add School' }}</FormHeader>
 
     <div class="pt-5">
       <BaseInput
