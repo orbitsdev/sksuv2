@@ -73,4 +73,26 @@ class FileController extends Controller
 
         $model->files()->detach();
     }
+
+    public function deleteTemporaryFiles(Request $request){
+        
+        $folders = $request->input('folders');
+        
+        
+
+        
+        if(count($folders) > 0){
+            foreach($folders as $folder){
+                $temporaryFolder = 'tmp/'.$folder;
+                Storage::disk('public_uploads')->deleteDirectory($temporaryFolder);
+                
+            }
+            
+            TemporaryStorage::whereIn('folder', $folders)->delete();
+        }
+
+
+        return response()->json(['success'], 200);
+
+    }
 }

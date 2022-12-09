@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dialogparent">
 
         <w-dialog 
     @close="this.$emit('close')"
@@ -75,6 +75,10 @@
 
 .c-container{
     background: red;
+}
+
+.dialogparent{
+    z-index: 1000;
 }
 
 </style>

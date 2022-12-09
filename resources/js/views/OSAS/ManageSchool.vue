@@ -211,6 +211,7 @@
             :schoolData="schoolData"
             :isUpdateMode="isUpdateMode"
             @close="closeForm"
+            @hasUnsaveFile="handleUnsaveFiles"
             @hasRequestError="showErrorDialog"
           />
         </template>
@@ -276,6 +277,36 @@ export default {
   },
 
   methods: {
+
+    
+    async handleUnsaveFiles(folders){
+      this.customConfirmationDialog({
+
+      title: "You have  unsave file upload in the form ",
+      text: "Are you sure you want to close it",
+      icon: "warning",
+      confirmButtonText: "Yes ",
+
+          passFunction: () => {
+            this.deleteTemporaryStorage(folders);
+          },
+        });
+    },
+
+    async deleteTemporaryStorage(filesfolder){
+      
+      axiosApi.post('api/files/delete-temporary-files', {
+        folders: filesfolder
+      }).then(res=>{
+
+        this.showForm = false;
+
+       
+      }).catch(err=>{
+        this.requestError = err;
+      });
+      
+      },
     uploadFile(){
         
       var client = new OSS(this.arrays.config);
@@ -291,34 +322,7 @@ export default {
         },
         partclientSize : 1 * 1024 * 1024,
        });
-      //  console.lo  g(OSS);
-      // client =  new OSS({
-      //   hellow: '',
-      // });
-      //   console.log(client);
-       
-      //   var client = new OSS({
-      //     accessKeyId: this.arrays.config.stsId,
-      //     accessKeySecret: this.arrays.config.stsKey,
-      //     region: this.arrays.config.region,
-      //     stsToken: this.arrays.config.stsToken,
-      //     bucket: this.arrays.config.bucket,
-      //       });
-
-      //       console.log(client)
-      //   return;
-      //   client.multipartUpload('/test/upload/', file, function(percentage, checkpoint){
-      //   console.log(percentage);
-      //   console.log(checkpoint);
-
-      // } ,{
-      //   accessKeyId: this.arrays.config.stsId,
-      //   accessKeySecret: this.arrays.config.stsKey,
-      //   region: this.arrays.config.region,
-      //   stsToken: this.arrays.config.stsToken,
-      //   bucket: this.arrays.config.bucket,
-      // } );
-
+   
     },
   
 
@@ -472,11 +476,14 @@ export default {
       this.requestError = null;
     },
     showError() {},
+
+    
     closeForm(isSchoolAdded) {
       if (isSchoolAdded) {
         this.loadSchool();
       }
       this.showForm = false;
+     
     },
   },
 };

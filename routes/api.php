@@ -3,15 +3,16 @@
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CloudStorageController;
-use App\Http\Controllers\Api\FilePondController;
-use App\Http\Controllers\Api\GoogleController;
-use App\Http\Controllers\Api\GoogleDriveStorageController;
-use App\Http\Controllers\Api\ManageSchoolController;
-use App\Http\Controllers\Api\NewPasswordController;
-use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\GoogleController;
+use App\Http\Controllers\Api\FilePondController;
+use App\Http\Controllers\Api\NewPasswordController;
+use App\Http\Controllers\Api\CloudStorageController;
+use App\Http\Controllers\Api\ManageSchoolController;
+use App\Http\Controllers\Mail\NewPasswordMailController;
+use App\Http\Controllers\Api\GoogleDriveStorageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,8 @@ Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
 Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
 Route::apiResource('schools', ManageSchoolController::class);
 
+// FILE CONTROLLER 
+Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
 
 // ALIBABA
 Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);

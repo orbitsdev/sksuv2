@@ -11,9 +11,6 @@
     </div>
 
 
-      {{ existingFile }}
-      <hr>
-      {{ fileToBeRemove }}
     <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
       <label for="cover-photo" class="block text-base font-medium text-gray-700"
         >Your Files
@@ -32,8 +29,7 @@
     </div>
 
     <div class="pt-2">
-      <label for="cover-photo" class="block text-base font-medium text-gray-700"
-        >Features Image</label
+      <label for="cover-photo" class="block    text-base text-gray-700" >Features Image</label
       >
       <FilePondBase
         v-if="noExisintData"
@@ -50,7 +46,7 @@
         <LinearLoader v-if="isUploading" />
         <div v-else class="flex justify-center items-center">
           <button
-            @click="$emit('close', false)"
+            @click="handleClose"
             type="button"
             class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
@@ -68,7 +64,7 @@
             :disabled="isLoading"
             v-else
             @click="handleSubmit"
-            class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-green-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             {{ isUpdateMode ? "Update" : "Save" }}
           </button>
@@ -104,7 +100,8 @@ export default {
       default: {},
     },
   },
-  imits: ["hasRequestError", "close"],
+    
+  emits: ["hasRequestError", "close", "hasUnsaveFile"],
   computed: {
     ...mapGetters(["fileType"]),
     name() {
@@ -133,6 +130,27 @@ export default {
   },
 
   methods: {
+
+    handleClose(){
+
+      if(this.form.files.length > 0){
+        const filesfolder = [];
+        this.form.files.forEach(file=>{
+            filesfolder.push(file.folder);
+        });
+
+        this.$emit('hasUnsaveFile',  filesfolder)
+       
+
+      }else{
+        this.$emit('close', false);
+      }
+
+    
+    },  
+
+   
+
     removeExistingFile(id) {  
 
       const  file =  this.existingFile.find(file=>  file.id == id);
