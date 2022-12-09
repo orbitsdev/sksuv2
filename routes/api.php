@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
+use App\Http\Controllers\Api\SboAdviserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +47,14 @@ Route::get('/role', function(){
     return redirect()->to('/authorize/google/callback?code=anna');
 });
 
+
+
+// FILEPOND
 Route::post('file/upload', [FilePondController::class, 'uploadToTemporaryStorage']);
 Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage']);
-// FILEPOND
+
+// FILE CONTROLLER 
+Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
 
 // MANAGE SCHOOL
 Route::post('schools/search', [ManageSchoolController::class,'search']);
@@ -56,8 +62,9 @@ Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
 Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
 Route::apiResource('schools', ManageSchoolController::class);
 
-// FILE CONTROLLER 
-Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
+// Manage SBO ADVISER
+Route::apiResource('sbo-advisers', SboAdviserController::class);
+
 
 // ALIBABA
 Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
