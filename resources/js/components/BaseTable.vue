@@ -1,15 +1,41 @@
 <template>
-    <div>
+  <div class="relative">
+    <TableLoader v-if="isFetching" />
+    <table class="min-w-full divide-y divide-gray-300">
+      <thead class="bg-green-100">
+        <tr>
+          <th v-for="(th, index) in thdata" :key="index"
+            scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            {{ th }}
+          </th>
 
-    </div>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        <slot name="data">
+         
+        </slot>
+
+        <!-- More people... -->
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+export default {
+  props: {
+    isFetching: {
+      type: Boolean,
+      default: false,
+    },
+    thdata: {
+      type: Array,
+      required: false,
+      default: ["Name", "Title", "Status", "Roles", ""],
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -33,6 +33,7 @@ import FileChip from './components/FileChip.vue';
 import BaseTableSetup from './components/BaseTableSetup.vue';
 import BaseSearchInput from './components/BaseSearchInput.vue';
 import BaseFilter from './components/BaseFilter.vue';
+import BaseTable from './components/BaseTable.vue';
 
 
 import axiosApi from "./api/axiosApi";
@@ -83,6 +84,7 @@ app.component('Pagination', Pagination);
 app.component('BaseTableSetup', BaseTableSetup);
 app.component('BaseSearchInput', BaseSearchInput);
 app.component('BaseFilter', BaseFilter);
+app.component('BaseTable', BaseTable);
 
 
 

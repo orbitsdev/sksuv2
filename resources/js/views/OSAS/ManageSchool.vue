@@ -76,8 +76,50 @@
       
       </BaseTableSetup>
     </template>
-    
-    <div class="relative">
+
+    <BaseTable :thdata="['School Name', 'Featured Image', '']" :isFetching="isFetching">
+      <template  #data>
+        <tr v-for="school in schools" :key="school.id">
+          <td class="whitespace-nowrap py-4  text-sm ">
+            <div class="flex items-center">
+        
+              <div class="pl-1">
+                <div class="font-medium text-sm text-gray-900">{{ school.name.toUpperCase() }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+            <div v-if="(school.files.length > 0)">
+              <img v-for="schoolfile  in school.files" :key="schoolfile.id" :src="('/uploads/files/'+schoolfile.owned_by+'/'+schoolfile.folder+'/'+schoolfile.file_name)" class="h-20 w-20 mx-2" :alt="schoolfile.file_name"> 
+             </div>
+             <div v-else>
+              <i class="fa-regular fa-image mr-2 text-green-600"></i>
+               <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">No Image</span>
+             </div>
+          </td>
+          <td
+          class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+        >
+          <button
+            @click="selectSchool(school, 'update')"
+            type="button"
+            class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+          >
+            <i class="fa-regular fa-pen-to-square"></i>
+          </button>
+          <button
+            :disabled="selectedSchool.length > 0"
+            @click="selectSchool(school, 'delete')"
+            type="button"
+            class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+          >
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </td>
+        </tr>
+      </template>     
+    </BaseTable>
+   <!-- <div class="relative">
 
       <TableLoader v-if="isFetching"  />
       <table class="min-w-full divide-y  divide-gray-300">
@@ -107,7 +149,6 @@
         <tbody class="divide-y divide-gray-200 bg-white">
           <tr v-for="school in schools" :key="school.id">
             <td class="relative w-12 px-6 sm:w-16 sm:px-8">
-              <!-- Selected row marker, only show when row is selected. -->
               <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
   
               <input
@@ -159,12 +200,10 @@
             </td>
           </tr>
   
-          <!-- More people... -->
         </tbody>
       </table>
     </div>
-   
-    <!-- <Pagination v-model="page" :records="200" :per-page="25" @paginate="myCallback"/> -->
+    -->
     <teleport to="#app">
       <BaseDialog :show="!!showForm" :width="'600'" :preventClose="true">
         <template #c-content>

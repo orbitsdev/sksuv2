@@ -35,9 +35,9 @@
       <label for="cover-photo" class="block text-base font-medium text-gray-700"
         >Features Image</label
       >
-
       <FilePondBase
-        :multiple="true"
+        v-if="noExisintData"
+        :multiple="allowmultiple"
         :fileType="fileType.image"
         @fileIsUploading="handleLoading"
         @fileIsUploaded="setFile"
@@ -58,12 +58,14 @@
           </button>
           <div
             v-if="isLoading"
+          
             class="bg-white px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             <BaseSpinner />
           </div>
 
           <button
+            :disabled="isLoading"
             v-else
             @click="handleSubmit"
             class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -108,9 +110,15 @@ export default {
     name() {
       return this.data;
     },
+
+    noExisintData(){
+      return (this.existingFile.length <=0);
+    }
   },
+
   data() {
     return {
+      allowmultiple: false,
       form: {
         name: "",
         files: [],
