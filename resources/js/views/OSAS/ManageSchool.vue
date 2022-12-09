@@ -130,22 +130,10 @@
             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
               <div class="flex-shrink-0">
                 <div v-if="school.files.length > 0" class="flex">
-  
                   <div  v-for="(file, index) in school.files" :key="index">
-                    <a :href="'https://skswbrsa.oss-ap-southeast-6.aliyuncs.com/files/schools/'+file.folder + '/' + file.file_name">view</a>
-                  <img
-                  class="h-20 w-20 mx-2"
-                 
-                  :src="'https://skswbrsa.oss-ap-southeast-6.aliyuncs.com/files/schools/' + file.folder + '/' + file.file_name"
-                />
+                    <a :href="file.url">view</a>
+                  <img class="h-20 w-20 mx-2" :src="file.url" />
                   </div>
-                 
-                  <!-- <img v-for="(file , index) in schools.files " :key="index"
-                    class="object-fill h-28 w-28"
-                    :src="'/uploads/files/schools/' + file.folder + '/' + file.file_name
-                    "
-                    alt=""
-                  /> -->
                 </div>
               </div>
             </td>
