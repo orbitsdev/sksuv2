@@ -1,8 +1,6 @@
 
 <template>
-    <div >
-        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-    </div>
+  <span class="loader"></span>
 </template>
 
 <script>
@@ -12,59 +10,36 @@
 </script>
 
 <style  scoped>
-.lds-ellipsis {
-    position: relative;
-    width: 100px;
-    height:100%;
-    padding: 10px;
+.loader {
+  width: 100%;
+  height: 4.8px;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.loader::after {
+  content: '';  
+  width: 96px;
+  height: 4.8px;
+  border-radius: 2px;
+  background:#15803d;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  animation: hitZak 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes hitZak {
+  0% {
+    left: 0;
+    transform: translateX(-1%);
   }
-  .lds-ellipsis div {
-    position: absolute;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: #369763;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  100% {
+    left: 100%;
+    transform: translateX(-99%);
   }
-  .lds-ellipsis div:nth-child(1) {
-    left: 8px;
-    animation: lds-ellipsis1 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(2) {
-    left: 8px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(3) {
-    left: 32px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(4) {
-    left: 56px;
-    animation: lds-ellipsis3 0.6s infinite;
-  }
-  @keyframes lds-ellipsis1 {
-    0% {
-      transform: scale(0);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  @keyframes lds-ellipsis3 {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0);
-    }
-  }
-  @keyframes lds-ellipsis2 {
-    0% {
-      transform: translate(0, 0);
-    }
-    100% {
-      transform: translate(24px, 0);
-    }
-  }
+}
+    
   
 </style>

@@ -18,7 +18,6 @@
 
 .ldp{
 
-    padding: 20px;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -27,7 +26,7 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.90) ;
+    background: white;
 }
 
 .loader,
@@ -36,15 +35,15 @@
   background: #12542f;
   -webkit-animation: load1 700ms infinite ease-in-out;
   animation: load1 700ms infinite ease-in-out;
-  width: 1em;
-  height: 2em;
+  width: 6px;
+  height: 8px;
 }
 .loader {
   color: #12542f;
   text-indent: -9999em;
   margin: 88px auto;
   position: relative;
-  font-size: 11px;
+  font-size: 7px;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
