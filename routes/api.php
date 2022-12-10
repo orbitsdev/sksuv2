@@ -63,6 +63,7 @@ Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSel
 Route::apiResource('schools', ManageSchoolController::class);
 
 // Manage SBO ADVISER
+Route::post('select-school', [ManageSchoolController::class,'selectSchool']);
 Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
 
 

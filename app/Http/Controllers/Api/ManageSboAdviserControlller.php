@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SboAdviserResource;
+use App\Models\School;
 
 class ManageSboAdviserControlller extends Controller
 {
@@ -14,6 +15,12 @@ class ManageSboAdviserControlller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function selectSchool (Request $request){
+
+        return response()->json($request->user->roles);
+        //  $school = School::where('id', $request->input('id'))->first();
+     }
     public function index()
     {
         $sboadvisers = User::whereHas('roles', function($query){

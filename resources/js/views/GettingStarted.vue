@@ -106,7 +106,7 @@
         class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
       >
         <li
-          @click="selectSchool"
+          @click="selectSchool(school)"
           v-for="school in schools"
           :key="school.id"
           class="cursor-pointer hover:bg-green-50 hover:border col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center"
@@ -147,9 +147,15 @@
     </div>
 
     <teleport to="#app">
-      <BaseDialog :show="true" :width="'300'">
+      <BaseDialog :show="selectedSchool != null" :width="'500'">
         <template #c-content>
-          <h1>Are Your Sure You belong to this school. Make sure</h1>
+          <p class="text-lg font-extrabold mb-1">Sultan Kudart State University</p>
+          <w-divider class="mb-1"></w-divider>
+          <span class="text-sm text-gray-600">
+            Make sure to select correct school, Only the admin of the system can change it
+          </span>
+          <BaseSpinner v-if="isSaving" class="mx-4 mt-4" />
+          <TableButton v-else class="mt-4"> Confirm University </TableButton>
         </template>
       </BaseDialog>
     </teleport>
@@ -177,17 +183,19 @@ export default {
 
   data() {
     return {
-      isFetching: false,
       schools: [],
       showLogoutButton: false,
+      isFetching: false,
       isLogout: false,
+      isSaving: false,
       selectedSchool: null,
     };
   },
 
   methods: {
-    selectSchool(id) {
-      console.log(id);
+    selectSchool(school) {
+      const newSchool = school;
+      this.selectedSchool = newSchool;
     },
     async getUserDetails() {
       this.isScreenLoading = true;
