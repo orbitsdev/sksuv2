@@ -34,6 +34,7 @@ import BaseTableSetup from './components/BaseTableSetup.vue';
 import BaseSearchInput from './components/BaseSearchInput.vue';
 import BaseFilter from './components/BaseFilter.vue';
 import BaseTable from './components/BaseTable.vue';
+import SchoolCard from './components/SchoolCard.vue';
 
 
 import axiosApi from "./api/axiosApi";
@@ -85,6 +86,7 @@ app.component('BaseTableSetup', BaseTableSetup);
 app.component('BaseSearchInput', BaseSearchInput);
 app.component('BaseFilter', BaseFilter);
 app.component('BaseTable', BaseTable);
+app.component('SchoolCard', SchoolCard);
 
 
 

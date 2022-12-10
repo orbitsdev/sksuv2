@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
+use App\Models\School;
 use App\Models\SocialAccount;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -46,7 +47,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     public function socialAccounts(){
         return $this->hasMany(SocialAccount::class);
     }
@@ -54,4 +54,12 @@ class User extends Authenticatable
     public function roles(){
         return $this->belongsToMany(Role::class, 'users_roles', 'user_id', 'role_id');
     }
+
+
+    public function schools(){
+        return $this->belongsToMany(School::class, 'school_users', 'user_id', 'school_id');
+    }
+
+
+
 }

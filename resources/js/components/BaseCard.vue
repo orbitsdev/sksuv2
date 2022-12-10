@@ -10,14 +10,13 @@
             {{ subtitle }}
         </h3>
         <slot name="header">
-            <div class="">
-                
+            <!-- <div class=""> 
                 <p class="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo nulla dicta saepe illum debitis sed ducimus corrupti voluptates iste quasi deserunt, tempore suscipit accusamus blanditiis, perspiciatis autem iusto ullam harum? </p>
 
-            </div>
+            </div> -->
         </slot>
         <slot >
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea laudantium qui recusandae ullam porro beatae ex dicta autem, error consequuntur! Soluta eius aut laborum repudiandae obcaecati quibusdam eaque! Consectetur, excepturi!
+            <!-- Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea laudantium qui recusandae ullam porro beatae ex dicta autem, error consequuntur! Soluta eius aut laborum repudiandae obcaecati quibusdam eaque! Consectetur, excepturi! -->
         </slot>
     </div>
 </template>

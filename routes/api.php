@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
-use App\Http\Controllers\Api\SboAdviserController;
+use App\Http\Controllers\Api\ManageSboAdviserControlller;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSel
 Route::apiResource('schools', ManageSchoolController::class);
 
 // Manage SBO ADVISER
-Route::apiResource('sbo-advisers', SboAdviserController::class);
+Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
 
 
 // ALIBABA

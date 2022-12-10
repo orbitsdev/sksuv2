@@ -33,15 +33,15 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-
+        
         if ($request->role != null) {
             $role = Role::where('name', $request->role)->pluck('id')->first();
             $user->roles()->attach($role);
         }
 
-
-
-
+        // $role = Role::where('name', 'guest')->pluck('id')->first();
+        // $user->roles()->attach($role);
+        
         $token = $user->createToken('chrome')->plainTextToken;
         return new AuthResource(['user' => $user, 'token' => $token]);
     }

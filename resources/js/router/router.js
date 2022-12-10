@@ -4,9 +4,7 @@
 
 import {createRouter} from 'vue-router';
 import {createWebHistory} from 'vue-router';
-import store from '../store/store';
-
-
+import  store from '../store/store.js';
 const routes = [
     {
         name: 'googledriveupload',
@@ -62,11 +60,12 @@ const routes = [
         meta: {middleware: "guest"}
        
     },
+   
     {
-        name: 'test',
-        path: '/test',
-        component: ()=> import('../views/TEST/CompositionApiPage.vue'),
-        meta: {middleware: "guest"}
+        name: 'getting-started',
+        path: '/getting-started',
+        component: ()=> import('../views/GettingStarted.vue'),
+        meta: {middleware: "auth"}
        
     },
 
@@ -74,7 +73,7 @@ const routes = [
         name: 'dashboard',
         path: '/dashboard',
         component: ()=> import('../views/DashboardPage.vue'),
-        meta: {middleware: "auth"},
+        meta: {middleware: "auth", isNotGuest: true},
         children: [
             {
                 name: 'manage-school',
@@ -85,7 +84,7 @@ const routes = [
             {
                 name: 'manage-sbo-adviser',
                 path: '/dashboard/osas/manage-sbo-adviser',
-                component: ()=> import('../views/OSAS/ManageSbo.vue'),
+                component: ()=> import('../views/OSAS/ManageSboAdviser.vue'),
                 meta: {middleware: "auth"}
             },
             {
@@ -103,6 +102,14 @@ const routes = [
         ],
     },
 
+    {
+        name: 'load',
+        path: '/load',
+        component: ()=> import('../components/LoadingScreen.vue'),
+        meta: {middleware: "guest"}
+       
+    },
+
    
 ];
 
@@ -116,6 +123,9 @@ const router = createRouter({
 function authenticated(){
     return localStorage.getItem('token');
 }
+function authenticatedIsGuest(){
+    return true;
+}
 router.beforeEach((to,from,next)=>{
 
     if(to.meta.middleware == 'guest' && authenticated()){
@@ -123,7 +133,16 @@ router.beforeEach((to,from,next)=>{
     }else  if(to.meta.middleware == "auth" && !authenticated()){
         next('/?login=attemp');
     }else{
+
+
+        // if(authenticated() && store.state.auth.Auth.roles.includes('guest')){
+        //     next('/getting-started');
+
+        // }else{
+            
+        // }
         next();
+        
     }
 
 });
