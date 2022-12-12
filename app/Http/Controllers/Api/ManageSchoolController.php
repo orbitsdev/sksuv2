@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SchoolResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\FileController;
+use App\Models\SchoolUser;
 
 class ManageSchoolController extends Controller
 {
@@ -33,13 +34,6 @@ class ManageSchoolController extends Controller
         
         return response()->json(['success'], 200);
 
-
-
-
-    //   return response()->json([$school['id']]);  
-    //   $user->schools()->sync($request->input());
-
-        return response()->json([auth('sanctum')->user()->id]);
      }
      
     public function search(Request $request)
@@ -65,7 +59,10 @@ class ManageSchoolController extends Controller
                 }
             }
 
-            School::whereIn('id', $selectedSchoolId)->delete();
+            // $user = School::whereIn('id', $selectedSchoolId)->delete();
+            $schoolcollection = School::whereIn('id', $selectedSchoolId)->select('id')->get()->pluck('id');
+            SchoolUser::whereIn('school_id', $schoolcollection)->delete();
+            School::whereIn('id', $schoolcollection)->delete();
             return response()->json(['success'], 200);
         } else {
 
@@ -85,11 +82,10 @@ class ManageSchoolController extends Controller
             }
         }
 
-        if (DB::table('schools')->delete()) {
-            return response()->json(['success'], 200);
-        } else {
-            return response()->json(['failed'], 400);
-        }
+        DB::table('schools')->delete();
+        DB::table('school_users')->delete();
+      
+        return response()->json(['success'], 200);
     }
     /**
      * Display a listing of the resource.
@@ -207,6 +203,7 @@ class ManageSchoolController extends Controller
 
             FileController::deleteAttachedFiles($school, 'public_uploads');
         }
+        $school->users()->detach();
         $school->delete();
         return new SchoolResource(['success']);
     }
