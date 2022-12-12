@@ -68,6 +68,7 @@ Route::apiResource('schools', ManageSchoolController::class);
 // MANAGE SBO ADVISERS
 Route::post('sbo-advisers/search', [ManageSboAdviserControlller::class,'search']);
 Route::post('sbo-advisers/filter', [ManageSboAdviserControlller::class,'filter']);
+Route::post('sbo-advisers/make-user-as-adviser', [ManageSboAdviserControlller::class,'makeUsersAsAdviser']);
 Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
 
 // MANAGE ROLES

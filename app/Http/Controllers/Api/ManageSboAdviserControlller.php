@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\School;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SboAdviserResource;
-use App\Models\School;
 
 class ManageSboAdviserControlller extends Controller
 {
@@ -17,13 +18,33 @@ class ManageSboAdviserControlller extends Controller
      */
 
 
+    public function makeUsersAsAdviser(Request $request){
+        $sboadviserrole =  Role::where('name', 'sbo-adviser')->pluck('id')->first();
+        
+        $users  = User::whereIn('id', $request->input('usersid'))->get();
+        if(count($users) > 0){
+            foreach($users as $user){
+                $user->roles()->sync([$sboadviserrole]);
+            }
 
+            
+        }
+        
+        return new SboAdviserResource([$users]);
+         
+    }
      
      public function search(Request $request)
      {
             // return response()->json($request->input('search'));  
                   
-        $users =  User::whereHas('schools')->where(function($query) use ($request){
+        $users =  User::when($request->input('filter', function($query) use ($request){
+            $query->where('name', $request->input('filter'));
+        }))->whereHas('roles',function($query){
+
+            $query->where('name' , '!=', 'sbo-adviser');
+
+        })->whereHas('schools')->where(function($query) use ($request){
             $query->where('email', 'like','%'.$request->input('search').'%')->orWhere('first_name', 'like','%'.$request->input('search').'%')->orWhere('last_name', 'like','%'.$request->input('search').'%'); })->with('schools')->get();
         // $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files')->get();
         return new SboAdviserResource($users);
@@ -31,8 +52,10 @@ class ManageSboAdviserControlller extends Controller
      }
      
      public function filter(Request $request){
-        
-        $users = User::whereHas('schools', function($query) use ($request) {
+ 
+        $users = User::whereHas('roles', function($query){
+            $query->where('name', '!=' ,'sbo-adviser');
+        })->whereHas('schools', function($query) use ($request) {
                 $query->where('name', $request->input('filter'));
         })->with('schools')->get();
         
@@ -41,8 +64,11 @@ class ManageSboAdviserControlller extends Controller
      }
     
     public function index()
-    {
-        $sboadvisers = User::whereHas('schools')->with('schools')->paginate(10);
+    {    
+    $sboadvisers = User::whereHas('roles', function($query){
+       $query->where('name', '!=',  'sbo-adviser'); 
+    })->whereHas('schools')->with('schools', 'roles')->get();
+        // $sboadvisers = User::whereHas('schools')->with('schools')->paginate(10);
 
         return new SboAdviserResource($sboadvisers);
     }

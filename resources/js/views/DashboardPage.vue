@@ -581,7 +581,7 @@ export default {
 
           this.$store.commit("setUserDetails", userDetails);
           roles.forEach((role) => {
-            if (role == "guest" || role == "sbo-adviser" || role == "sbo") {
+            if (role == "guest" || role == "sbo-adviser" || role == "sbo-student") {
               if (res.data.schools.length<=0) {
                 this.$router.replace("/getting-started");
               }

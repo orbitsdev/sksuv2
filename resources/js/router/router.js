@@ -87,24 +87,25 @@ const routes = [
             {
                 name: 'manage-sbo-adviser',
                 path: '/dashboard/osas/manage-sbo-adviser',
-                component: ()=> import('../views/OSAS/ManageSboAdviser.vue'),
+                // redirect: '/dashboard/osas/manage-school/user',
+             component: ()=> import('../views/OSAS/ManageSboAdviser.vue'),
                 meta: {middleware: "auth"},
                 children: [
                    {
                     name: 'manage-sbo-adviser-adviser',
-                    path: '/dashboard/osas/manae-sbo-advier/advisers',
+                    path: '/dashboard/osas/manage-sbo-adviser/advisers',
                     component: ()=> import('../views/OSAS/SboAdviser.vue'),
 
                   },
                    {
                     name: 'manage-sbo-adviser-user',
-                    path: '/dashboard/osas/manae-sbo-advier/users',
+                    path: '/dashboard/osas/manage-sbo-adviser/users',
                     component: ()=> import('../views/OSAS/SboAdviserUser.vue'),
 
                   },
                    {
                     name: 'manage-sbo-adviser-request',
-                    path: '/dashboard/osas/manae-sbo-advier/user',
+                    path: '/dashboard/osas/manage-sbo-adviser/user',
                     component: ()=> import('../views/OSAS/SboAdviserRequest.vue'),
 
                   },
