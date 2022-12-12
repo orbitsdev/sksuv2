@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\SboAdviserResource;
-use App\Models\School;
 
-class ManageSboAdviserControlller extends Controller
+class ManageUserRoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,35 +14,13 @@ class ManageSboAdviserControlller extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-
-     
-     public function search(Request $request)
-     {
-            // return response()->json($request->input('search'));  
-                  
-        $users =  User::whereHas('schools')->where(function($query) use ($request){
-            $query->where('email', 'like','%'.$request->input('search').'%')->orWhere('first_name', 'like','%'.$request->input('search').'%')->orWhere('last_name', 'like','%'.$request->input('search').'%'); })->with('schools')->get();
-        // $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files')->get();
-        return new SboAdviserResource($users);
-   
-     }
-     
-     public function filter(Request $request){
-        
-        $users = User::whereHas('schools', function($query) use ($request) {
-                $query->where('name', $request->input('filter'));
-        })->with('schools')->get();
-        
-    return new SboAdviserResource($users);
-        
-     }
     
+
+     
+
     public function index()
     {
-        $sboadvisers = User::whereHas('schools')->with('schools')->paginate(10);
-
-        return new SboAdviserResource($sboadvisers);
+        return response()->json(['roles'=> Role::all()]);
     }
 
     /**

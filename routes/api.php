@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
 use App\Http\Controllers\Api\ManageSboAdviserControlller;
+use App\Http\Controllers\Api\ManageUserRoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,7 @@ use App\Http\Controllers\Api\ManageSboAdviserControlller;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->load('roles');
+    return $request->user()->load('roles', 'schools');
 });
 
 
@@ -43,8 +44,7 @@ Route::get('/authorize/{provider}/callback', [GoogleController::class ,'handlePr
 // PASSWORD RESET
 Route::post('/request-password-reset', [NewPasswordMailController::class, 'sendEmailForPasswordReset']);
 Route::post('/set-password', [NewPasswordMailController::class, 'setNewPassword']);
-Route::get('/role', function(){
-    return redirect()->to('/authorize/google/callback?code=anna');
+Route::get('/role', function(){ return redirect()->to('/authorize/google/callback?code=anna');
 });
 
 
@@ -56,21 +56,27 @@ Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage
 // FILE CONTROLLER 
 Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
 
+
 // MANAGE SCHOOL
+
 Route::post('schools/search', [ManageSchoolController::class,'search']);
 Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
 Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
+Route::post('schools/attach-to-user', [ManageSchoolController::class,'attachSchoolToUser']);
 Route::apiResource('schools', ManageSchoolController::class);
 
-// Manage SBO ADVISER
-Route::post('select-school', [ManageSchoolController::class,'selectSchool']);
+// MANAGE SBO ADVISERS
+Route::post('sbo-advisers/search', [ManageSboAdviserControlller::class,'search']);
+Route::post('sbo-advisers/filter', [ManageSboAdviserControlller::class,'filter']);
 Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
+
+// MANAGE ROLES
+Route::apiResource('roles', ManageUserRoleController::class);
 
 
 // ALIBABA
 Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
 // PUBLIC
-Route::get('/roles', [RolesController::class, 'getAllRoles']);
 
 
 // ALIBABA

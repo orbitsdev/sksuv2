@@ -109,14 +109,13 @@
           @click="selectSchool(school)"
           v-for="school in schools"
           :key="school.id"
-          class="cursor-pointer hover:bg-green-50 hover:border col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center"
+          class="border border-grey-400 cursor-pointer hover:bg-green-50 hover:border col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center"
         >
           <div class="flex flex-1 flex-col p-8">
             <div v-if="school.files.length > 0">
               <img
                 class="mx-auto h-30 w-30 flex-shrink-0 rounded-xs"
-                :src="
-                  '/uploads/files/' +
+                :src="'/uploads/files/' +
                   school.files[0].owned_by +
                   '/' +
                   school.files[0].folder +
@@ -125,6 +124,13 @@
                 "
                 alt=""
               />
+            </div>
+            <div v-else>
+            <img
+              class="mx-auto h-30 w-30 flex-shrink-0 rounded-xs"
+              :src="'/assets/undraw_welcome_re_h3d9.svg'"
+              alt=""
+            />
             </div>
 
             <!-- <h3 class="mt-6 text-sm font-medium text-gray-900">{{ school.name }}</h3> -->
@@ -147,15 +153,23 @@
     </div>
 
     <teleport to="#app">
-      <BaseDialog :show="selectedSchool != null" :width="'500'">
+      <BaseDialog :show="selectedSchool != null" :width="'500'" :preventClose="true" >
         <template #c-content>
-          <p class="text-lg font-extrabold mb-1">Sultan Kudart State University</p>
+          <p class="text-lg font-extrabold mb-1">{{ selectedSchool.name }}</p>
+
           <w-divider class="mb-1"></w-divider>
           <span class="text-sm text-gray-600">
-            Make sure to select correct school, Only the admin of the system can change it
+            Make sure to select school that you belong. If you think you made mistake you can request to the admin
           </span>
-          <BaseSpinner v-if="isSaving" class="mx-4 mt-4" />
-          <TableButton v-else class="mt-4"> Confirm University </TableButton>
+          <div class="flex">
+            <TableButton @click="selectedSchool = null" mode class="mt-4 mr-2"
+              >Close
+            </TableButton>
+            <BaseSpinner v-if="isSaving" class="mx-4 mt-4" />
+            <TableButton @click="attachSchoolToUser" v-else class="mt-4">
+              Confirm University
+            </TableButton>
+          </div>
         </template>
       </BaseDialog>
     </teleport>
@@ -193,6 +207,24 @@ export default {
   },
 
   methods: {
+    async attachSchoolToUser() {
+      this.isSaving = true;
+      await axiosApi
+        .post("api/schools/attach-to-user", {
+          school: this.selectedSchool,
+        })
+        .then((res) => {
+          window.location.reload(true);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.isSaving = false;
+        });
+    },
+
     selectSchool(school) {
       const newSchool = school;
       this.selectedSchool = newSchool;
@@ -213,11 +245,19 @@ export default {
             roles: roles,
             token: localStorage.getItem("token"),
           };
+
           this.$store.commit("setUserDetails", userDetails);
 
-          // if(this.Auth.is('guest')){
-          //     this.$router.replace('/getting-started');
-          // }
+          roles.forEach((role) => {
+            if (role == "guest" || role == "sbo-adviser" || role == "sbo") {
+              if (res.data.schools.length>0) {
+                this.$router.replace("/dashboard");
+              }
+            }
+          });
+  
+        
+
         })
         .catch((err) => {
           console.log(err);

@@ -1,5 +1,5 @@
 <template>
-<LoadingScreen v-if="(isScreenLoading)"/>
+  <LoadingScreen v-if="isScreenLoading" />
   <section v-else>
     <div>
       <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
@@ -96,8 +96,7 @@
                     />
                   </svg>
                   Dashboard
-                </a>  
- 
+                </a>
 
                 <a
                   href="#"
@@ -259,32 +258,33 @@
               
               </a> -->
 
-              
-                  <div v-if="Auth.is('osas')">
-                    <router-link :to="{name: 'manage-school'}"
-                    href="#"
-                    class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+              <div v-if="Auth.is('osas')">
+                <router-link
+                  :to="{ name: 'manage-school' }"
+                  href="#"
+                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                >
+                  <!-- Heroicon name: outline/folder -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
                   >
-                    <!-- Heroicon name: outline/folder -->
-                    <svg
-                      class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                      />
-                    </svg>
-                    Manage School
-                  </router-link>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                    />
+                  </svg>
+                  Manage School
+                </router-link>
 
-                  <router-link :to="{name: 'manage-sbo-adviser'}"
+                <router-link
+                  :to="{ name: 'manage-sbo-adviser' }"
                   href="#"
                   class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
@@ -306,62 +306,59 @@
                   </svg>
                   Manage SBO
                 </router-link>
-    
-                  
-    
-                  <a
-                    href="#"
-                    class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+
+                <a
+                  href="#"
+                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                >
+                  <!-- Heroicon name: outline/inbox -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
                   >
-                    <!-- Heroicon name: outline/inbox -->
-                    <svg
-                      class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"
-                      />
-                    </svg>
-                    Documents
-                  </a>
-    
-                  <a
-                    href="#"
-                    class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"
+                    />
+                  </svg>
+                  Documents
+                </a>
+
+                <a
+                  href="#"
+                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                >
+                  <!-- Heroicon name: outline/chart-bar -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
                   >
-                    <!-- Heroicon name: outline/chart-bar -->
-                    <svg
-                      class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
-                      />
-                    </svg>
-                    Reports
-                  </a>
-                  </div>
-            
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
+                    />
+                  </svg>
+                  Reports
+                </a>
+              </div>
             </nav>
           </div>
         </div>
       </div>
       <div class="flex flex-1 flex-col md:pl-64">
-        <div class="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow ">
+        <div class="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
           <button
             type="button"
             class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -385,9 +382,7 @@
             </svg>
           </button>
           <div class="flex flex-1 justify-between px-4">
-            <div class="flex flex-1">
-              
-            </div>
+            <div class="flex flex-1"></div>
             <div class="ml-4 flex items-center md:ml-6">
               <button
                 type="button"
@@ -416,7 +411,7 @@
               <div class="relative ml-3">
                 <div>
                   <button
-                  @click="showLogoutButton = ! showLogoutButton"
+                    @click="showLogoutButton = !showLogoutButton"
                     type="button"
                     class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     id="user-menu-button"
@@ -432,14 +427,14 @@
                   </button>
                 </div>
 
-                <div v-show="showLogoutButton"
+                <div
+                  v-show="showLogoutButton"
                   class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="user-menu-button"
                   tabindex="-1"
                 >
-                  
                   <button
                     @click="logoutUser"
                     class="block px-4 py-2 text-sm text-gray-700"
@@ -457,17 +452,14 @@
 
         <main class="my-6">
           <div class="">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8"></div>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-            </div>
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <!-- {{ Auth }} -->
-                <router-view> </router-view>
-                <!-- <div class="h-96 rounded-lg border-4 border-dashed border-gray-200">                   
+              <!-- {{ Auth }} -->
+              <router-view> </router-view>
+              <!-- <div class="h-96 rounded-lg border-4 border-dashed border-gray-200">                   
                 </div> -->
             </div>
-            
           </div>
-        
         </main>
       </div>
     </div>
@@ -503,12 +495,10 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-     
-
       showLogoutButton: false,
       isLogout: false,
       requestError: null,
-     
+
       osas: [
         {
           label: "Manage School",
@@ -564,17 +554,15 @@ export default {
             message: err.response.statusText,
           };
 
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
           window.location.reload(true);
-          
         })
         .finally(() => {
           this.isLogout = false;
         });
     },
     async getUserDetails() {
-
-        this.isScreenLoading = true;
+      this.isScreenLoading = true;
       await axiosApi
         .get("api/user")
         .then((res) => {
@@ -592,17 +580,18 @@ export default {
           };
 
           this.$store.commit("setUserDetails", userDetails);
-
-
-          if(this.Auth.is('guest')){
-              this.$router.replace('/getting-started');
-          }
-
-
+          roles.forEach((role) => {
+            if (role == "guest" || role == "sbo-adviser" || role == "sbo") {
+              if (res.data.schools.length<=0) {
+                this.$router.replace("/getting-started");
+              }
+            }
+          });
         })
         .catch((err) => {
           console.log(err);
-        }).finally(()=>{
+        })
+        .finally(() => {
           this.isScreenLoading = false;
         });
     },

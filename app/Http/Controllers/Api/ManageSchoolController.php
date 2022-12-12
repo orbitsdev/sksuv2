@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\File;
+use App\Models\User;
 use App\Models\School;
 use Illuminate\Http\Request;
 use App\Models\TemporaryStorage;
@@ -14,8 +15,33 @@ use App\Http\Controllers\Api\FileController;
 
 class ManageSchoolController extends Controller
 {
+    
 
 
+
+    public function attachSchoolToUser (Request $request){
+        
+        
+        $user =   User::where('id', auth('sanctum')->user()->id)->first();
+        $selectedSchool = $request->input('school');
+        $school = School::where('id', $selectedSchool['id'])->pluck('id')->first();
+
+        if($school != null){
+            $user->schools()->sync([$school]);
+        }   
+
+        
+        return response()->json(['success'], 200);
+
+
+
+
+    //   return response()->json([$school['id']]);  
+    //   $user->schools()->sync($request->input());
+
+        return response()->json([auth('sanctum')->user()->id]);
+     }
+     
     public function search(Request $request)
     {
         $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files')->get();

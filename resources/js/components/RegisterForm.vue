@@ -43,7 +43,7 @@
             <select
               v-model="form.role"
               name="location"
-              class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              class="mt-1 block w-full rounded-md border py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             >
               <option v-for="role in roles" :key="role.id" :value="role.name">
                 {{ role.name }}
@@ -135,7 +135,7 @@ export default {
       form: {
         first_name: "brian",
         last_name: "orbino",
-        email: "admin@gmail.com",
+        email: "osas@gmail.com",
         password: "@admin123",
         password_confirmation: "@admin123",
         role: null,
@@ -156,8 +156,10 @@ export default {
 
     async getRoles() {
       await axios.get("api/roles").then((res) => {
+
+      console.log(res);
         this.roles = res.data.roles;
-        this.form.role = this.roles[0].name;
+        // this.form.role = this.roles[0].name;
       });
     },
 

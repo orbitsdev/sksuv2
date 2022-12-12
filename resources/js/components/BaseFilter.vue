@@ -6,7 +6,7 @@
     <select
     class="block hover:shadow-lg  border px-3 py-2 border text-gray-600  placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none  sm:text-sm"> 
       
-    <option v-for="(option, index) in options" :key="index"  class="py-2" value="a"> {{ option }}</option>
+    <option v-for="option in options" :key="option.id"  class="py-2" value="a"> {{ option.name }} </option>
     
   </select>
 </div>
@@ -18,8 +18,8 @@
     export default {
         props: {
           
-          options: {
-            type: Array,
+          schools: {
+            type: [Object, Array, Number],
             default: ['Vue', 'Flutter', 'Laravel'],
           },
 
