@@ -353,6 +353,32 @@
                   Reports
                 </a>
               </div>
+             
+              <div v-if="(Auth.is('guest') && !hasRuest)">
+                <router-link
+                  :to="{ name: 'sbo-adviser-makerequest' }"
+                  href="#"
+                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                >
+                  <!-- Heroicon name: outline/folder -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                    />
+                  </svg>
+                  Make Request
+                </router-link>
+              </div>
             </nav>
           </div>
         </div>
@@ -498,30 +524,7 @@ export default {
       showLogoutButton: false,
       isLogout: false,
       requestError: null,
-
-      osas: [
-        {
-          label: "Manage School",
-          name: "manage-school",
-        },
-        {
-          label: "Manage SBO",
-          name: "manage-sbo",
-        },
-        {
-          label: "Manage Application",
-          name: "manage-application",
-        },
-        {
-          label: "Manage Application",
-          name: "manage-roles",
-        },
-      ],
-
-      sboAdviser: [],
-      sboStudent: [],
-      campusDirector: [],
-      vpaa: [],
+      hasRuest: null,
       isScreenLoading: false,
     };
   },
@@ -566,6 +569,12 @@ export default {
       await axiosApi
         .get("api/user")
         .then((res) => {
+          console.log(res.data.sbo_request);
+
+          if(res.data.sbo_request != null){
+            this.hasRuest = true;
+          };
+
           let roles = [];
           res.data.roles.forEach((role) => {
             roles.push(role.name);
@@ -582,7 +591,7 @@ export default {
           this.$store.commit("setUserDetails", userDetails);
           roles.forEach((role) => {
             if (role == "guest" || role == "sbo-adviser" || role == "sbo-student") {
-              if (res.data.schools.length<=0) {
+              if (res.data.schools.length <= 0) {
                 this.$router.replace("/getting-started");
               }
             }

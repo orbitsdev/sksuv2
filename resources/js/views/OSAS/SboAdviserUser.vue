@@ -1,6 +1,5 @@
 <template>
   <BaseCard class="relative" :subtitle="'Manage Sbo Advisers'">
-    {{ selectedSboAdvisers }}
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
@@ -101,10 +100,10 @@
                 <!-- {{selectedSboAdvisers}} -->
               <div class="flex my-2">
                 <TableButton mode class="mr-2" @click="closeTheForm"> Close </TableButton>
-                <div class="my-1  ml-1 ">
-                  <BaseSpinner/>
+                <div class="my-1  ml-1 " v-if="isSaving">
+                  <BaseSpinner />
                 </div>
-                <TableButton class="mr-2" @click="makeUsersAsSboAdviser"> Yes </TableButton>
+                <TableButton v-else class="mr-2" @click="makeUsersAsSboAdviser"> Yes </TableButton>
               </div>
   
             </div>
@@ -131,6 +130,7 @@ export default {
       selectedSboAdvisers: [],
       requestError: null,
       isFetching: false,
+      isSaving: false,
       requestError: null,
     };
   },
@@ -162,7 +162,7 @@ export default {
      });
      
 
-      
+     this.isSaving = true;
       await axiosApi.post('api/sbo-advisers/make-user-as-adviser',{
         usersid: selectedId
       }).then(res=>{
@@ -172,6 +172,8 @@ export default {
         this.selectedSboAdvisers = [];
       }).catch(err=>{
         console.log(err);
+      }).finally(()=>{
+        this.isSaving = false;
       });
 
 

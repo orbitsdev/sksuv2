@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\SocialAccount;
+use App\Models\SboAdviserRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,6 +59,10 @@ class User extends Authenticatable
 
     public function schools(){
         return $this->belongsToMany(School::class, 'school_users', 'user_id', 'school_id');
+    }
+
+    public function sboRequest(){
+        return $this->hasOne(SboAdviserRequest::class);
     }
 
 

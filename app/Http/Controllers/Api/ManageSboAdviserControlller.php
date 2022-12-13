@@ -17,7 +17,7 @@ class ManageSboAdviserControlller extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
+    
     public function makeUsersAsAdviser(Request $request){
         $sboadviserrole =  Role::where('name', 'sbo-adviser')->pluck('id')->first();
         

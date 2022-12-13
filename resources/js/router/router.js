@@ -90,6 +90,7 @@ const routes = [
                 // redirect: '/dashboard/osas/manage-school/user',
              component: ()=> import('../views/OSAS/ManageSboAdviser.vue'),
                 meta: {middleware: "auth"},
+                
                 children: [
                    {
                     name: 'manage-sbo-adviser-adviser',
@@ -105,7 +106,8 @@ const routes = [
                   },
                    {
                     name: 'manage-sbo-adviser-request',
-                    path: '/dashboard/osas/manage-sbo-adviser/user',
+                    path: '/dashboard/osas/manage-sbo-adviser/requests',
+               
                     component: ()=> import('../views/OSAS/SboAdviserRequest.vue'),
 
                   },
@@ -122,6 +124,17 @@ const routes = [
                 path: '/dashboard/osas/manage-roles',
                 component: ()=> import('../views/OSAS/ManageRole.vue'),
                 meta: {middleware: "auth"}
+            },
+
+                // SEND  SBO ADVISER ROLE REQUES
+            {
+                name: 'sbo-adviser-makerequest',
+                path: '/dashboard/sbo-adviser/make-request',
+                component: ()=> import('../views/SBO-ADVISER/MakeRequestPage.vue'),
+                meta: {middleware: "auth"},
+                children: [
+                    
+                ]
             },
         ],
     },
@@ -159,12 +172,6 @@ router.beforeEach((to,from,next)=>{
     }else{
 
 
-        // if(authenticated() && store.state.auth.Auth.roles.includes('guest')){
-        //     next('/getting-started');
-
-        // }else{
-            
-        // }
         next();
         
     }

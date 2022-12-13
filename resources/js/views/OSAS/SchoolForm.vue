@@ -170,7 +170,7 @@ export default {
       }
     },
     async updateSchool() {
-
+          this.isLoading = true;
       await axiosApi
         .put("api/schools/" + this.schoolData.id, {
           ...this.form,

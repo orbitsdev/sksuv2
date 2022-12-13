@@ -91,12 +91,18 @@
         </div>
       </div>
     </div>
-
-    <div class="m-7">
+    <div v-if="schools.length <= 0" class="flex justify-center flex-col items-center h-screen  ">
+      <img src="/assets/undraw_thoughts_re_3ysu.svg" alt="" class="sv-image">
+      <div class="mt-6 text-lg ">
+        No School Was Created Yet
+      </div>
+    </div>
+    <div v-else class="m-7">
       <div class="my-3">
         <h1 class="text-4xl font-bold">What University Are You In?</h1>
       </div>
 
+       
       <div v-if="isFetching" class="h-100 flex justify-center items-center">
         <TableLoader />
       </div>
@@ -312,4 +318,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+
+.sv-image{
+  width: 360px;
+  height: auto;
+}</style>

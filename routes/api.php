@@ -15,6 +15,7 @@ use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
 use App\Http\Controllers\Api\ManageSboAdviserControlller;
 use App\Http\Controllers\Api\ManageUserRoleController;
+use App\Http\Controllers\Api\SboAdviserRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ use App\Http\Controllers\Api\ManageUserRoleController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->load('roles', 'schools');
+    return $request->user()->load('roles', 'schools','sboRequest');
 });
 
 
@@ -71,9 +72,13 @@ Route::post('sbo-advisers/filter', [ManageSboAdviserControlller::class,'filter']
 Route::post('sbo-advisers/make-user-as-adviser', [ManageSboAdviserControlller::class,'makeUsersAsAdviser']);
 Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
 
+// SBO ROLE REQUEST
+Route::get('sbo-requests/get-sbo-request', [SboAdviserRequestController::class, 'getRequest']);
+Route::post('sbo-requests/request-role-as-sbo-adviser', [SboAdviserRequestController::class, 'requestSboAdviserRole']);
+Route::apiResource('sbo-requests', SboAdviserRequestController::class);
+
 // MANAGE ROLES
 Route::apiResource('roles', ManageUserRoleController::class);
-
 
 // ALIBABA
 Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
