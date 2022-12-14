@@ -37,7 +37,7 @@
             },
             subject: {
                 type: String,
-                default: 'subjet '
+                default: ''
             },
 
             selectedData: {

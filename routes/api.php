@@ -87,6 +87,8 @@ Route::apiResource('sbo-requests', SboAdviserRequestController::class);
 Route::get('current-sbo-advisers', [CurrentSboAdviserController::class, 'getCurrentSboAdvisers']);
 Route::post('current-sbo-advisers/search', [CurrentSboAdviserController::class, 'search']);
 Route::post('current-sbo-advisers/filter', [CurrentSboAdviserController::class, 'filter']);
+Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-user', [CurrentSboAdviserController::class, 'removeAdviserRoleToUser']);
+Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-the-selected-user', [CurrentSboAdviserController::class, 'removeAdviserRoleToTheSelectedUser']);
 
 
 // MANAGE ROLES

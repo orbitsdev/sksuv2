@@ -18,8 +18,9 @@
           <select
             v-model="filterBy"
             @change="filterSbo"
-            class="block hover:shadow-lg border px-3 py-2 border text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none sm:text-sm"
-          >
+            class="block hover:shadow-lg  px-3 py-2 border text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none sm:text-sm"
+          > 
+          <option :value="'none'"> None</option>
             <option
               v-for="option in schools"
               :key="option.id"
@@ -118,7 +119,7 @@ export default {
 
   data() {
     return {
-      filterBy: null,
+      filterBy: 'none',
       showForm: false,
       search: "",
       sboadvisers: [],
@@ -135,11 +136,7 @@ export default {
   watch: {
     search(oldeValue, newValue) {
       this.searchSbo();
-      // if(newValue == ""){
-      //   this.loadSboAdvisers();
-      // }else{
-
-      // }
+  
     },
   },
 
@@ -245,7 +242,6 @@ export default {
         .then((res) => {
           this.schools = res.data.data;
           if (this.schools.length > 0) {
-            this.filterBy = this.schools[0].name;
           }
         })
         .catch((err) => {
