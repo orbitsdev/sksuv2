@@ -14,7 +14,7 @@
   <router-link
   :to="{ name: 'manage-sbo-adviser-adviser' }"
   class=" py-1 text-gray-400 text-sm mr-1 "
-> Sbo Advisers </router-link>
+> SBO Advisers </router-link>
 
  </div>
 

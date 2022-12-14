@@ -2,7 +2,7 @@
   <button
     v-if="!mode"
     type="button"
-    class="flex items-center justify-center rounded-lg border border-green-600 bg-green-50 text-green-800 px-4 py-2 text-sm font-extrabold hover:text-white hover:shadow-lg hover:bg-green-800 focus:outline-none sm:w-auto"
+    class="flex items-center justify-center rounded-lg border border-green-600 bg-green-700 text-white  px-4 py-2 text-sm font-extrabold hover:text-white hover:shadow-lg hover:bg-green-800 focus:outline-none sm:w-auto"
   >
     <slot>Click Me</slot>
   </button>

@@ -46,7 +46,6 @@ class ManageSboAdviserControlller extends Controller
 
         })->whereHas('schools')->where(function($query) use ($request){
             $query->where('email', 'like','%'.$request->input('search').'%')->orWhere('first_name', 'like','%'.$request->input('search').'%')->orWhere('last_name', 'like','%'.$request->input('search').'%'); })->with('schools')->get();
-        // $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files')->get();
         return new SboAdviserResource($users);
    
      }

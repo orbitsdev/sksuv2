@@ -70,6 +70,7 @@ export default {
       await axiosApi
         .post("api/sbo-requests/request-role-as-sbo-adviser")
         .then((res) => {
+          this.$router.replace('/dashboard');
           console.log(res);
         })
         .catch((err) => {

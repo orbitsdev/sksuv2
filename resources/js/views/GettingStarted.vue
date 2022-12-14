@@ -91,23 +91,19 @@
         </div>
       </div>
     </div>
-    <div v-if="schools.length <= 0" class="flex justify-center flex-col items-center h-screen  ">
-      <img src="/assets/undraw_thoughts_re_3ysu.svg" alt="" class="sv-image">
-      <div class="mt-6 text-lg ">
-        No School Was Created Yet
-      </div>
+   
+    <div v-if="isFetching" class="flex justify-center items-center h-screen">
+      <BaseSpinner/>
     </div>
     <div v-else class="m-7">
-      <div class="my-3">
+    
+      <div v-if="schools.length > 0" class="my-3">
         <h1 class="text-4xl font-bold">What University Are You In?</h1>
       </div>
-
        
-      <div v-if="isFetching" class="h-100 flex justify-center items-center">
-        <TableLoader />
-      </div>
+      
       <ul
-        v-else
+        
         role="list"
         class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
       >

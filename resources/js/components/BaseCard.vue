@@ -3,10 +3,10 @@
 <template>
     <div class="w-full min-h-full bg-white shadow border  p-3 ">
         
-        <h2 v-if="!!title" class="text-2xl font-medium  ">
+        <h2 v-if="!!title" class="text-2xl text-gray-300   ">
             {{ title }}
         </h2>
-        <h3 v-if="!!subtitle" class="text-base font-bold ">
+        <h3 v-if="!!subtitle" class="text-base ">
             {{ subtitle }}
         </h3>
         <slot name="header">

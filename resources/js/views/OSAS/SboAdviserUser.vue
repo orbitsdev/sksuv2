@@ -1,15 +1,20 @@
 <template>
-  <BaseCard class="relative" :subtitle="'Manage Sbo Advisers'">
+  <BaseCard class="relative" :subtitle="'Available Users'">
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
           <TableButton v-if="selectedSboAdvisers.length > 0" class="mr-2" @click="showTheForm">
-            <!-- <i class="fa-solid fa-plus mr-1"></i> -->
-            Make Users as Sbo Adviser ({{ selectedSboAdvisers.length}})
+            Make selected users as Sbo Adviser ({{ selectedSboAdvisers.length}})
           </TableButton>
           <BaseSearchInput :placeholder="'Search name ..'" v-model="search" />
         </template>
         <template #filters-area>
+          <div v-if="isSchooLoading"> 
+            <BaseSpinner/>
+          </div>
+          <div  class="flex items-center " v-else >
+           
+        
           <select
             v-model="filterBy"
             @change="filterSbo"
@@ -24,6 +29,7 @@
               {{ option.name }}
             </option>
           </select>
+        </div>
         </template>
         <template #actions-area>
           <!-- <TableButton :mode="true" class="mr-2">
@@ -37,7 +43,7 @@
       </BaseTableSetup>
     </template>
 
-    <BaseTable :thdata="['', 'Sbo Adviser Name', 'Schools', '']" :isFetching="isFetching">
+    <BaseTable :thdata="['', 'Sbo Adviser Name', 'University', '']" :isFetching="isFetching">
       <template #data>
         <tr v-for="sboadviser in sboadvisers" :key="sboadviser.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
@@ -88,28 +94,17 @@
     </BaseTable>
 
     <teleport to="#app">
-      <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
+      <BaseDialog :show="showForm" :width="'500'" :preventClose="true" >
         <template #c-content>
-            <div>
-              <h1 class="text-md font-bold">Are your sure do you want to make this users as <span class="text-green-700">
-                Sbo-Adviser
-              </span></h1>
-              <div class="bg-gray-100 text-xs italic p-1 my-1 rounded-sm" v-for="sboad in selectedSboAdvisers" :key="sboad.ud">
-                {{ sboad.first_name }} {{ sboad.last_name  }} - {{ sboad.schools[0].name }}
-              </div>
-                <!-- {{selectedSboAdvisers}} -->
-              <div class="flex my-2">
-                <TableButton mode class="mr-2" @click="closeTheForm"> Close </TableButton>
-                <div class="my-1  ml-1 " v-if="isSaving">
-                  <BaseSpinner />
-                </div>
-                <TableButton v-else class="mr-2" @click="makeUsersAsSboAdviser"> Yes </TableButton>
-              </div>
-  
-            </div>
+
+          <BaseConfirmation :selectedData="selectedSboAdvisers" @close="closeTheForm" :isSaving="isSaving" :title="'Are your sure do you want to make this users as'" :subject="'Sbo-Adviser'">
+            <TableButton class="mr-2" @click="makeUsersAsSboAdviser"> Yes </TableButton>
+          </BaseConfirmation>
+           
         </template>
       </BaseDialog>
     </teleport>
+
   </BaseCard>
 </template>
 
@@ -123,6 +118,7 @@ export default {
 
   data() {
     return {
+      filterBy: null,
       showForm: false,
       search: "",
       sboadvisers: [],
@@ -130,6 +126,7 @@ export default {
       selectedSboAdvisers: [],
       requestError: null,
       isFetching: false,
+      isSchooLoading: false,
       isSaving: false,
       requestError: null,
     };
@@ -242,7 +239,7 @@ export default {
         });
     },
     async loadSchool() {
-      this.isFetching = true;
+      this.isSchooLoading = true;
       await axiosApi
         .get("api/schools")
         .then((res) => {
@@ -252,10 +249,10 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          this.requestError = err;
         })
         .finally(() => {
-          this.isFetching = false;
+          this.isSchooLoading = false;
         });
     },
   },

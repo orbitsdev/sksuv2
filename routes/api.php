@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\CloudStorageController;
+use App\Http\Controllers\Api\CurrentSboAdviserController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
@@ -73,9 +74,20 @@ Route::post('sbo-advisers/make-user-as-adviser', [ManageSboAdviserControlller::c
 Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
 
 // SBO ROLE REQUEST
-Route::get('sbo-requests/get-sbo-request', [SboAdviserRequestController::class, 'getRequest']);
+Route::post('sbo-requests/confirm-selected-request', [SboAdviserRequestController::class, 'confirmSelectedSbo']);
+Route::post('sbo-requests/confirm', [SboAdviserRequestController::class, 'confirm']);
 Route::post('sbo-requests/request-role-as-sbo-adviser', [SboAdviserRequestController::class, 'requestSboAdviserRole']);
+Route::post('sbo-requests/filter', [SboAdviserRequestController::class,'filter']);
+Route::post('sbo-requests/search', [SboAdviserRequestController::class, 'search']);
+Route::get('sbo-requests/get-sbo-request', [SboAdviserRequestController::class, 'getRequest']);
 Route::apiResource('sbo-requests', SboAdviserRequestController::class);
+
+
+//  MANAGE CURRENT SBO ADVISERS
+Route::get('current-sbo-advisers', [CurrentSboAdviserController::class, 'getCurrentSboAdvisers']);
+Route::post('current-sbo-advisers/search', [CurrentSboAdviserController::class, 'search']);
+Route::post('current-sbo-advisers/filter', [CurrentSboAdviserController::class, 'filter']);
+
 
 // MANAGE ROLES
 Route::apiResource('roles', ManageUserRoleController::class);
