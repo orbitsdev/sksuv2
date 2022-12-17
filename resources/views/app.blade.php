@@ -442,7 +442,17 @@
     border-radius: 10px;
     border: 3px solid #ffffff;
   }
+.bggray{
+    background-color: #FAFAFA;
+}
+.bggray2{
+    background-color: #E6E6E6;
+}
 
+
+.myfont{
+    color:#292929
+}
   .dialog-error{
     z-index: 2000;
   }

@@ -157,9 +157,10 @@ export default {
     async getRoles() {
       await axios.get("api/roles").then((res) => {
 
-      console.log(res);
-        this.roles = res.data.roles;
-        // this.form.role = this.roles[0].name;
+
+      this.roles = res.data.data;
+
+      this.form.role = this.roles[0].name;
       });
     },
 

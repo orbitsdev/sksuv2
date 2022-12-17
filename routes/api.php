@@ -92,6 +92,11 @@ Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-the-selected-user',
 
 
 // MANAGE ROLES
+Route::get('manage-users-roles/get-users',[ManageUserRoleController::class, 'getUsers']);
+// Route::post('manage-users-roles/change-role-of-user',[ManageUserRoleController::class, 'changeUserRole']);
+Route::post('manage-users-roles/change-role-selected-user',[ManageUserRoleController::class, 'changeSelectedUsersRoles']);
+Route::post('manage-users-roles/filter',[ManageUserRoleController::class, 'filter']);
+Route::post('manage-users-roles/search',[ManageUserRoleController::class, 'search']);
 Route::apiResource('roles', ManageUserRoleController::class);
 
 // ALIBABA

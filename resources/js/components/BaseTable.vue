@@ -1,11 +1,11 @@
 <template>
   <div class="relative">
     <TableLoader v-if="isFetching" />
-    <table class="min-w-full divide-y divide-gray-50">
-      <thead class="bg-gray-100">
+    <table class="min-w-full divide-y divide-gray-300">
+      <thead class="bg-gray-50">
         <tr>
           <th v-for="(th, index) in thdata" :key="index"
-            scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            scope="col" class="py-2.5 text-left text-sm font-semibold text-gray-900">
             {{ th }}
           </th>
 
