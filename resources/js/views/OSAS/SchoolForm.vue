@@ -1,15 +1,30 @@
 <template>
   <div>
-    <FormHeader> {{ isUpdateMode ? 'Update Shool' : 'Add School' }}</FormHeader>
-
-    <div class="pt-5">
+    <div class="">
+      {{ selectedOrganizations }}
       <BaseInput
         :label="'School Name'"
         v-model="form.name"
         :hasError="validationError.name"
       />
     </div>
+    <div class="pt-1 max-h-80 overflow-y-auto ">
+      <label for="cover-photo" class="block text-base font-medium text-gray-700"
+        >Your Files
+      </label>
+    <div   class="grid grid-cols-2 gap-1 ">
+      
+      <div v-for="organization in organizations" :key="organization.id" >
+        <div class="flex items-center   p-1 rounded-sm">
+          <input type="checkbox" :value="organization.id" class="w-4 h-4 accent-green-600  text-white mr-1 border-blue-700 border-2 cursor-pointer" :id="organization.id" v-model="selectedOrganizations">
+          <label :for="organization.id" class="mr-1 capitalize"> {{ organization.name }} </label>
+        </div>
+      </div>
+    </div>
+    </div>
 
+     
+    <w-divider class="my-2"></w-divider>
 
     <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
       <label for="cover-photo" class="block text-base font-medium text-gray-700"
@@ -19,7 +34,7 @@
         <FileChip
           @click="removeExistingFile(file.id)"
           class="m-1"
-          v-for="(file, index) in existingFile"
+          v-for="file in existingFile"
           :key="file.id"
         >
           {{ file.file_name }}
@@ -91,6 +106,11 @@ export default {
    
   },
   props: {
+
+    organizationsData:{
+        type:Array,
+        default: [],
+    },
     isUpdateMode: {
       type: Boolean,
       default: false,
@@ -121,15 +141,21 @@ export default {
         files: [],
       },
       existingFile: [],
+      organizations: this.organizationsData,
+      selectedOrganizations:[],
       fileToBeRemove: [],
       isLoading: false,
       isUploading: false,
+      isOrganizationFetching: false,
       validationError: {},
       requestError: null,
     };
   },
 
   methods: {
+
+
+   
 
     handleClose(){
 
@@ -207,7 +233,10 @@ export default {
     async addSchool() {
       this.isLoading = true;
       await axiosApi
-        .post("api/schools", this.form)
+        .post("api/schools", {
+          ...this.form,
+          organizations: this.selectedOrganizations,
+        })
         .then((res) => {
           console.log(res);
           this.showToast({ title: "Succesfully Update" });
@@ -215,6 +244,8 @@ export default {
             name: "",
             files: [],
           };
+
+          this.selectedOrganizations = [];
           this.$emit("close", true);
         })
         .catch((err) => {

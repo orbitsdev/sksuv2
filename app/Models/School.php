@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\File;
 use App\Models\User;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,5 +19,9 @@ class School extends Model
 
     public function users(){
         return $this->belongsToMany(User::class, 'school_users', 'school_id', 'user_id');
+    }
+
+    public function departments(){
+        return $this->hasMany(Department::class);
     }
 }

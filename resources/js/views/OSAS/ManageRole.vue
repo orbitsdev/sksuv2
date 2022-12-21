@@ -80,76 +80,12 @@
             </td>
 
             <td>
-              <!-- <button
-              type="button"
-              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-            >
-            <i class="fa-regular fa-pen-to-square"></i>
-            </button> -->
+            
             </td>
             
           
           </tr>
-          <!-- <tr v-for="user in users" :key="user.id">
-            <td class="relative w-12 px-6 sm:w-16 sm:px-8">
-              <input
-                v-model="selectedUsers"
-                :value="user"
-                type="checkbox"
-                class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
-              />
-            </td>
-            <td class="whitespace-nowrap py-4">
-              <div class="flex items-center">
-                <div class="h-10 w-10 flex-shrink-0">
-                  <img
-                    class="h-10 w-10 rounded-full"
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
-                </div>
-                <div class="ml-4">
-                  <div class="font-medium text-gray-900">
-                    {{ user.first_name + " " + user.last_name }}
-                  </div>
-                 
-                </div>
-              </div>
-            </td>
-            <td>
-               <div class="text-gray-900">{{ user.email }}</div>
-            </td>
-            <td>
-
-                  <div v-if="user.roles.length > 0">
-                      <div v-for="role in user.roles" :key="role.id" class="text-gray-900">
-                        <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">{{ role.name }}</span>
-                  </div>
-                    </div>
-              <div v-else>
-                <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">None</span>
-
-              </div>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <div v-if="user.schools.length > 0">
-                <span>
-                  {{ user.schools[0].name }}
-                </span>
-              </div>
-              <div v-else>
-                <span>
-                  <span
-                    class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-                    >None</span
-                  >
-                </span>
-              </div>
-            </td>
-            <td
-              class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-            ></td>
-          </tr> -->
+         
         </template>
       </BaseTable>
     </template>
@@ -380,6 +316,9 @@ export default {
           this.isFetching = false;
         });
     },
+
+    
+
   },
 };
 </script>

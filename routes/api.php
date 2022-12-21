@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\CurrentSboAdviserController;
+use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
@@ -60,7 +61,6 @@ Route::post('files/delete-temporary-files', [FileController::class, 'deleteTempo
 
 
 // MANAGE SCHOOL
-
 Route::post('schools/search', [ManageSchoolController::class,'search']);
 Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
 Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
@@ -99,6 +99,12 @@ Route::post('manage-users-roles/filter',[ManageUserRoleController::class, 'filte
 Route::post('manage-users-roles/search',[ManageUserRoleController::class, 'search']);
 Route::apiResource('roles', ManageUserRoleController::class);
 
+// MANAGE DEPARTMENT/ORGANIZATION
+Route::get('manage-department', [DepartmentController::class, 'getDepartment']);
+Route::post('manage-department-create', [DepartmentController::class, 'createDepartment']);
+Route::post('manage-department-update', [DepartmentController::class, 'updateDepartment']);
+Route::post('manage-department-delete-selected', [DepartmentController::class, 'deleteSelectedDepartment']);
+Route::post('manage-department-delete-all', [DepartmentController::class, 'deleteAllDepartment']);
 // ALIBABA
 Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
 // PUBLIC

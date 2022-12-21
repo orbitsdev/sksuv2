@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
 use App\Models\School;
+use App\Models\SboOfficer;
 use App\Models\SocialAccount;
 use App\Models\SboAdviserRequest;
 use Laravel\Sanctum\HasApiTokens;
@@ -65,6 +66,10 @@ class User extends Authenticatable
         return $this->hasOne(SboAdviserRequest::class);
     }
 
+
+public function officers(){
+    return $this->hasMany(SboOfficer::class);  
+}
 
 
 }

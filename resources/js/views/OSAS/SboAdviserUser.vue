@@ -241,8 +241,7 @@ export default {
         .get("api/schools")
         .then((res) => {
           this.schools = res.data.data;
-          if (this.schools.length > 0) {
-          }
+ 
         })
         .catch((err) => {
           this.requestError = err;

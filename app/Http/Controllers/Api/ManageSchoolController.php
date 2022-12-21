@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\File;
 use App\Models\User;
 use App\Models\School;
+use App\Models\Department;
+use App\Models\SchoolUser;
 use Illuminate\Http\Request;
 use App\Models\TemporaryStorage;
 use Illuminate\Support\Facades\DB;
@@ -12,13 +14,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SchoolResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\FileController;
-use App\Models\SchoolUser;
 
 class ManageSchoolController extends Controller
 {
     
 
-
+    public function getSchool(){
+        return new SchoolResource(User::all());
+    }
 
     public function attachSchoolToUser (Request $request){
         
@@ -92,6 +95,8 @@ class ManageSchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    
     public function index()
     {
         return new SchoolResource(School::with('files')->paginate(20));
@@ -119,17 +124,26 @@ class ManageSchoolController extends Controller
             'name' => 'required',
         ]);
 
+
+
         $files = $request->input('files');
+        $organizations = $request->input("organizations");
         $school = School::create([
             'name' => $request->input('name')
         ]);
+
+        if(count($organizations)> 0){
+            $selectedOrganizations = Department::whereIn('id', $organizations)->get()->pluck('id');
+            $school->departments()->sync($selectedOrganizations);
+            
+        }
 
         if (count($files) > 0) {
 
             FileController::storeFiles($files, 'schools', 'public_uploads', $school);
         }
 
-        return response()->json(['success',], 200);
+        return response()->json(['success', $school->departments], 200);
     }
 
     /**
@@ -171,6 +185,8 @@ class ManageSchoolController extends Controller
         $school->update([
             'name' => $request->input('name'),
         ]);
+
+    
 
         $filetoberemove = $request->input('filetoberemove');
         $filestoadded = $request->input('files');
