@@ -31,7 +31,7 @@ use App\Http\Controllers\Api\SboAdviserRequestController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->load('roles', 'schools','sboRequest');
+    return $request->user()->load('roles', 'schools');
 });
 
 
@@ -101,6 +101,7 @@ Route::apiResource('roles', ManageUserRoleController::class);
 
 // MANAGE DEPARTMENT/ORGANIZATION
 Route::get('manage-department', [DepartmentController::class, 'getDepartment']);
+Route::post('manage-department-search', [DepartmentController::class, 'search']);
 Route::post('manage-department-create', [DepartmentController::class, 'createDepartment']);
 Route::post('manage-department-update', [DepartmentController::class, 'updateDepartment']);
 Route::post('manage-department-delete-selected', [DepartmentController::class, 'deleteSelectedDepartment']);

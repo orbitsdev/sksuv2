@@ -99,8 +99,16 @@ export default {
       this.form = {
         name: this.schoolData.name,
         files: [],
+
       }
 
+      const initial_organizations_id =  [];
+      this.schoolData.organizations.forEach(element => {
+          initial_organizations_id.push(element.id);
+      });
+
+      console.log(initial_organizations_id);
+      this.selectedOrganizations = initial_organizations_id;
       this.existingFile = this.schoolData.files;
     }
    
@@ -200,10 +208,11 @@ export default {
       await axiosApi
         .put("api/schools/" + this.schoolData.id, {
           ...this.form,
-          filetoberemove: this.fileToBeRemove
+          filetoberemove: this.fileToBeRemove,
+          organizations: this.selectedOrganizations,
         })
         .then((res) => {
-
+          console.log(res.data);
  
           this.showToast({title: 'Succesfully Update'});
           this.form = {

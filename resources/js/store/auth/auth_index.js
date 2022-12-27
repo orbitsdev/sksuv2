@@ -21,6 +21,7 @@ export default {
                 roles: [],
                 
             },
+            User: null,
         }
 
     },

@@ -5,12 +5,20 @@ import axiosApi from '../../api/axiosApi';
 export default {
 
 
-    // async getUserDetials({commit}){
-    //     await axiosApi.get('/api/user').then(res=>{
-    //         console.log(res);
-    //     }).catch(err=>{
-    //         return new Error('failed to get data');
-    //     });
-    // }
+  async getUser() {
+      return  await axiosApi.get('api/user').then(res=>{
+        return res.data;
+      });
+    },
+
+   
+  
+    logoutUser(){
+      localStorage.removeItem('token');
+      window.location.reload(true);
+  }
+
+  
+
 
 }

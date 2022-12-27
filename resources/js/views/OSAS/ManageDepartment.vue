@@ -3,11 +3,20 @@
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
-          <TableButton @click="handleShowForm(null, 'add')"
+          <TableButton  class="mr-2" @click="handleShowForm(null, 'add')"
             ><i class="fa-solid fa-plus mr-1"> </i> Add Deparment
           </TableButton>
+
+          <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
+
+         
         </template>
-        <template #filters-area> </template>
+        <template #filters-area>
+          <div v-if="isSchooLoading">
+            <BaseSpinner />
+          </div>
+          
+        </template>
         <template #actions-area>
           <TableButton
             @click="deleteSelectedDepartment"
@@ -29,7 +38,7 @@
         </template>
       </BaseTableSetup>
     </template>
-    <BaseTable :thdata="['', 'Department', 'University', '']" :isFetching="isFetching">
+    <BaseTable :thdata="['', 'Department',  '']" :isFetching="isFetching">
       <template #data>
         <tr v-for="department in departments" :key="department.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
@@ -47,21 +56,7 @@
               </div>
             </div>
           </td>
-          <td class="text-sm">
-            <div class="flex items-center">
-              <div class="">
-                <div class="font-medium text-gray-900" v-if="department.school != null">
-                  {{ department.school.name }} - {{ department.school.id }}
-                </div>
-
-                <span
-                  v-else
-                  class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-                  >None</span
-                >
-              </div>
-            </div>
-          </td>
+         
           <td class="py-2 text-sm text-gray-500">
             <button
               @click="handleShowForm(department, 'update')"
@@ -86,36 +81,7 @@
               :hasError="validationError.name"
             />
           </div>
-          <div class="pt-2">
-            <label for="cover-photo" class="block text-base font-medium text-gray-700"
-              >University
-              {{ selectedShool }}
-            </label>
-            <select
-            v-model="selectedShool"
-              v-if="schools.length > 0"
-              class="block hover:shadow-lg rounded w-full px-3 py-2 border text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none sm:text-sm"
-            >
-              <option
-                v-for="option in schools"
-                :key="option.id"
-                class="py-2"
-                :value="option.id"
-              >
-                {{ option.name }}-
-                {{ option.id }}
-              </option>
-            </select>
-            <select
-              v-else
-              class="block hover:shadow-lg rounded w-full px-3 py-2 border text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none sm:text-sm"
-            >
-              <option>No university found</option>
-            </select>
-            <p v-if="validationError.school_id" class="mx-2 text-red-500 text-sm my-2">
-              {{ validationError.school_id[0] }}
-            </p>
-          </div>
+         
           <div class="my-4"></div>
           <div class="my-2 flex justify-end">
             <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
@@ -174,15 +140,17 @@ import axiosApi from "../../api/axiosApi";
 
 export default {
   created() {
-    this.loadSchool();
     this.loadDepartment();
   },
+
+  
   data() {
     return {
+      search: "",
       name: "",
+      filterBy: "none",
       departments: [],
       selectedDeparment: [],
-      schools: [],
       selectedShool: null,
       isFetching: false,
       isUpdating: false,
@@ -194,29 +162,29 @@ export default {
       departmentSelected: null,
     };
   },
-  methods: {
-    setSchool(e) {
-      this.selectedShool = e.target.value;
+
+  watch: {
+    search(olvalue, newvalue) {
+      this.searDepartment();
     },
+  },
+  methods: {
 
-    async loadSchool() {
-      this.isFetching = true;
+    async searDepartment() {
+
+
       await axiosApi
-        .get("api/schools")
+        .post("api/manage-department-search", {
+          search: this.search,
+        })
         .then((res) => {
-          this.schools = res.data.data;
-
-          if (this.schools.length > 0) {
-            this.selectedShool = this.schools[0].id;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.isFetching = false;
+          this.departments = res.data.data;
         });
     },
+
+    
+
+    
 
     handleShowForm(department, action) {
       this.validationError = {};
@@ -231,9 +199,6 @@ export default {
         
         this.departmentSelected = department;
 
-        if (department.school != null) {
-            this.selectedShool = department.school.id;
-        }
         this.name = department.name;
       }
 
@@ -330,7 +295,6 @@ export default {
       await axiosApi
         .post("api/manage-department-create", {
           name: this.name,
-          school_id: this.selectedShool,
         })
         .then((res) => {
           this.showForm = false;
@@ -338,6 +302,7 @@ export default {
           this.loadDepartment();
         })
         .catch((err) => {
+          console.log(err);
           if (err.response.status === 422) {
             this.validationError = err.response.data.errors;
           } else {
@@ -355,7 +320,6 @@ export default {
         .post("api/manage-department-update", {
           name: this.name,
           id: this.departmentSelected.id,
-          school_id: this.selectedShool,
         })
         .then((res) => {
           this.showForm = false;

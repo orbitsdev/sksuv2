@@ -258,7 +258,7 @@
               
               </a> -->
 
-              <div v-if="Auth.is('osas')">
+              <div v-if="User.is('osas')">
                 <router-link
                   :to="{ name: 'manage-school' }"
                   href="#"
@@ -303,7 +303,7 @@
                       d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
                     />
                   </svg>
-                  Manage School Department
+                  Manage School Organization
                 </router-link>
 
                 <router-link
@@ -377,7 +377,7 @@
                 </router-link>
               
               </div>
-              <div v-if="Auth.is('sbo-adviser')">
+              <div v-if="User.is('sbo-adviser')">
                 <router-link
                 :to="{ name: 'manage-sbo-officers' }"
                 href="#"
@@ -506,10 +506,9 @@
           <div class="">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8"></div>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-              <!-- {{ Auth }} -->
+              <!-- {{ User }} -->
               <router-view> </router-view>
-              <!-- <div class="h-96 rounded-lg border-4 border-dashed border-gray-200">                   
-                </div> -->
+  
             </div>
           </div>
         </main>
@@ -555,7 +554,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["Auth"]),
+    ...mapGetters(['User']),
   },
   created() {
     this.getUserDetails();
@@ -591,44 +590,71 @@ export default {
         });
     },
     async getUserDetails() {
-      this.isScreenLoading = true;
-      await axiosApi
-        .get("api/user")
-        .then((res) => {
-          // console.log(res.data.sbo_request);
 
-          if(res.data.sbo_request != null){
-            this.hasRuest = true;
-          };
+      const token = localStorage.getItem('token');
 
-          let roles = [];
-          res.data.roles.forEach((role) => {
-            roles.push(role.name);
-          });
+      if(token !=  null){
 
-          const userDetails = {
-            first_name: res.data.first_name,
-            last_name: res.data.last_name,
-            email: res.data.email,
-            roles: roles,
-            token: localStorage.getItem("token"),
-          };
+        if(this.$store.state.User == null){
+          this.isScreenLoading = true;
 
-          this.$store.commit("setUserDetails", userDetails);
-          roles.forEach((role) => {
-            if (role == "guest" || role == "sbo-adviser" || role == "sbo-student") {
-              if (res.data.schools.length <= 0) {
-                this.$router.replace("/getting-started");
-              }
-            }
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
+         this.$store.dispatch('getUser').then(res=>{         
+         this.$store.commit('setUser', res);
+
+
+         }).catch(err=>{
+
+          this.requestError = err;
+          this.$store.dispatch('logoutUser');
+         }).finally(()=>{
+
           this.isScreenLoading = false;
-        });
+
+
+         });
+
+        }else{
+          this.$store.dispatch('logoutUser');
+        }
+      }
+      
+      // await axiosApi
+      //   .get("api/user")
+      //   .then((res) => {
+      //     if(res.data.sbo_request != null){
+      //       this.hasRuest = true;
+      //     };
+
+      //     let roles = [];
+      //     res.data.roles.forEach((role) => {
+      //       roles.push(role.name);
+      //     });
+
+      //     const userDetails = {
+      //       first_name: res.data.first_name,
+      //       last_name: res.data.last_name,
+      //       email: res.data.email,
+      //       roles: roles,
+      //       token: localStorage.getItem("token"),
+      //     };
+
+      //     this.$store.commit("setUserDetails", userDetails);
+      //     roles.forEach((role) => {
+      //       if (role == "guest" || role == "sbo-adviser" || role == "sbo-student") {
+      //         if (res.data.schools.length <= 0) {
+      //           this.$router.replace("/getting-started");
+      //         }
+      //       }
+      //     });
+
+
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   })
+      //   .finally(() => {
+      //     this.isScreenLoading = false;
+      //   });
     },
   },
 };

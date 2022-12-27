@@ -3,34 +3,36 @@
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
-          <TableButton v-if="selectedSboAdvisers.length > 0" class="mr-2" @click="showTheForm">
-            Make selected users as Sbo Adviser ({{ selectedSboAdvisers.length}})
+          <TableButton
+            v-if="selectedSboAdvisers.length > 0"
+            class="mr-2"
+            @click="showTheForm"
+          >
+            Make selected users as Sbo Adviser ({{ selectedSboAdvisers.length }})
           </TableButton>
           <BaseSearchInput :placeholder="'Search name ..'" v-model="search" />
         </template>
         <template #filters-area>
-          <div v-if="isSchooLoading"> 
-            <BaseSpinner/>
+          <div v-if="isSchooLoading">
+            <BaseSpinner />
           </div>
-          <div  class="flex items-center " v-else >
-           
-        
-          <select
-            v-model="filterBy"
-            @change="filterSbo"
-            class="block hover:shadow-lg  px-3 py-2 border text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none sm:text-sm"
-          > 
-          <option :value="'none'"> None</option>
-            <option
-              v-for="option in schools"
-              :key="option.id"
-              class="py-2"
-              :value="option.name"
+          <div class="flex items-center" v-else>
+            <select
+              v-model="filterBy"
+              @change="filterSbo"
+              class="block hover:shadow-lg px-3 py-2 border text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none sm:text-sm"
             >
-              {{ option.name }}
-            </option>
-          </select>
-        </div>
+              <option :value="'none'">None</option>
+              <option
+                v-for="option in schools"
+                :key="option.id"
+                class="py-2"
+                :value="option.name"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
         </template>
         <template #actions-area>
           <!-- <TableButton :mode="true" class="mr-2">
@@ -44,7 +46,10 @@
       </BaseTableSetup>
     </template>
 
-    <BaseTable :thdata="['', 'Sbo Adviser Name', 'University', '']" :isFetching="isFetching">
+    <BaseTable
+      :thdata="['', 'Sbo Adviser Name', 'University', '']"
+      :isFetching="isFetching"
+    >
       <template #data>
         <tr v-for="sboadviser in sboadvisers" :key="sboadviser.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
@@ -95,17 +100,20 @@
     </BaseTable>
 
     <teleport to="#app">
-      <BaseDialog :show="showForm" :width="'500'" :preventClose="true" >
+      <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
         <template #c-content>
-
-          <BaseConfirmation :selectedData="selectedSboAdvisers" @close="closeTheForm" :isSaving="isSaving" :title="'Are your sure do you want to make this users as'" :subject="'Sbo-Adviser'">
+          <BaseConfirmation
+            :selectedData="selectedSboAdvisers"
+            @close="closeTheForm"
+            :isSaving="isSaving"
+            :title="'Are your sure do you want to make this users as'"
+            :subject="'Sbo-Adviser'"
+          >
             <TableButton class="mr-2" @click="makeUsersAsSboAdviser"> Yes </TableButton>
           </BaseConfirmation>
-           
         </template>
       </BaseDialog>
     </teleport>
-
   </BaseCard>
 </template>
 
@@ -119,7 +127,7 @@ export default {
 
   data() {
     return {
-      filterBy: 'none',
+      filterBy: "none",
       showForm: false,
       search: "",
       sboadvisers: [],
@@ -136,42 +144,40 @@ export default {
   watch: {
     search(oldeValue, newValue) {
       this.searchSbo();
-  
     },
   },
 
   methods: {
-    closeTheForm(){
+    closeTheForm() {
       this.showForm = false;
     },
-    showTheForm(){
-      this.showForm  = true;
+    showTheForm() {
+      this.showForm = true;
     },
-    
-   async makeUsersAsSboAdviser() {
 
-     const selectedId = [];
-     this.selectedSboAdvisers.forEach(user => {
+    async makeUsersAsSboAdviser() {
+      const selectedId = [];
+      this.selectedSboAdvisers.forEach((user) => {
         selectedId.push(user.id);
-     });
-     
-
-     this.isSaving = true;
-      await axiosApi.post('api/sbo-advisers/make-user-as-adviser',{
-        usersid: selectedId
-      }).then(res=>{
-        console.log(res.data.data);
-        this.loadSboAdvisers();
-        this.showForm = false;
-        this.selectedSboAdvisers = [];
-      }).catch(err=>{
-        console.log(err);
-      }).finally(()=>{
-        this.isSaving = false;
       });
 
-
-      
+      this.isSaving = true;
+      await axiosApi
+        .post("api/sbo-advisers/make-user-as-adviser", {
+          usersid: selectedId,
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          this.loadSboAdvisers();
+          this.showForm = false;
+          this.selectedSboAdvisers = [];
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.isSaving = false;
+        });
     },
 
     customConfirmationDialog({
@@ -200,7 +206,7 @@ export default {
       axiosApi
         .post("api/sbo-advisers/search", {
           search: this.search,
-          filter:this.filterBy,
+          filter: this.filterBy,
         })
         .then((res) => {
           this.sboadvisers = res.data.data;
@@ -241,7 +247,6 @@ export default {
         .get("api/schools")
         .then((res) => {
           this.schools = res.data.data;
- 
         })
         .catch((err) => {
           this.requestError = err;

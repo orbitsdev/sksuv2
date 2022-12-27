@@ -216,6 +216,13 @@ export default {
       if(this.$route.query.login =='attemp'){
           this.showTheForm('login');
       }
+
+      if(this.$route.query.login =='failed'){
+        this.requestError  = {
+              statusCode: "400",
+              message: "Failed To Loign",
+            }
+        }
     },
   data() {
     return {

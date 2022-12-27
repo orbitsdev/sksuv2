@@ -12,7 +12,7 @@ class Department extends Model
 
     protected $guarded = [];
 
-    public function school(){
-        return $this->belongsTo(School::class);
+    public function schools(){
+        return $this->belongsToMany(School::class, 'school_departments', 'department_id', 'school_id');
     }
 }

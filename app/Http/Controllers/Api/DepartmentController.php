@@ -9,8 +9,28 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DepartmentResource;
 
-class DepartmentController extends Controller
-{
+class DepartmentController extends Controller   
+{   
+
+    // public function filter(Request $request){
+
+    //     if($request->input('filter') == 'none'){
+    //         return $this->getDepartment();
+    //     }else{
+    //         $departments =  Department::whereHas('school', function($query) use ($request) {
+    //             $query->where('name', $request->input('filter'));
+    //     })->with('schools')->paginate(10);
+    //     return new DepartmentResource($departments);
+    //     }
+       
+    // }
+
+    public function search(Request $request){
+
+        $departments = Department::where('name', 'like', '%'.$request->input('search').'%')->get();
+
+        return new DepartmentResource($departments);
+    }
     
     public function deleteAllDepartment(Request $request){
         DB::table('departments')->delete();
@@ -23,18 +43,16 @@ class DepartmentController extends Controller
     return response()->json(['success'], 200);
     }
 
-    public function getDepartment(Request $request){
-        return new DepartmentResource(Department::with('school')->paginate(10));
+    public function getDepartment(){
+        return new DepartmentResource(Department::paginate(10));
     }
 
     public function createDepartment(Request $request){
         
         $validated = $request->validate([
             'name' => 'required',
-            'school_id' => 'required'
         ],[
             'name' => 'Depertment name is required',
-            'school_id' => 'University is required'
         ]);
 
         
@@ -47,18 +65,13 @@ class DepartmentController extends Controller
         
         $validated = $request->validate([
             'name' => 'required',
-            'school_id' => 'required'
         ],[
             'name' => 'Depertment name is required',
-            'school_id' => 'University is required'
         ]);
 
 
        $department = Department::where('id', $request->input('id'))->first();
-       $department->update([
-        'name'=> $request->input('name'),
-        'school_id' => $request->input('school_id'),
-       ]);
+       $department->update($validated);
 
         return response()->json(['success'], 200);
     }

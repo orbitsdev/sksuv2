@@ -1,12 +1,13 @@
 <template>
   <BaseCard class="relative" :subtitle="'Manage Schools'">
     <template #header>
-      {{ organizations }}
+      {{schools}}
 
       <BaseTableSetup>
+  
         <template #searchs-area>
           <TableButton class="mr-2" @click="showTheForm">
-            <i class="fa-solid fa-plus mr-1"></i> Add School
+            <i class="fa-solid fa-plus mr-1"></i> Add University
           </TableButton>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
         </template>
@@ -39,7 +40,7 @@
     </template>
 
     <BaseTable
-      :thdata="[' ', 'School Name', 'Featured Image', '']"
+      :thdata="[' ', 'School Name', 'Organizations' ,'Featured Image', '']"
       :isFetching="isFetching"
     >
       <template #data>
@@ -55,10 +56,24 @@
           <td class="whitespace-nowrap py-4 text-sm">
             <div class="flex items-center">
               <div class="pl-1">
-                <div class="font-medium text-sm text-gray-900">
-                  {{ school.name.toUpperCase() }}
+                <div class="font-medium capitalize text-sm pr-2 text-gray-900">
+                  {{ school.name }}
                 </div>
               </div>
+            </div>
+          </td>
+          <td class="py-2 text-sm text-gray-500">
+            <div class="text-gray-500 capitalize " v-if="school.departments.length > 0">
+              <span
+                class="inline-flex  bg-green-100 px-2 mr-0.5 text-xs font-semibold leading-5 text-green-800"  v-for="department in school.departments" :key="department.id"
+                >{{ department.name }}</span
+              >
+            </div>
+            <div v-else>
+              <span
+                class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
+                >None</span
+              >
             </div>
           </td>
           <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -86,6 +101,8 @@
               >
             </div>
           </td>
+          
+         
           <td
             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
           >
@@ -299,11 +316,11 @@ export default {
     },
 
     async loadSchool() {
+      console.log(localStorage.getItem('token'))
       this.isFetching = true;
       await axiosApi
         .get("api/schools")
         .then((res) => {
-
           this.schools = res.data.data;
         })
         .catch((err) => {
@@ -321,6 +338,7 @@ export default {
           id: school.id,
           name: school.name,
           files: school.files.length > 0 ? [...school.files] : [],
+          organizations: school.departments.length > 0 ? [...school.departments] : [],
           created_at: school.created_at,
           update_at: school.update_at,
         };

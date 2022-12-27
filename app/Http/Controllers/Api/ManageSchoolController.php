@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SchoolResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\FileController;
+use App\Models\SchoolDepartment;
 
 class ManageSchoolController extends Controller
 {
@@ -41,7 +42,7 @@ class ManageSchoolController extends Controller
      
     public function search(Request $request)
     {
-        $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files')->get();
+        $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files','departments')->get();
         return new SchoolResource($schools);
     }
 
@@ -65,6 +66,8 @@ class ManageSchoolController extends Controller
             // $user = School::whereIn('id', $selectedSchoolId)->delete();
             $schoolcollection = School::whereIn('id', $selectedSchoolId)->select('id')->get()->pluck('id');
             SchoolUser::whereIn('school_id', $schoolcollection)->delete();
+            SchoolDepartment::whereIn('school_id', $schoolcollection)->delete();
+            
             School::whereIn('id', $schoolcollection)->delete();
             return response()->json(['success'], 200);
         } else {
@@ -87,6 +90,7 @@ class ManageSchoolController extends Controller
 
         DB::table('schools')->delete();
         DB::table('school_users')->delete();
+        DB::table('school_departments')->delete();
       
         return response()->json(['success'], 200);
     }
@@ -99,7 +103,7 @@ class ManageSchoolController extends Controller
     
     public function index()
     {
-        return new SchoolResource(School::with('files')->paginate(20));
+        return new SchoolResource(School::with('files','departments')->paginate(20));
     }
 
     /**
@@ -122,20 +126,24 @@ class ManageSchoolController extends Controller
     {
         $request->validate([
             'name' => 'required',
-        ]);
+        ],);
 
 
 
         $files = $request->input('files');
         $organizations = $request->input("organizations");
+
         $school = School::create([
             'name' => $request->input('name')
         ]);
 
         if(count($organizations)> 0){
-            $selectedOrganizations = Department::whereIn('id', $organizations)->get()->pluck('id');
-            $school->departments()->sync($selectedOrganizations);
-            
+            $departments = Department::whereIn('id', $organizations)->get()->pluck('id');
+            $school->departments()->sync($departments);
+        }else{
+            if(count($school->departments) > 0 ){
+                $school->departments()->detach();
+            }
         }
 
         if (count($files) > 0) {
@@ -178,10 +186,12 @@ class ManageSchoolController extends Controller
 
 
     public function update(Request $request, School $school)
-    {
+    {   
+
+        
         $request->validate([
-            'name' => 'required'
-        ]);
+            'name' => 'required',
+        ],);
         $school->update([
             'name' => $request->input('name'),
         ]);
@@ -190,6 +200,19 @@ class ManageSchoolController extends Controller
 
         $filetoberemove = $request->input('filetoberemove');
         $filestoadded = $request->input('files');
+
+        $organizations = $request->input("organizations");
+
+        if(count($organizations)> 0){
+            $departments = Department::whereIn('id', $organizations)->get()->pluck('id');
+            $school->departments()->sync($departments);
+        }else{
+            if(count($school->departments) > 0 ){
+                $school->departments()->detach();
+            }
+        }
+
+
 
         if (count($filestoadded) > 0) {
             FileController::storeFiles($filestoadded, 'schools', 'public_uploads', $school);
@@ -220,6 +243,7 @@ class ManageSchoolController extends Controller
             FileController::deleteAttachedFiles($school, 'public_uploads');
         }
         $school->users()->detach();
+        $school->departments()->detach();
         $school->delete();
         return new SchoolResource(['success']);
     }
