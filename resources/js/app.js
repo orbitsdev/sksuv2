@@ -37,6 +37,7 @@ import BaseTable from './components/BaseTable.vue';
 import SchoolCard from './components/SchoolCard.vue';
 import Path from './components/Path.vue';
 import BaseConfirmation from './components/BaseConfirmation.vue';
+import FieldTypeComponent from './components/FieldTypeComponent.vue';
 
 
 import axiosApi from "./api/axiosApi";
@@ -91,6 +92,7 @@ app.component('BaseTable', BaseTable);
 app.component('SchoolCard', SchoolCard);
 app.component('Path', Path);
 app.component('BaseConfirmation', BaseConfirmation);
+app.component('FieldTypeComponent', FieldTypeComponent);
 
 
 

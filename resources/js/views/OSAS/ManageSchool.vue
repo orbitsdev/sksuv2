@@ -9,7 +9,7 @@
           <TableButton class="mr-2" @click="showTheForm">
             <i class="fa-solid fa-plus mr-1"></i> Add University
           </TableButton>
-          <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
+        <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
         </template>
         <template #filters-area>
           <!-- <BaseFilter class="mx-1"/>

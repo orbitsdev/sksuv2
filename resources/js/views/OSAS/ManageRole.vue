@@ -102,7 +102,7 @@
           </div>
           <div  v-else class="grid p-2 grid-cols-3 gap-1">
             <div v-for="role in roles" :key="role.id" >
-              <div class="flex items-center inline-block  p-1  ">
+              <div class="flex items-center  p-1  ">
                 <input type="checkbox" :value="role.id" class="w-4 h-4 accent-green-600  text-white mr-1 border-blue-700 border-2 cursor-pointer" :id="role.id" v-model="selectedRoles">
                 <label :for="role.id" class="mr-1 "> {{ role.name }} </label>
               </div>

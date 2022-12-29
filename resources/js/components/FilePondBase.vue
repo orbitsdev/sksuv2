@@ -10,7 +10,9 @@
     ref="pond"
     allowFileSizeValidation="true"
     allowPdfPreview="false"
+
     pdfComponentExtraParams="toolbar=0&view=fit&page=1"
+    :label-idle="label"
     :maxFileSize="maxSize"
     :allow-multiple="multiple"
     :accepted-file-types="fileType"
@@ -139,6 +141,11 @@ export default {
     multiple: {
       type: Boolean,
       default: true,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: "Drag & Drop your files or Browse",
     },
     maxSize: {
       type: String,

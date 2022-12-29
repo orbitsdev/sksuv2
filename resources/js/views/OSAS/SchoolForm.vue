@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="">
-      {{ selectedOrganizations }}
       <BaseInput
         :label="'School Name'"
         v-model="form.name"
@@ -28,7 +27,7 @@
 
     <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
       <label for="cover-photo" class="block text-base font-medium text-gray-700"
-        >Your Files
+        >Featured Image
       </label>
       <div class="py-2 flex flex-wrap">
         <FileChip
@@ -40,14 +39,14 @@
           {{ file.file_name }}
         </FileChip>
       </div>
-      <w-divider class="my-2"></w-divider>
+      <w-divider   v-if="noExisintData" class="my-2"></w-divider>
     </div>
 
-    <div class="pt-2">
+    <div class="pt-2"   v-if="noExisintData">
       <label for="cover-photo" class="block    text-base text-gray-700" >Features Image</label
       >
       <FilePondBase
-        v-if="noExisintData"
+        :label="'Drag & Drop your image here or <u> Browse </u>'"
         :multiple="allowmultiple"
         :fileType="fileType.image"
         @fileIsUploading="handleLoading"

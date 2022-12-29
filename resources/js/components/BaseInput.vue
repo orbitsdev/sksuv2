@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label for="email" class="block text-base font-medium text-gray-700">{{ label}}</label>
+        <label for="email" class="block text-sm ">{{ label}}</label>
         <div class="mt-1">
         
           <input 
