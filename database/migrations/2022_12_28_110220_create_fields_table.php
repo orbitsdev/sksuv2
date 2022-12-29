@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('application_form_id')->constrained();
+            $table->string('name');
+            $table->string('type');
+            $table->string('collection_for_select')->nullable();
             $table->timestamps();
         });
     }

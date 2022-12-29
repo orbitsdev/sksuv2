@@ -59,11 +59,13 @@
           <BaseInput />
           <div class="mt-2 ">
             <div class="">
-              <Button class="border rounded-lg  p-1 hover:shadow-lg" @click="handleAddFields">
-                <i class="fa-solid fa-plus mr-1"></i> Fields
+              <Button class="border rounded px-2 p-1 hover:shadow-lg" @click="handleAddFields">
+                <i class="fa-solid fa-plus mr-1"></i> Field
               </Button>
             </div>
-            <div v-for="(field,parentindex) in formfields" :key="field.id" class=" relative shadow my-4 border p-2 rounded bg-gray-100">
+
+            
+            <div v-for="(field,parentindex) in formfields" :key="field.id" class=" relative shadow mt-3 mb-4 border p-2 rounded bg-gray-100">
               <div>
 
            
@@ -116,7 +118,9 @@
               </div>
             </div>
             
-            <w-divider class="my6 my-2"></w-divider>
+           
+        </div>
+          </div>
           <div class="my-2 flex justify-end">
             <TableButton mode class="mr-2" > Close </TableButton>
            <div class="my-1 mx-2" v-if="isSaving">
@@ -125,8 +129,6 @@
             <div >
               <TableButton  >  Save </TableButton>
             </div>
-          </div>
-        </div>
           </div>
         </template>
       </BaseDialog>
