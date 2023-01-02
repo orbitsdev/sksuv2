@@ -7,5 +7,14 @@ use Illuminate\Http\Request;
 
 class ApplicationFormController extends Controller
 {
-    //
+    
+
+    public function createApplicationForm(Request $request){
+
+        $validate = $request->validate([
+            'name'=> 'required',
+            'fields.*.name' => 'required'
+        ]);
+
+    }
 }

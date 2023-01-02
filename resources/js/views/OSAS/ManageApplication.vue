@@ -54,9 +54,12 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'800'" :preventClose="true">
         <template #c-content>
+          {{ formfields }}
           <label class="text-sm">Form title </label>
 
-          <BaseInput />
+          <BaseInput 
+          v-model="formtitle"
+          />
           <div class="mt-2 ">
             <div class="">
               <Button class="border rounded px-2 p-1 hover:shadow-lg" @click="handleAddFields">
@@ -77,7 +80,7 @@
               <div class="">
                 
                 <label class="text-sm"> Field name </label>
-                <input type="text" class="w-full p-1 border ">
+                <input v-model="formfields[parentindex].fieldname" type="text" class="w-full p-1 border ">
                 <!-- <BaseInput /> -->
               </div>
               <div class="mt-2 flex justify-between">
@@ -100,7 +103,7 @@
                   </label>
                   </div>
                   <div class="mt-2 ">
-                    <div class="" v-if="formfields[parentindex].selectedtype == 3">
+                    <div class="" v-if="formfields[parentindex].selectedtype == 'select'">
                       <p>Choose data for select field</p>
                       <w-divider class="my6 my-2"></w-divider>
                       <label v-for="(collection, index) in formfields[parentindex].data" :key="collection" class="mt-3 border cursor-pointer flex items-center px-2 py-1 rounded">
@@ -127,7 +130,7 @@
              <BaseSpinner />
            </div>
             <div >
-              <TableButton  >  Save </TableButton>
+              <TableButton @click="createApplicationForm" >  Save </TableButton>
             </div>
           </div>
         </template>
@@ -140,6 +143,7 @@
 export default {
   data() {
     return {
+      formtitle:'',
       showForm: true,
       formfields: [
       
@@ -148,6 +152,33 @@ export default {
   },
 
   methods: {
+    createApplicationForm(){
+
+      let newfields = [];
+      let selected_collection_for_select = null;
+      this.formfields.forEach(element => {
+        
+          if(element.selectedtype == 'select'){
+            selected_collection_for_select = element.selecteddata;
+          }
+
+          newfields.push({
+            name: element.fieldname,
+            type: element.selectedtype,
+            collection_for_select: selected_collection_for_select,
+          });
+          
+      });
+
+      const new_application = {
+        name: this.formtitle,
+        fields: newfields 
+      }
+
+
+
+     
+    },
 
     removeField(parentindex){
         this.formfields.splice(parentindex, 1);
@@ -157,7 +188,8 @@ export default {
       const id = this.formfields.length+1;
       const newfields = {
         id: id,
-        selectedtype:1,
+        fieldname:'',
+        selectedtype:'text',
         selecteddata: null,
         fieldtypeOption: [
         
@@ -185,7 +217,7 @@ export default {
       });
       item.selected = true;
 
-      this.formfields[parentindex].selectedtype = item.id;
+      this.formfields[parentindex].selectedtype = item.value;
         
       
     },
@@ -197,7 +229,7 @@ export default {
     });
     item.selected = true;
 
-    this.formfields[parentindex].selecteddata = item.id;   
+    this.formfields[parentindex].selecteddata = item.value;   
     console.log(this.formfields[parentindex].selectedtype);   
     console.log(this.formfields[parentindex].selecteddata);   
     },

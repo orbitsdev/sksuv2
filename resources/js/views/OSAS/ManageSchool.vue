@@ -124,6 +124,10 @@
           </td>
         </tr>
       </template>
+      <template #ac> 
+      
+
+      </template>
     </BaseTable>
 
     <teleport to="#app">
@@ -316,7 +320,6 @@ export default {
     },
 
     async loadSchool() {
-      console.log(localStorage.getItem('token'))
       this.isFetching = true;
       await axiosApi
         .get("api/schools")

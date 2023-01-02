@@ -19,6 +19,7 @@
         <!-- More people... -->
       </tbody>
     </table>
+    <slot name="ac"></slot>
   </div>
 </template>
 

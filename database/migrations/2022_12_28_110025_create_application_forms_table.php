@@ -15,10 +15,7 @@ return new class extends Migration
     {
         Schema::create('application_forms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id')->constrained();
-            $table->string('name');
-            $table->string('type');
-            $table->string('table_to_dispay')->nullable();
+            $table->string('title');     
             $table->timestamps();
         });
     }

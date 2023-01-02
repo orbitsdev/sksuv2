@@ -38,14 +38,13 @@ import SchoolCard from './components/SchoolCard.vue';
 import Path from './components/Path.vue';
 import BaseConfirmation from './components/BaseConfirmation.vue';
 import FieldTypeComponent from './components/FieldTypeComponent.vue';
+import Pagination from './components/Pagination.vue';
 
 
 import axiosApi from "./api/axiosApi";
 import axios from 'axios';
 window.axios = axios;
 window.axiosApi = axiosApi;
-// PAGINATION
-import Pagination from 'v-pagination-3';
 // LOTTIE
 import Vue3Lottie from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'

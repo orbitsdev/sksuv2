@@ -41,84 +41,81 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // GOOGLE SIGNIN
-Route::get('/authorize/{provider}/redirect', [GoogleController::class ,'redirectToProvider']);
-Route::get('/authorize/{provider}/callback', [GoogleController::class ,'handleProviderCallback']);
+Route::get('/authorize/{provider}/redirect', [GoogleController::class, 'redirectToProvider']);
+Route::get('/authorize/{provider}/callback', [GoogleController::class, 'handleProviderCallback']);
 
 // PASSWORD RESET
 Route::post('/request-password-reset', [NewPasswordMailController::class, 'sendEmailForPasswordReset']);
 Route::post('/set-password', [NewPasswordMailController::class, 'setNewPassword']);
-Route::get('/role', function(){ return redirect()->to('/authorize/google/callback?code=anna');
+Route::get('/role', function () {
+    return redirect()->to('/authorize/google/callback?code=anna');
 });
 
 
+// Route::group(['middleware' => ['auth:sanctum']], function () {
+    // FILEPOND
+    Route::post('file/upload', [FilePondController::class, 'uploadToTemporaryStorage']);
+    Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage']);
 
-// FILEPOND
-Route::post('file/upload', [FilePondController::class, 'uploadToTemporaryStorage']);
-Route::delete('file/delete', [FilePondController::class, 'deleteFromLocalStorage']);
+    // FILE CONTROLLER 
+    Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
 
-// FILE CONTROLLER 
-Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
+    // MANAGE SCHOOL
+    Route::post('schools/search', [ManageSchoolController::class, 'search']);
+    Route::post('schools/delete-all', [ManageSchoolController::class, 'deleteAll']);
+    Route::post('schools/delete-selected', [ManageSchoolController::class, 'deleteSelectedSchool']);
+    Route::post('schools/attach-to-user', [ManageSchoolController::class, 'attachSchoolToUser']);
+    Route::apiResource('schools', ManageSchoolController::class);
 
+    // MANAGE SBO ADVISERS
+    Route::post('sbo-advisers/search', [ManageSboAdviserControlller::class, 'search']);
+    Route::post('sbo-advisers/filter', [ManageSboAdviserControlller::class, 'filter']);
+    Route::post('sbo-advisers/make-user-as-adviser', [ManageSboAdviserControlller::class, 'makeUsersAsAdviser']);
+    Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
 
-// MANAGE SCHOOL
-Route::post('schools/search', [ManageSchoolController::class,'search']);
-Route::post('schools/delete-all', [ManageSchoolController::class,'deleteAll']);
-Route::post('schools/delete-selected', [ManageSchoolController::class,'deleteSelectedSchool']);
-Route::post('schools/attach-to-user', [ManageSchoolController::class,'attachSchoolToUser']);
-Route::apiResource('schools', ManageSchoolController::class);
-
-// MANAGE SBO ADVISERS
-Route::post('sbo-advisers/search', [ManageSboAdviserControlller::class,'search']);
-Route::post('sbo-advisers/filter', [ManageSboAdviserControlller::class,'filter']);
-Route::post('sbo-advisers/make-user-as-adviser', [ManageSboAdviserControlller::class,'makeUsersAsAdviser']);
-Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
-
-// SBO ROLE REQUEST
-Route::post('sbo-requests/confirm-selected-request', [SboAdviserRequestController::class, 'confirmSelectedSbo']);
-Route::post('sbo-requests/confirm', [SboAdviserRequestController::class, 'confirm']);
-Route::post('sbo-requests/request-role-as-sbo-adviser', [SboAdviserRequestController::class, 'requestSboAdviserRole']);
-Route::post('sbo-requests/filter', [SboAdviserRequestController::class,'filter']);
-Route::post('sbo-requests/search', [SboAdviserRequestController::class, 'search']);
-Route::get('sbo-requests/get-sbo-request', [SboAdviserRequestController::class, 'getRequest']);
-Route::apiResource('sbo-requests', SboAdviserRequestController::class);
-
-
-//  MANAGE CURRENT SBO ADVISERS
-Route::get('current-sbo-advisers', [CurrentSboAdviserController::class, 'getCurrentSboAdvisers']);
-Route::post('current-sbo-advisers/search', [CurrentSboAdviserController::class, 'search']);
-Route::post('current-sbo-advisers/filter', [CurrentSboAdviserController::class, 'filter']);
-Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-user', [CurrentSboAdviserController::class, 'removeAdviserRoleToUser']);
-Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-the-selected-user', [CurrentSboAdviserController::class, 'removeAdviserRoleToTheSelectedUser']);
+    // SBO ROLE REQUEST
+    Route::post('sbo-requests/confirm-selected-request', [SboAdviserRequestController::class, 'confirmSelectedSbo']);
+    Route::post('sbo-requests/confirm', [SboAdviserRequestController::class, 'confirm']);
+    Route::post('sbo-requests/request-role-as-sbo-adviser', [SboAdviserRequestController::class, 'requestSboAdviserRole']);
+    Route::post('sbo-requests/filter', [SboAdviserRequestController::class, 'filter']);
+    Route::post('sbo-requests/search', [SboAdviserRequestController::class, 'search']);
+    Route::get('sbo-requests/get-sbo-request', [SboAdviserRequestController::class, 'getRequest']);
+    Route::apiResource('sbo-requests', SboAdviserRequestController::class);
 
 
-// MANAGE ROLES
-Route::get('manage-users-roles/get-users',[ManageUserRoleController::class, 'getUsers']);
-// Route::post('manage-users-roles/change-role-of-user',[ManageUserRoleController::class, 'changeUserRole']);
-Route::post('manage-users-roles/change-role-selected-user',[ManageUserRoleController::class, 'changeSelectedUsersRoles']);
-Route::post('manage-users-roles/filter',[ManageUserRoleController::class, 'filter']);
-Route::post('manage-users-roles/search',[ManageUserRoleController::class, 'search']);
-Route::apiResource('roles', ManageUserRoleController::class);
-
-// MANAGE DEPARTMENT/ORGANIZATION
-Route::get('manage-department', [DepartmentController::class, 'getDepartment']);
-Route::post('manage-department-search', [DepartmentController::class, 'search']);
-Route::post('manage-department-create', [DepartmentController::class, 'createDepartment']);
-Route::post('manage-department-update', [DepartmentController::class, 'updateDepartment']);
-Route::post('manage-department-delete-selected', [DepartmentController::class, 'deleteSelectedDepartment']);
-Route::post('manage-department-delete-all', [DepartmentController::class, 'deleteAllDepartment']);
-// ALIBABA
-Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
-// PUBLIC
+    //  MANAGE CURRENT SBO ADVISERS
+    Route::get('current-sbo-advisers', [CurrentSboAdviserController::class, 'getCurrentSboAdvisers']);
+    Route::post('current-sbo-advisers/search', [CurrentSboAdviserController::class, 'search']);
+    Route::post('current-sbo-advisers/filter', [CurrentSboAdviserController::class, 'filter']);
+    Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-user', [CurrentSboAdviserController::class, 'removeAdviserRoleToUser']);
+    Route::post('current-sbo-advisers/remove-sbo-adviser-role-to-the-selected-user', [CurrentSboAdviserController::class, 'removeAdviserRoleToTheSelectedUser']);
 
 
-// ALIBABA
-Route::get('/oss/token', [CloudStorageController::class ,'getAccessToken']);
+    // MANAGE ROLES
+    Route::get('manage-users-roles/get-users', [ManageUserRoleController::class, 'getUsers']);
+    // Route::post('manage-users-roles/change-role-of-user',[ManageUserRoleController::class, 'changeUserRole']);
+    Route::post('manage-users-roles/change-role-selected-user', [ManageUserRoleController::class, 'changeSelectedUsersRoles']);
+    Route::post('manage-users-roles/filter', [ManageUserRoleController::class, 'filter']);
+    Route::post('manage-users-roles/search', [ManageUserRoleController::class, 'search']);
+    Route::apiResource('roles', ManageUserRoleController::class);
+
+    // MANAGE DEPARTMENT/ORGANIZATION
+    Route::get('manage-department', [DepartmentController::class, 'getDepartment']);
+    Route::post('manage-department-search', [DepartmentController::class, 'search']);
+    Route::post('manage-department-create', [DepartmentController::class, 'createDepartment']);
+    Route::post('manage-department-update', [DepartmentController::class, 'updateDepartment']);
+    Route::post('manage-department-delete-selected', [DepartmentController::class, 'deleteSelectedDepartment']);
+    Route::post('manage-department-delete-all', [DepartmentController::class, 'deleteAllDepartment']);
+    // ALIBABA
+    Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
+    // PUBLIC
 
 
-// GOOGLE DRIVE
-Route::post('google-drive-upload', [GoogleDriveStorageController::class, 'fileUpload']);
-Route::post('google-drive-get-files', [GoogleDriveStorageController::class, 'getFiles']);
+    // ALIBABA
+    Route::get('/oss/token', [CloudStorageController::class, 'getAccessToken']);
 
 
-
-
+    // GOOGLE DRIVE
+    Route::post('google-drive-upload', [GoogleDriveStorageController::class, 'fileUpload']);
+    Route::post('google-drive-get-files', [GoogleDriveStorageController::class, 'getFiles']);
+// });
