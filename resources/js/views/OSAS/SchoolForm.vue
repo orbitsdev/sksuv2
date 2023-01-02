@@ -7,16 +7,17 @@
         :hasError="validationError.name"
       />
     </div>
-    <div class="pt-1 max-h-80 overflow-y-auto ">
-      <label for="cover-photo" class="block text-base font-medium text-gray-700"
-        >Your Files
+
+    <div class="mt-2 pt-1 max-h-80 overflow-y-auto ">
+      <label for="cover-photo" class="block text-sm font-medium text-gray-700 "
+        >Available Organizations
       </label>
     <div   class="grid grid-cols-2 gap-1 ">
       
       <div v-for="organization in organizations" :key="organization.id" >
-        <div class="flex items-center   p-1 rounded-sm">
-          <input type="checkbox" :value="organization.id" class="w-4 h-4 accent-green-600  text-white mr-1 border-blue-700 border-2 cursor-pointer" :id="organization.id" v-model="selectedOrganizations">
-          <label :for="organization.id" class="mr-1 capitalize"> {{ organization.name }} </label>
+        <div class="flex items-center  p-1 rounded-sm">
+          <input type="checkbox" :value="organization.id" class="w-4 h-4 accent-green-600  text-white  mr-1 border-blue-700 border-2 cursor-pointer" :id="organization.id" v-model="selectedOrganizations">
+          <label :for="organization.id" class="mr-1 capitalize text-xs"> {{ organization.name }}  </label>
         </div>
       </div>
     </div>
@@ -26,7 +27,7 @@
     <w-divider class="my-2"></w-divider>
 
     <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
-      <label for="cover-photo" class="block text-base font-medium text-gray-700"
+      <label for="cover-photo" class="block text-sm font-medium text-gray-700"
         >Featured Image
       </label>
       <div class="py-2 flex flex-wrap">
@@ -43,7 +44,7 @@
     </div>
 
     <div class="pt-2"   v-if="noExisintData">
-      <label for="cover-photo" class="block    text-base text-gray-700" >Features Image</label
+      <label for="cover-photo" class="block    text-sm text-gray-700" >Features Image</label
       >
       <FilePondBase
         :label="'Drag & Drop your image here or <u> Browse </u>'"

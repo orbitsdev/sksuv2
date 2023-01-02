@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApplicationFormController;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -106,14 +107,12 @@ Route::get('/role', function () {
     Route::post('manage-department-update', [DepartmentController::class, 'updateDepartment']);
     Route::post('manage-department-delete-selected', [DepartmentController::class, 'deleteSelectedDepartment']);
     Route::post('manage-department-delete-all', [DepartmentController::class, 'deleteAllDepartment']);
+
+    // MANAGE APPLICATION FORM
+    Route::post('manage-applications/create', [ApplicationFormController::class, 'createApplicationForm']);
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
-    // PUBLIC
-
-
-    // ALIBABA
     Route::get('/oss/token', [CloudStorageController::class, 'getAccessToken']);
-
 
     // GOOGLE DRIVE
     Route::post('google-drive-upload', [GoogleDriveStorageController::class, 'fileUpload']);

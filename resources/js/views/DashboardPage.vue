@@ -258,7 +258,7 @@
               
               </a> -->
 
-              <div v-if="User.is('osas')">
+              <div v-if="User.hasRoleOf(['osas'])">
                 <router-link
                   :to="{ name: 'manage-school' }"
                   href="#"

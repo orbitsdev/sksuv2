@@ -54,12 +54,13 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'800'" :preventClose="true">
         <template #c-content>
-          {{ formfields }}
           <label class="text-sm">Form title </label>
-
+          
+          
           <BaseInput 
           v-model="formtitle"
           />
+          <p class="text-xs text-red-500 mt-1" v-if="(validationError != null && validationError.title)" > {{validationError.title[0]  }}</p>
           <div class="mt-2 ">
             <div class="">
               <Button class="border rounded px-2 p-1 hover:shadow-lg" @click="handleAddFields">
@@ -82,6 +83,7 @@
                 <label class="text-sm"> Field name </label>
                 <input v-model="formfields[parentindex].fieldname" type="text" class="w-full p-1 border ">
                 <!-- <BaseInput /> -->
+                <p class="text-xs text-red-500 mt-1" v-if="(validationError != null && validationError['fields.'+parentindex+'.name'])" > {{ validationError['fields.'+parentindex+'.name'][0]}} </p>
               </div>
               <div class="mt-2 flex justify-between">
                 <div>
@@ -125,37 +127,75 @@
         </div>
           </div>
           <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" > Close </TableButton>
+            <TableButton mode class="mr-2" @click="closeTheForm" > Close </TableButton>
            <div class="my-1 mx-2" v-if="isSaving">
-             <BaseSpinner />
+             <BaseSpinner  />
            </div>
-            <div >
+            <div v-else>
               <TableButton @click="createApplicationForm" >  Save </TableButton>
             </div>
           </div>
         </template>
       </BaseDialog>
     </teleport>
+
+
+    <teleport to="#app">
+      <BaseErrorDialog
+        :show="requestError != null"
+        :width="'400'"
+        :transition="'slide-fade-down'"
+      >
+        <template #c-content>
+          <RequestError
+            :statusCode="requestError.statusCode"
+            @close="requestError = null"
+            :message="requestError.message"
+          />
+        </template>
+        <template #c-actions> </template>
+      </BaseErrorDialog>
+    </teleport>
   </BaseCard>
 </template>
 
 <script>
+import axiosApi from '../../api/axiosApi';
 export default {
   data() {
     return {
       formtitle:'',
       showForm: true,
-      formfields: [
-      
-      ],
+      validationError: null,
+      requestError: null,
+      isSaving:false,
+      formfields: [],
     };
   },
 
   methods: {
-    createApplicationForm(){
 
+
+    showTheForm(){
+        this.showForm = true;
+      },
+      
+      closeTheForm(){
+        
+        this.showForm = false;
+        // this.formfields = [];
+        // this.formtitle = '';
+    },
+
+    clearForm(){
+      this.validationError = null;
+      
+    },
+   async createApplicationForm(){
+    this.isSaving = true;
       let newfields = [];
       let selected_collection_for_select = null;
+
       this.formfields.forEach(element => {
         
           if(element.selectedtype == 'select'){
@@ -171,11 +211,30 @@ export default {
       });
 
       const new_application = {
-        name: this.formtitle,
+        title: this.formtitle,
         fields: newfields 
       }
 
 
+     await axiosApi.post('api/manage-applications/create', new_application ).then(res=>{
+          console.log(res.data);
+          this.validationError = null;
+          this.showForm = false;
+          this.formtitle = '';
+          this.formfields = [];
+      }).catch(err=>{
+        console.log(err);
+        if (err.response.status === 422) {
+            // let  errors = err.response.data.errors;
+            // let errors_to_array = Object.entries(errors);
+            // this.validationError = errors_to_array;
+           this.validationError = err.response.data.errors;
+          } else {
+            this.requestError = err;
+          }
+      }).finally(()=>{
+        this.isSaving = false;
+      });
 
      
     },
@@ -191,6 +250,7 @@ export default {
         fieldname:'',
         selectedtype:'text',
         selecteddata: null,
+      
         fieldtypeOption: [
         
             { id: 1, name: "Text", value: "text", selected: true },
@@ -218,6 +278,8 @@ export default {
       item.selected = true;
 
       this.formfields[parentindex].selectedtype = item.value;
+
+     
         
       
     },

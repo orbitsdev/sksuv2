@@ -1,8 +1,5 @@
 
 
-
-
-
 import { createApp } from "vue";
 import './bootstrap';
 let app = createApp({});

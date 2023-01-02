@@ -30,6 +30,10 @@ export default {
             hasRoles(roles) {
                 return array_has_roles(state.User.user_roles, roles);
             },
+            hasRoleOf(roles = []){
+                // return roles.some((role)=> state.User.user_roles.includes(role));
+                return state.User.user_roles.some((role)=> roles.includes(role));
+            }
         };
     },
 

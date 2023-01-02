@@ -44,13 +44,13 @@
                 </div>
               </div>
              
-            <a
-              href="/"
+            <router-link
+              :to="'/'"
               class="text-base font-medium text-indigo-600 hover:text-indigo-500"
             >
               Go back home
               <span aria-hidden="true"> &rarr;</span>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>

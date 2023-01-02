@@ -1,9 +1,10 @@
 <template>
   <BaseCard :subtitle="'Mange Users Roles'">
     <template #header>
+      
       <BaseTableSetup >
         <template #searchs-area>
-          <TableButton v-if="selectedUsers.length" class="mr-2" @click="showRolesForm = true">
+          <TableButton v-if="selectedUsers.length" class="mr-2" @click="handleShowRolesForm">
             Update 
           </TableButton>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
@@ -93,8 +94,10 @@
 
     
     <teleport to="#app">
+    
       <BaseDialog :show="showRolesForm" :width="'500'" :preventClose="true" >
         <template #c-content>          
+        
           <p class="text-base font-bold">Choose Roles  </p>
           <w-divider class="my6"></w-divider>
           <div v-if="isRoleFetching" class="flex justify-center my-4">
@@ -213,6 +216,25 @@ export default {
   },
 
   methods: {
+    handleShowRolesForm(){
+      this.showRolesForm = true;
+      if(this.selectedUsers.length > 0){
+  
+        const initial_roles  = [];
+       this.selectedUsers.forEach(element => {
+          element.roles.forEach((role) => {
+              if(!initial_roles.includes(role.id)){
+                  initial_roles.push(role.id);
+              }
+          });
+       });
+
+      this.selectedRoles = initial_roles;
+        // // console.log(initial_roles);
+      }
+
+     
+    },
     showToast({ title = "Succesfully Saved" }) {
       this.$swal({
         position: "top-end",
