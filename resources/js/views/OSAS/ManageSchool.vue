@@ -55,7 +55,7 @@
           </td>
           <td class="whitespace-nowrap py-4 text-sm">
             <div class="flex items-center">
-              <div class="pl-1">
+              <div class="pl-1 ">
                 <div class="font-medium capitalize text-sm pr-2 text-gray-900">
                   {{ school.name }}
                 </div>
@@ -65,13 +65,13 @@
           <td class="py-2 text-sm text-gray-500">
             <div class="text-gray-500 capitalize " v-if="school.departments.length > 0">
               <span
-                class="inline-flex  bg-green-100 px-2 mr-0.5 text-xs font-semibold leading-5 text-green-800"  v-for="department in school.departments" :key="department.id"
+                class="inline-flex mb-1  bg-green-100 px-2 mr-0.5 text-xs font-semibold leading-5 text-green-800"  v-for="department in school.departments" :key="department.id"
                 >{{ department.name }}</span
               >
             </div>
             <div v-else>
               <span
-                class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
+                class="inline-flex rounded-full bg-green-100  px-2 text-xs font-semibold leading-5 text-green-800"
                 >None</span
               >
             </div>

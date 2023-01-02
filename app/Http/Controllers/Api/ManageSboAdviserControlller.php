@@ -17,62 +17,73 @@ class ManageSboAdviserControlller extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
-    public function makeUsersAsAdviser(Request $request){
+
+    public function makeUsersAsAdviser(Request $request)
+    {
         $sboadviserrole =  Role::where('name', 'sbo-adviser')->pluck('id')->first();
-        
+
         $users  = User::whereIn('id', $request->input('usersid'))->get();
-        if(count($users) > 0){
-            foreach($users as $user){
+        if (count($users) > 0) {
+            foreach ($users as $user) {
                 $user->roles()->sync([$sboadviserrole]);
             }
-
-            
         }
-        
+
         return new SboAdviserResource([$users]);
-         
     }
-     
-     public function search(Request $request)
-     {
-            // return response()->json($request->input('search'));  
-                  
-        $users =  User::when($request->input('filter') != 'none', function($query) use ($request){
-            $query->where('name', $request->input('filter'));
-        })->whereHas('roles',function($query){
 
-            $query->where('name' , '!=', 'sbo-adviser');
+    public function search(Request $request)
+    {
 
-        })->whereHas('schools')->where(function($query) use ($request){
-            $query->where('email', 'like','%'.$request->input('search').'%')->orWhere('first_name', 'like','%'.$request->input('search').'%')->orWhere('last_name', 'like','%'.$request->input('search').'%'); })->with('schools')->get();
+
+        $users = User::when($request->input('filter') != 'none', function ($query) use ($request) {
+            $query->whereHas('schools', function ($query) use ($request) {
+                $query->where('name', $request->input('filter'));
+            });
+        })->whereHas('roles', function ($query) {
+            $query->where([
+                ['name', '!=',  'sbo-adviser'],
+                ['name', '!=',  'osas'],
+            ]);
+        })->where(function ($query) use ($request) {
+            $query->where('email', 'like', '%' . $request->input('search') . '%')->orWhere('first_name', 'like', '%' . $request->input('search') . '%')->orWhere('last_name', 'like', '%' . $request->input('search') . '%');
+        })->with('schools')->get();
+
         return new SboAdviserResource($users);
-   
-     }
-     
-     public function filter(Request $request){
+    }
 
-        if($request->input('filter') == 'none'){
+    public function filter(Request $request)
+    {
+
+        if ($request->input('filter') == 'none') {
             return $this->index();
-        }else{
-            $users = User::whereHas('roles', function($query){
-                $query->where('name', '!=' ,'sbo-adviser');
-            })->whereHas('schools', function($query) use ($request) {
+        } else {
+            $users = User::whereHas('roles', function ($query) {
+                $query->where([
+                    ['name', '!=', 'sbo-adviser'],
+                    ['name', '!=', 'osas'],
+                ]);
+            })->when($request->input('filter'), function ($query) use ($request) {
+                $query->whereHas('schools', function ($query) use ($request) {
                     $query->where('name', $request->input('filter'));
+                });
             })->with('schools')->get();
-            
-        return new SboAdviserResource($users);
+
+            return new SboAdviserResource($users);
         }
- 
-       
-        
-     }
-    
+    }
+
     public function index()
-    {    
-    $sboadvisers = User::whereHas('roles', function($query){
-       $query->where('name', '!=',  'sbo-adviser'); 
-    })->whereHas('schools')->with('schools', 'roles')->get();
+    {
+        $sboadvisers = User::whereHas('roles', function ($query) {
+            $query->where(
+                [
+                    ['name', '!=',  'sbo-adviser'],
+                    ['name', '!=',  'osas'],
+                ]
+
+            );
+        })->with('schools', 'roles')->get();
         // $sboadvisers = User::whereHas('schools')->with('schools')->paginate(10);
 
         return new SboAdviserResource($sboadvisers);

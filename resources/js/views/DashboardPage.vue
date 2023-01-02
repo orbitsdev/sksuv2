@@ -226,6 +226,7 @@
       <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5">
+          
           <div class="flex flex-shrink-0 items-center px-4">
             <img
               class="h-8 w-auto"
@@ -462,6 +463,7 @@
               <!-- Profile dropdown -->
               <div class="relative ml-3">
                 <div>
+                  
                   <button
                     @click="showLogoutButton = !showLogoutButton"
                     type="button"
@@ -470,7 +472,9 @@
                     aria-expanded="false"
                     aria-haspopup="true"
                   >
+                  <span class="mr-3 capitalize"> {{User.first_name}} {{ User.last_name }}</span>
                     <span class="sr-only">Open user menu</span>
+                  
                     <img
                       class="h-8 w-8 rounded-full"
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
