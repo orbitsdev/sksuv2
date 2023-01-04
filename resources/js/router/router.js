@@ -85,6 +85,13 @@ const routes = [
                 children: [],
             },
             {
+                name: "manage-requirement",
+                path: "/dashboard/osas/manage-requirement",
+                component: () => import("../views/OSAS/ManageRequirement.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
+                children: [],
+            },
+            {
                 name: "manage-sbo-adviser",
                 path: "/dashboard/osas/manage-sbo-adviser",
                 // redirect: '/dashboard/osas/manage-school/user',

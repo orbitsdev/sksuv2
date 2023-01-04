@@ -1,7 +1,6 @@
 <template>
   <BaseCard class="relative" :subtitle="'Manage Schools'">
     <template #header>
-      {{schools}}
 
       <BaseTableSetup>
   

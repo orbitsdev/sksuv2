@@ -23,9 +23,12 @@ class ManageSboAdviserControlller extends Controller
         $sboadviserrole =  Role::where('name', 'sbo-adviser')->pluck('id')->first();
 
         $users  = User::whereIn('id', $request->input('usersid'))->get();
+        
         if (count($users) > 0) {
             foreach ($users as $user) {
-                $user->roles()->sync([$sboadviserrole]);
+                if(!$user->roles->contains($sboadviserrole)){
+                    $user->roles()->attach($sboadviserrole);
+                }
             }
         }
 
@@ -75,18 +78,13 @@ class ManageSboAdviserControlller extends Controller
 
     public function index()
     {
-        $sboadvisers = User::whereHas('roles', function ($query) {
-            $query->where(
-                [
-                    ['name', '!=',  'sbo-adviser'],
-                    ['name', '!=',  'osas'],
-                ]
 
-            );
-        })->with('schools', 'roles')->get();
-        // $sboadvisers = User::whereHas('schools')->with('schools')->paginate(10);
+        $users = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'sbo-adviser');
+        })->with('schools', 'roles')->paginate(10);
 
-        return new SboAdviserResource($sboadvisers);
+
+        return new SboAdviserResource($users);
     }
 
     /**

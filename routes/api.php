@@ -18,6 +18,7 @@ use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
 use App\Http\Controllers\Api\ManageSboAdviserControlller;
 use App\Http\Controllers\Api\ManageUserRoleController;
+use App\Http\Controllers\Api\RequirementController;
 use App\Http\Controllers\Api\SboAdviserRequestController;
 
 /*
@@ -94,7 +95,6 @@ Route::get('/role', function () {
 
     // MANAGE ROLES
     Route::get('manage-users-roles/get-users', [ManageUserRoleController::class, 'getUsers']);
-    // Route::post('manage-users-roles/change-role-of-user',[ManageUserRoleController::class, 'changeUserRole']);
     Route::post('manage-users-roles/change-role-selected-user', [ManageUserRoleController::class, 'changeSelectedUsersRoles']);
     Route::post('manage-users-roles/filter', [ManageUserRoleController::class, 'filter']);
     Route::post('manage-users-roles/search', [ManageUserRoleController::class, 'search']);
@@ -109,7 +109,20 @@ Route::get('/role', function () {
     Route::post('manage-department-delete-all', [DepartmentController::class, 'deleteAllDepartment']);
 
     // MANAGE APPLICATION FORM
+    Route::get('manage-applications', [ApplicationFormController::class, 'getApplicationForms']);
     Route::post('manage-applications/create', [ApplicationFormController::class, 'createApplicationForm']);
+    Route::post('manage-applications/update', [ApplicationFormController::class, 'updateApplicationForm']);
+    Route::post('manage-applications/make-application-public', [ApplicationFormController::class, 'makeApplicationPublic']);
+    Route::post('manage-applications/delete-selected', [ApplicationFormController::class, 'deleteSelectedApplicationForm']);
+
+    // APPLICATION REQUIREMENT
+
+    Route::get('manage-requirement', [RequirementController::class, 'getRequirement']);
+    Route::post('manage-requirement/create', [RequirementController::class, 'createRequirement']);
+    Route::post('manage-requirement/update', [RequirementController::class, 'updateRequirement']);
+    Route::post('manage-requirement/search', [RequirementController::class, 'search']);
+    Route::post('manage-requirement/delete-selected', [RequirementController::class, 'deleteSelectedRequirement']);
+
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
     Route::get('/oss/token', [CloudStorageController::class, 'getAccessToken']);

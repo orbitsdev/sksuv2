@@ -47,7 +47,7 @@
     </template>
 
     <BaseTable
-      :thdata="['', 'Sbo Adviser Name', 'University', '']"
+      :thdata="['', 'Sbo Adviser Name', 'Roles', 'University', '']"
       :isFetching="isFetching"
     >
       <template #data>
@@ -75,6 +75,17 @@
                 </div>
                 <div class="text-gray-900">{{ sboadviser.email }}</div>
               </div>
+            </div>
+          </td>
+
+          <td class="py-2 text-sm text-gray-500">
+            <div v-if="sboadviser.roles.length > 0" class="inline-flex">
+              <p v-for="role in sboadviser.roles" :key="role.id" >
+                <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 m-0.5">{{ role.name }}</span>
+              </p>
+            </div>
+            <div v-else>
+              <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">None</span>
             </div>
           </td>
 

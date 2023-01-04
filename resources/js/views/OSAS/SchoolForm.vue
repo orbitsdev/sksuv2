@@ -1,17 +1,20 @@
 <template>
   <div>
     <div class="">
+      <p class="text-base font-bold">School Name</p>
       <BaseInput
-        :label="'School Name'"
         v-model="form.name"
         :hasError="validationError.name"
       />
     </div>
 
     <div class="mt-2 pt-1 max-h-80 overflow-y-auto ">
-      <label for="cover-photo" class="block text-sm font-medium text-gray-700 "
-        >Available Organizations
-      </label>
+          <div>
+            <div class="mt-1">
+              <p class="text-base font-bold">Available Organizations </p>
+            </div>
+            <p class="bggray2 rounde text-xs font-light italic mt-1 p-1" v-for="user in selectedUsers " :key="user.id" > <span class="">{{user.first_name.toUpperCase()}}  {{user.last_name.toUpperCase()}}</span>   </p>
+          </div> 
     <div   class="grid grid-cols-2 gap-1 ">
       
       <div v-for="organization in organizations" :key="organization.id" >
@@ -27,9 +30,7 @@
     <w-divider class="my-2"></w-divider>
 
     <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
-      <label for="cover-photo" class="block text-sm font-medium text-gray-700"
-        >Featured Image
-      </label>
+      <p class="text-base font-bold">Attachment Type</p>
       <div class="py-2 flex flex-wrap">
         <FileChip
           @click="removeExistingFile(file.id)"
@@ -43,9 +44,8 @@
       <w-divider   v-if="noExisintData" class="my-2"></w-divider>
     </div>
 
-    <div class="pt-2"   v-if="noExisintData">
-      <label for="cover-photo" class="block    text-sm text-gray-700" >Features Image</label
-      >
+    <div class="" v-if="noExisintData">
+      <p class="text-base font-bold">Featured Image</p>
       <FilePondBase
         :label="'Drag & Drop your image here or <u> Browse </u>'"
         :multiple="allowmultiple"

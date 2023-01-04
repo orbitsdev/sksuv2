@@ -2,12 +2,11 @@
 
 <template>
     <div>
-        <h1 class="text-md font-bold">{{ title }} <span class="text-green-700">
-          {{ subject }}
-        </span></h1>
+        <p class="text-base font-bold">{{ title }} <span class="text-green-700">
+        </span></p>
 
         <div  class="bg-gray-100 text-xs italic p-1 my-1 rounded-sm" v-for="user in selectedData" :key="user.id">
-          {{ user.first_name }} {{ user.last_name  }} -  <span v-if="user.schools != null && user.schools.length > 0    "> {{user.schools[0].name }}</span> <span v-else> Unknown  </span>
+          {{ user.first_name }} {{ user.last_name  }} -  <span v-if="user.schools != null && user.schools.length > 0    "> {{user.schools[0].name }}</span> <span v-else> Unknown School  </span>
         </div>
 
         <slot name="data">

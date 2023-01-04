@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('application_forms', function (Blueprint $table) {
+        Schema::create('requirements', function (Blueprint $table) {
             $table->id();
-            $table->string('title');     
-            $table->string('status')->nullable()->default('private');     
+            $table->string('name');
+            $table->string('file_type');
+            $table->string('upload_type');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('application_forms');
+        Schema::dropIfExists('requirements');
     }
 };
