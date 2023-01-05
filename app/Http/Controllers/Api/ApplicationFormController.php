@@ -13,6 +13,18 @@ use App\Http\Resources\ApplicationFormResource;
 class ApplicationFormController extends Controller
 {
 
+    public function getSingleApplication($id){
+
+        $application = ApplicationForm::where('id', $id)->with(['fields'=> function($query){
+            $query->orderBy('index', 'asc');
+        }], 'requirements')->first();
+
+        return new ApplicationFormResource($application);
+
+
+    
+    }
+
     public function makeApplicationPublic(Request $request)
     {
         $application_form = ApplicationForm::where('id', $request->input('id'))->first();
@@ -56,7 +68,8 @@ class ApplicationFormController extends Controller
             $request->validate(
                 [
                     'title' => 'required',
-                    'fields.*.name' => 'required'
+                    'fields.*.name' => 'required',
+                    'fields.*.index' => 'required',
                 ],
                 [
                     'name.required' => 'Title is required',
@@ -99,11 +112,13 @@ class ApplicationFormController extends Controller
             $request->validate(
                 [
                     'title' => 'required',
-                    'fields.*.name' => 'required'
+                    'fields.*.name' => 'required',
+                    'fields.*.index' => 'required',
                 ],
                 [
                     'name.required' => 'Title is required',
                     'fields.*.name' => 'Name is required '
+
                 ]
             );
 

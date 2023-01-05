@@ -12,6 +12,8 @@ class ApplicationForm extends Model
     use HasFactory;
     protected $guarded = [];
 
+
+    
     public function fields()
     {
         return $this->hasMany(Field::class);

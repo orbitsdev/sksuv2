@@ -37,6 +37,8 @@ import BaseConfirmation from './components/BaseConfirmation.vue';
 import FieldTypeComponent from './components/FieldTypeComponent.vue';
 import Pagination from './components/Pagination.vue';
 
+// VUETIFY
+
 
 import axiosApi from "./api/axiosApi";
 import axios from 'axios';

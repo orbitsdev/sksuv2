@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('application_form_id')->constrained();
             $table->string('name');
             $table->string('type');
+            $table->integer('index')->nullable();     
             $table->string('collection_for_select')->nullable();
             $table->timestamps();
         });

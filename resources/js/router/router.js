@@ -63,6 +63,20 @@ const routes = [
         path: "/401",
         component: () => import("../views/NoAuthorizePage.vue"),
     },
+    {
+        name: "applicationform",
+        path: "/applicationform",
+        component: () => import("../views/FormPage.vue"),
+    },
+
+
+    {
+        name: "view-application",
+        path: "/dashboard/osas/manage-application/view/:id",
+        component: () => import("../views/FormPage.vue"),
+        props:true,
+        meta: { requireAuth: true, allowedRoles: ["osas"] },
+    },
 
     {
         name: "dashboard",
@@ -127,12 +141,14 @@ const routes = [
                 component: () => import("../views/OSAS/ManageApplication.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
             },
+           
             {
                 name: "manage-roles",
                 path: "/dashboard/osas/manage-roles",
                 component: () => import("../views/OSAS/ManageRole.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
             },
+           
 
             // SEND  SBO ADVISER ROLE REQUES
             {

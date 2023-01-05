@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\CurrentSboAdviserController;
 use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\DynamicFetchingController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
@@ -110,10 +111,15 @@ Route::get('/role', function () {
 
     // MANAGE APPLICATION FORM
     Route::get('manage-applications', [ApplicationFormController::class, 'getApplicationForms']);
+    Route::get('manage-applications/{id}', [ApplicationFormController::class, 'getSingleApplication']);
     Route::post('manage-applications/create', [ApplicationFormController::class, 'createApplicationForm']);
     Route::post('manage-applications/update', [ApplicationFormController::class, 'updateApplicationForm']);
     Route::post('manage-applications/make-application-public', [ApplicationFormController::class, 'makeApplicationPublic']);
     Route::post('manage-applications/delete-selected', [ApplicationFormController::class, 'deleteSelectedApplicationForm']);
+
+
+    //Forms
+    Route::get('application-fields-for-select/fetch', [DynamicFetchingController::class, 'datatoFetch']);
 
     // APPLICATION REQUIREMENT
 

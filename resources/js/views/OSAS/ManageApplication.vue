@@ -67,12 +67,14 @@
             </td>
             <td class="whitespace-nowrap py-4 text-sm pl-2">
               <div v-if="item.requirements.length > 0">
-                <div class="grid grid-cols-3 gap-1">
+                <div class="grid grid-cols-2 ">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
                     <p
                       class="inline-flex bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 m-0.5"
                     >
+                    
                       {{ requirement.name }}
+
                     </p>
                   </div>
                 </div>
@@ -94,6 +96,9 @@
             <td
               class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
             >
+            
+            
+          
               <button
               :disabled="selectedApplicationForms.length > 0"
                 @click="makeApplicationPublic(item)"
@@ -103,6 +108,12 @@
                 Make {{ item.status == "private" ? "Public" : "Private" }}
               </button>
 
+            <router-link
+              :to="'/dashboard/osas/manage-application/view/'+ item.id "
+              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+            >
+              View
+            </router-link>
               <button
               :disabled="selectedApplicationForms.length > 0"
                 @click="showTheFormToUpdate(item)"
@@ -334,6 +345,7 @@ export default {
         item.fields.forEach((element) => {
           let field = {
             name: element.name,
+            index: element.index,
             type: element.type,
             collection_for_select: element.collection_for_select,
           };
@@ -368,6 +380,7 @@ export default {
           const createdField = {
             id: id,
             fieldname: field.name,
+            index: field.index,
             selectedtype: field.type,
             selecteddata: field.collection_for_select,
             fieldtypeOption: defaulttypeoption,
@@ -375,8 +388,10 @@ export default {
           };
 
           this.formfields.push(createdField);
+          this.formfields.sort((a, b) => a.index - b.index);
+          
         });
-      }
+      } 
       // check existing requirements
       if(item.requirements.length > 0){
         item.requirements.forEach(element => {
@@ -393,20 +408,22 @@ export default {
           selected_collection_for_select = element.selecteddata;
         }
 
-        newfields.push({
-          name: element.fieldname,
-          type: element.selectedtype,
-          collection_for_select: selected_collection_for_select,
-        });
+        // newfields.push({
+        //   name: element.fieldname,
+        //   index: element.index,
+        //   type: element.selectedtype,
+        //   collection_for_select: selected_collection_for_select,
+        // });
 
       });
 
-      const new_application = {
-        id:item.id,
-        title: this.formtitle,
-        fields: newfields,
-        requirements: this.selectedRequirements,
-      };
+   
+      // const new_application = {
+      //   id:item.id,
+      //   title: this.formtitle,
+      //   fields: newfields,
+      //   requirements: this.selectedRequirements,
+      // };
 
       this.selectedApplicationFormToUpdate = item.id;
 
@@ -430,6 +447,7 @@ export default {
 
         newfields.push({
           name: element.fieldname,
+          index:element.index,
           type: element.selectedtype,
           collection_for_select: selected_collection_for_select,
         });
@@ -601,19 +619,20 @@ export default {
       this.isSaving = true;
       let newfields = [];
       let selected_collection_for_select = null;
-
-      this.formfields.forEach((element) => {
+        
+      this.formfields.forEach((element, index) => {
         if (element.selectedtype == "select") {
           selected_collection_for_select = element.selecteddata;
         }
-
         newfields.push({
           name: element.fieldname,
+          index: index,
           type: element.selectedtype,
           collection_for_select: selected_collection_for_select,
         });
 
       });
+
 
       const new_application = {
         title: this.formtitle,
@@ -654,6 +673,7 @@ export default {
       const newfields = {
         id: id,
         fieldname: "",
+        index: id,
         selectedtype: "text",
         selecteddata: null,
 
