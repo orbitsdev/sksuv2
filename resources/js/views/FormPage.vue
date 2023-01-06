@@ -134,7 +134,7 @@
     </div>
     <div class="bg-white rounded mt-10 mb-5 p-4 shadow">
       <router-link
-        :to="'/dashboard/osas/manage-application'"
+        :to="{ name: 'manage-application' }"
         class="text-blue-600 font-bold"
       >
         GO BACK TO MANAGE APPLICATION
@@ -174,9 +174,9 @@ export default {
 
   created() {
     this.loadApplication();
+
   },
 
-  watch() {},
 
   methods: {
     loadDataforSelect() {},
@@ -246,4 +246,4 @@ export default {
 </script>
 
 <style scoped></style>
-gi
+

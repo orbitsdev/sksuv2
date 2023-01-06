@@ -6,7 +6,7 @@
           <TableButton class="mr-2" @click="showTheForm">
             <i class="fa-solid fa-plus mr-1"></i> Create Application Form
           </TableButton>
-          <BaseSearchInput :placeholder="'Search application ...'" v-model="search" />
+          <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
         </template>
         <template #filters-area></template>
         <template #actions-area>
@@ -65,16 +65,14 @@
                 >
               </div>
             </td>
-            <td class="whitespace-nowrap py-4 text-sm pl-2 ">
+            <td class="whitespace-nowrap py-4 text-sm pl-2">
               <div v-if="item.requirements.length > 0">
                 <div class="grid grid-cols-1 gap-1 break-words">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
                     <p
                       class="inline-flex rounded-full whitespace-normal bg-green-100 px-2 text-xs break-words font-semibold leading-5 text-green-800 m-0.5"
                     >
-                    
                       {{ requirement.name }}
-
                     </p>
                   </div>
                 </div>
@@ -96,11 +94,8 @@
             <td
               class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
             >
-            
-            
-          
               <button
-              :disabled="selectedApplicationForms.length > 0"
+                :disabled="selectedApplicationForms.length > 0"
                 @click="makeApplicationPublic(item)"
                 type="button"
                 class="inline-flex z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
@@ -108,21 +103,20 @@
                 Make {{ item.status == "private" ? "Public" : "Private" }}
               </button>
 
-            <router-link
-              :to="'/dashboard/osas/manage-application/view/'+ item.id "
-              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-            >
-              View
-            </router-link>
               <button
-              :disabled="selectedApplicationForms.length > 0"
+                @click="showSampleForm(item.id)"
+                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+              >
+                View Form
+              </button>
+              <button
+                :disabled="selectedApplicationForms.length > 0"
                 @click="showTheFormToUpdate(item)"
                 type="button"
                 class="inline-flex z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
                 <i class="fa-regular fa-pen-to-square"></i>
               </button>
-            
             </td>
           </tr>
         </template>
@@ -131,12 +125,7 @@
 
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'800'" :preventClose="true">
-        <template #c-content>
-        {{ selectedRequirements }}
-          <!-- <div v-for="f in formfields" :key="f.id">
-            {{ f }}
-            <hr />
-          </div> -->
+        <template #c-content>         
           <p class="text-base font-bold">Application Title</p>
           <BaseInput v-model="formtitle" />
           <p
@@ -146,8 +135,6 @@
             {{ validationError.title[0] }}
           </p>
           <div class="mt-2">
-            
-
             <div
               v-for="(field, parentindex) in formfields"
               :key="field.id"
@@ -193,7 +180,7 @@
                           type="checkbox"
                           class="mr-1 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
                         />
-                        <span class="text-sm "> {{ option.name }}</span>
+                        <span class="text-sm"> {{ option.name }}</span>
                       </label>
                     </div>
                     <div class="mt-2">
@@ -224,7 +211,7 @@
             </div>
             <div class="flex justify-end">
               <Button
-                class="border bg-green-700 text-white font-bold rounded-full  px-4 py-1 hover:shadow-lg"
+                class="border bg-green-700 text-white font-bold rounded-full px-4 py-1 hover:shadow-lg"
                 @click="handleAddFields"
               >
                 <i class="fa-solid fa-plus mr-1"></i> <span class="mr-1"> Field </span>
@@ -251,14 +238,16 @@
               </div>
             </div>
           </div>
-          
+
           <div class="my-2 flex justify-end">
             <TableButton mode class="mr-2" @click="closeTheForm"> Close </TableButton>
             <div class="my-1 mx-2" v-if="isSaving">
               <BaseSpinner />
             </div>
             <div v-else>
-              <TableButton v-if="!isUpdatingMode" @click="createApplicationForm"> Save </TableButton>
+              <TableButton v-if="!isUpdatingMode" @click="createApplicationForm">
+                Save
+              </TableButton>
               <TableButton v-else @click="updateApplicatonForm"> Update </TableButton>
             </div>
           </div>
@@ -282,6 +271,24 @@
         <template #c-actions> </template>
       </BaseErrorDialog>
     </teleport>
+
+
+    
+    <teleport to="#app">
+      <BaseDialog class="bg-gray-200" :show="selectedApplicationToView != null" :width="'600'" :preventClose="true">
+        <template #c-content>   
+
+          <h1 class="mb-4 text-lg font-bold">( View only ) </h1>
+
+          <FormComponent  :id="selectedApplicationToView"/>
+          <div class="">
+            <TableButton mode class="mr-2" @click="selectedApplicationToView = null"> Close </TableButton>
+            
+          </div>
+        </template>
+      </BaseDialog>
+    </teleport>
+
   </BaseCard>
 </template>
 
@@ -290,6 +297,7 @@ import axiosApi from "../../api/axiosApi";
 export default {
   data() {
     return {
+      search: "",
       formtitle: "",
       showForm: false,
       validationError: null,
@@ -306,6 +314,7 @@ export default {
       selectedApplicationFormToUpdate: null,
       formfields: [],
       isLoading: false,
+      selectedApplicationToView: null,
     };
   },
 
@@ -314,21 +323,41 @@ export default {
     this.loadRequirements();
   },
 
+  watch: {
+    search(olvalue, newvalue) {
+      this.searchApplication();
+    },
+  },
+
+  
   methods: {
 
+    showSampleForm(id){
+      this.selectedApplicationToView = id;
+    },
+    async searchApplication() {
 
-   async showTheFormToUpdate(item) {
+    await axiosApi
+      .post("api/manage-applications/search", {
+        search: this.search,
+      })
+      .then((res) => {
+        this.applicationforms = res.data.data;
+      });
+  },
+
+    async showTheFormToUpdate(item) {
       this.isUpdatingMode = true;
       this.formtitle = item.title;
       this.formfields = [];
-   
+
       this.selectedRequirements = [];
 
       // display initial existing feilds
       if (item.fields.length > 0) {
         item.fields.forEach((element) => {
           let field = {
-            id:element.id,
+            id: element.id,
             name: element.name,
             index: element.index,
             type: element.type,
@@ -373,16 +402,14 @@ export default {
 
           this.formfields.push(createdField);
           this.formfields.sort((a, b) => a.index - b.index);
-          
-        });
-      } 
-      // check existing requirements
-      if(item.requirements.length > 0){
-        item.requirements.forEach(element => {
-            this.selectedRequirements.push(element.id);
         });
       }
-
+      // check existing requirements
+      if (item.requirements.length > 0) {
+        item.requirements.forEach((element) => {
+          this.selectedRequirements.push(element.id);
+        });
+      }
 
       let newfields = [];
       let selected_collection_for_select = null;
@@ -398,10 +425,8 @@ export default {
         //   type: element.selectedtype,
         //   collection_for_select: selected_collection_for_select,
         // });
-
       });
 
-   
       // const new_application = {
       //   id:item.id,
       //   title: this.formtitle,
@@ -411,15 +436,10 @@ export default {
 
       this.selectedApplicationFormToUpdate = item.id;
 
-
       this.showForm = true;
     },
 
-    async updateApplicatonForm(){
-
-
-
-    
+    async updateApplicatonForm() {
       this.isSaving = true;
       let newfields = [];
       let selected_collection_for_select = null;
@@ -432,15 +452,14 @@ export default {
         newfields.push({
           id: element.id,
           name: element.fieldname,
-          index:element.index,
+          index: element.index,
           type: element.selectedtype,
           collection_for_select: selected_collection_for_select,
         });
-
       });
 
       const new_application = {
-        id:this.selectedApplicationFormToUpdate,
+        id: this.selectedApplicationFormToUpdate,
         title: this.formtitle,
         fields: newfields,
         requirements: this.selectedRequirements,
@@ -461,7 +480,6 @@ export default {
         .catch((err) => {
           console.log(err);
           if (err.response.status === 422) {
-         
             this.validationError = err.response.data.errors;
           } else {
             this.requestError = err;
@@ -470,7 +488,6 @@ export default {
         .finally(() => {
           this.isSaving = false;
         });
-
     },
 
     showTheForm() {
@@ -603,7 +620,7 @@ export default {
       this.isSaving = true;
       let newfields = [];
       let selected_collection_for_select = null;
-        
+
       this.formfields.forEach((element, index) => {
         if (element.selectedtype == "select") {
           selected_collection_for_select = element.selecteddata;
@@ -614,9 +631,7 @@ export default {
           type: element.selectedtype,
           collection_for_select: selected_collection_for_select,
         });
-
       });
-
 
       const new_application = {
         title: this.formtitle,
@@ -638,7 +653,6 @@ export default {
         .catch((err) => {
           console.log(err);
           if (err.response.status === 422) {
-         
             this.validationError = err.response.data.errors;
           } else {
             this.requestError = err;

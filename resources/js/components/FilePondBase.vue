@@ -12,6 +12,7 @@
     allowPdfPreview="false"
 
     pdfComponentExtraParams="toolbar=0&view=fit&page=1"
+    :disabled="isDisabled"
     :label-idle="label"
     :maxFileSize="maxSize"
     :allow-multiple="multiple"
@@ -141,6 +142,10 @@ export default {
     multiple: {
       type: Boolean,
       default: true,
+    },
+    isDisabled: {
+      type: Boolean,
+      default:false,
     },
     label: {
       type: String,

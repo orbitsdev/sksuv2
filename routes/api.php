@@ -114,6 +114,7 @@ Route::get('/role', function () {
     Route::get('manage-applications/{id}', [ApplicationFormController::class, 'getSingleApplication']);
     Route::post('manage-applications/create', [ApplicationFormController::class, 'createApplicationForm']);
     Route::post('manage-applications/update', [ApplicationFormController::class, 'updateApplicationForm']);
+    Route::post('manage-applications/search', [ApplicationFormController::class, 'search']);
     Route::post('manage-applications/make-application-public', [ApplicationFormController::class, 'makeApplicationPublic']);
     Route::post('manage-applications/delete-selected', [ApplicationFormController::class, 'deleteSelectedApplicationForm']);
 
@@ -122,7 +123,6 @@ Route::get('/role', function () {
     Route::get('application-fields-for-select/fetch', [DynamicFetchingController::class, 'datatoFetch']);
 
     // APPLICATION REQUIREMENT
-
     Route::get('manage-requirement', [RequirementController::class, 'getRequirement']);
     Route::post('manage-requirement/create', [RequirementController::class, 'createRequirement']);
     Route::post('manage-requirement/update', [RequirementController::class, 'updateRequirement']);

@@ -25,7 +25,6 @@
         text: {
             type: String,
             default: 'Loading...',
-             required: true,
           },
         },
     }

@@ -13,13 +13,28 @@ use App\Http\Resources\ApplicationFormResource;
 class ApplicationFormController extends Controller
 {
 
+
+    public function search(Request $request){
+
+        $applications = ApplicationForm::where('title', 'like', '%'.$request->input('search').'%')->with(
+            ['fields'=> function($query){
+               $query->orderBy('index', 'asc');
+           } , 
+           'requirements' 
+       ], )->get();
+
+        return new ApplicationFormResource($applications);
+    }
+
     public function getSingleApplication($id){
 
         $application = ApplicationForm::where('id', $id)->with(
          ['fields'=> function($query){
             $query->orderBy('index', 'asc');
         } , 
-        'requirements' 
+        'requirements' => function($query){
+            $query->orderBy('id', 'asc');
+        }
     ], )->first();
 
         return new ApplicationFormResource($application);

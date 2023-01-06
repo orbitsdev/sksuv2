@@ -36,6 +36,8 @@ import Path from './components/Path.vue';
 import BaseConfirmation from './components/BaseConfirmation.vue';
 import FieldTypeComponent from './components/FieldTypeComponent.vue';
 import Pagination from './components/Pagination.vue';
+import FormComponent from './components/FormComponent.vue';
+
 
 // VUETIFY
 
@@ -91,6 +93,7 @@ app.component('SchoolCard', SchoolCard);
 app.component('Path', Path);
 app.component('BaseConfirmation', BaseConfirmation);
 app.component('FieldTypeComponent', FieldTypeComponent);
+app.component('FormComponent', FormComponent);
 
 
 
