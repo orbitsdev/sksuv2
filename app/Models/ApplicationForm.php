@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Field;
+use App\Models\Response;
 use App\Models\Requirement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,5 +27,9 @@ class ApplicationForm extends Model
 
     public function departments(){
         return $this->belongsToMany(Department::class, 'school_departments', 'school_id', 'department_id');
+    }
+
+    public function responses(){
+        return $this->hasMany(Response::class);
     }
 }

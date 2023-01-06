@@ -1,12 +1,11 @@
 <template>
   <div class="mx-auto max-w-lg w-full mt-10" v-if="application != null">
-    <div class="bg-white rounded mt-10 mb-5 border-t-4 border-green-600 p-4 shadow">
+    <div class="bg-white rounded mt-10 mb-1 border-t-4 border-green-600 p-4 shadow">
       <h1 class="text-lg font-bold mb-4">{{ application.title }}</h1>
     </div>
 
     <div class="p-4 bg-white rounded shadow-md">
       <div class="mb-4" v-for="field in application.fields" :key="field">
-        <!-- {{ field.type }} -->
         <div>
           <label
             v-if="field.type == 'text'"
@@ -46,7 +45,7 @@
             v-if="field.type == 'number'"
             class="block w-full rounded-lg p-2 border border-gray-400 focus:outline-none focus:border-indigo-500"
             id="number"
-            type="number"
+            type="text"
             placeholder="0912300023"
           />
 
@@ -105,20 +104,34 @@
           </div>
         </div>
       </div>
+      
+    </div>
+    <div v-if="application.requirements.length > 0">
+      <div class="bg-white rounded mt-10 mb-1 border-t-4 border-green-600 py-2  ">
+        <h1 class="text-lg font-bold mb-4">Requirements</h1>
+      </div>
 
-      <div class="mt-4">
-        <div class="my-2 flex justify-end items-center">
-          <div class="flex">
-            <TableButton mode class="mr-2"> Close </TableButton>
-
-            <div>
-              <TableButton> Save </TableButton>
-            </div>
+      <div v-for="requirement in application.requirements" :key="requirement.id">
+        <FilePondBase
+        :label="'Drag & Drop your image here or <u> Browse </u>'"
+        :multiple="allowmultiple"
+        @fileIsUploading="false"
+        @fileIsUploaded="setFile"
+        @fileIsDeleted="removeFile"
+        class="mt-2"
+      />
+      </div>
+    </div>
+    <div class="mt-4">
+      <div class="my-2 flex justify-end items-center">
+        <div class="flex">
+          <TableButton mode class="mr-2"> Close </TableButton>
+          <div>
+            <TableButton> Save </TableButton>
           </div>
         </div>
       </div>
     </div>
-
     <div class="bg-white rounded mt-10 mb-5 p-4 shadow">
       <router-link
         :to="'/dashboard/osas/manage-application'"

@@ -48,10 +48,10 @@
             <td class="whitespace-nowrap py-4 text-sm pl-2">
               <div v-if="item.fields.length > 0">
                 <div class="flex">
-                  <div class="grid grid-cols-3 gap-1">
+                  <div class="grid grid-cols-1 gap-1">
                     <div v-for="field in item.fields" :key="field.id">
                       <span
-                        class="inline-flex rounded-full bg-green-100 mx-1 px-2 text-xs font-semibold leading-5 text-green-800"
+                        class="inline-flex whitespace-normal rounded-full break-words bg-green-100 mx-1 px-2 text-xs font-semibold leading-5 text-green-800"
                         >{{ field.name }}</span
                       >
                     </div>
@@ -65,12 +65,12 @@
                 >
               </div>
             </td>
-            <td class="whitespace-nowrap py-4 text-sm pl-2">
+            <td class="whitespace-nowrap py-4 text-sm pl-2 ">
               <div v-if="item.requirements.length > 0">
-                <div class="grid grid-cols-2 ">
+                <div class="grid grid-cols-1 gap-1 break-words">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
                     <p
-                      class="inline-flex bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 m-0.5"
+                      class="inline-flex rounded-full whitespace-normal bg-green-100 px-2 text-xs break-words font-semibold leading-5 text-green-800 m-0.5"
                     >
                     
                       {{ requirement.name }}
@@ -122,25 +122,7 @@
               >
                 <i class="fa-regular fa-pen-to-square"></i>
               </button>
-              <!-- 
-                <button
-                type="button"
-                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-              >
-              <i class="fa-regular fa-eye"></i>
-              </button>
-              <button
-                type="button"
-                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-              >
-                <i class="fa-regular fa-pen-to-square"></i>
-              </button>
-              <button
-                type="button"
-                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-              >
-                <i class="fa-regular fa-trash-can"></i>
-              </button> -->
+            
             </td>
           </tr>
         </template>
@@ -211,7 +193,7 @@
                           type="checkbox"
                           class="mr-1 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
                         />
-                        <span class="text-sm"> {{ option.name }}</span>
+                        <span class="text-sm "> {{ option.name }}</span>
                       </label>
                     </div>
                     <div class="mt-2">
@@ -346,6 +328,7 @@ export default {
       if (item.fields.length > 0) {
         item.fields.forEach((element) => {
           let field = {
+            id:element.id,
             name: element.name,
             index: element.index,
             type: element.type,
@@ -378,9 +361,8 @@ export default {
             }
           });
 
-          const id = this.formfields.length + 1;
           const createdField = {
-            id: id,
+            id: field.id,
             fieldname: field.name,
             index: field.index,
             selectedtype: field.type,
@@ -448,6 +430,7 @@ export default {
         }
 
         newfields.push({
+          id: element.id,
           name: element.fieldname,
           index:element.index,
           type: element.selectedtype,
@@ -582,7 +565,6 @@ export default {
       await axiosApi
         .get("api/manage-applications")
         .then((res) => {
-          console.log(res);
           this.applicationforms = res.data.data;
         })
         .catch((err) => {

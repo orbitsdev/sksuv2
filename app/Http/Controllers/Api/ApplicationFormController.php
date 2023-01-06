@@ -15,9 +15,12 @@ class ApplicationFormController extends Controller
 
     public function getSingleApplication($id){
 
-        $application = ApplicationForm::where('id', $id)->with(['fields'=> function($query){
+        $application = ApplicationForm::where('id', $id)->with(
+         ['fields'=> function($query){
             $query->orderBy('index', 'asc');
-        }], 'requirements')->first();
+        } , 
+        'requirements' 
+    ], )->first();
 
         return new ApplicationFormResource($application);
 
@@ -104,53 +107,81 @@ class ApplicationFormController extends Controller
     }
 
     public function updateApplicationForm(Request $request){
+
+
+        if(count($request->fields) > 0){
+
+            $request->validate(
+                        [
+                            'title' => 'required',
+                            'fields.*.name' => 'required',
+                            'fields.*.index' => 'required',
+                        ],
+                        [
+                            'name.required' => 'Title is required',
+                            'fields.*.name' => 'Name is required '
+                        ]
+                    );
+
+        // update application 
+            $application_form = ApplicationForm::where('id', $request->input('id'))->first();
+            $application_form->update(
+                [
+                  'title' => $request->title,
+                ]);
+
+         // update each fields  of the application
         
+            foreach($request->fields  as $field ){
+
+                $pull_field =$application_form->fields()->where('id', $field['id'])->first();
+                
+                if($pull_field !=  null){
+                    $application_form->fields()->where('id', $field['id'])->update(
+                        [
+                          'name'=> $field['name'],
+                          'type'=> $field['type'],
+                          'collection_for_select'=> $field['collection_for_select'],
+                         ]
+                     );
+                }else{
+                    $n [] = $field;
+                    $application_form->fields()->create([
+                        'name'=> $field['name'],
+                        'type'=> $field['type'],
+                        'index'=> $field['index'],
+                        'collection_for_select'=> $field['collection_for_select'],
+                    ]);
+                }
+                
+
+            }
 
 
-        if (count($request->fields) > 0) {
-
+        }else{
+            // crea new one
             $request->validate(
                 [
                     'title' => 'required',
-                    'fields.*.name' => 'required',
-                    'fields.*.index' => 'required',
                 ],
                 [
                     'name.required' => 'Title is required',
-                    'fields.*.name' => 'Name is required '
-
                 ]
             );
 
-            $application_form = ApplicationForm::where('id', $request->input('id'))->first();
-            $application_form->update([
-                'title' => $request->title,
-            ]);
-            $application_form->fields()->delete();
-            $application_form->fields()->createMany($request->fields);
-        } else {
-
-
-            $request->validate([
-                'title' => 'required',
-
-            ], [
-                'title.required' => 'Title is required'
-            ]);
-
-
-            $application_form = ApplicationForm::where('id', $request->input('id'))->first();
-            $application_form->update([
-                'title' => $request->title,
-            ]);
-
-            if(count($application_form->fields)> 0){
+    // update application 
+     $application_form = ApplicationForm::where('id', $request->input('id'))->first();
+     $application_form->update(['title' => $request->title,]);
+   
+     // delete if it has field
+    if(count($application_form->fields)> 0){
                 $application_form->fields()->delete();
             }
-        }
 
+    }
 
-        if (count($request->input('requirements')) > 0) {
+    //update requirements
+     if (count($request->input('requirements')) > 0) {
             $requirements = Requirement::whereIn('id', $request->input('requirements'))->get()->pluck('id');
             $application_form->requirements()->sync($requirements);
         }else{
@@ -159,9 +190,11 @@ class ApplicationFormController extends Controller
                 $application_form->requirements()->detach();
             }
         }
+        return response()->json(['succsess']);
 
 
-        return response()->json([$request->only('name'), $request->only('fields'), count($request->fields)]);
+
+
 
     }
 
