@@ -164,14 +164,7 @@
             {{ validationError.title[0] }}
           </p>
           <div class="mt-2">
-            <div class="">
-              <Button
-                class="border rounded px-2 p-1 hover:shadow-lg"
-                @click="handleAddFields"
-              >
-                <i class="fa-solid fa-plus mr-1"></i> Field
-              </Button>
-            </div>
+            
 
             <div
               v-for="(field, parentindex) in formfields"
@@ -247,6 +240,14 @@
                 </div>
               </div>
             </div>
+            <div class="flex justify-end">
+              <Button
+                class="border bg-green-700 text-white font-bold rounded-full  px-4 py-1 hover:shadow-lg"
+                @click="handleAddFields"
+              >
+                <i class="fa-solid fa-plus mr-1"></i> <span class="mr-1"> Field </span>
+              </Button>
+            </div>
             <div class="mt-2">
               <p class="text-base font-bold">Attach Requiments</p>
               <w-divider class="my6"></w-divider>
@@ -268,6 +269,7 @@
               </div>
             </div>
           </div>
+          
           <div class="my-2 flex justify-end">
             <TableButton mode class="mr-2" @click="closeTheForm"> Close </TableButton>
             <div class="my-1 mx-2" v-if="isSaving">
