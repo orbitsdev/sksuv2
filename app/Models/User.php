@@ -67,9 +67,16 @@ class User extends Authenticatable
     }
 
 
-public function officers(){
-    return $this->hasMany(SboOfficer::class);  
-}
+    public function officers(){
+        return $this->hasMany(SboOfficer::class, 'adviser_id');
+    }
+
+    public function officer(){
+        return $this->hasOne(SboOfficer::class, 'student_id');
+    }
+
+   
+
 
 
 }

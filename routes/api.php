@@ -19,6 +19,7 @@ use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
 use App\Http\Controllers\Api\ManageSboAdviserControlller;
 use App\Http\Controllers\Api\ManageUserRoleController;
+use App\Http\Controllers\Api\OfficerController;
 use App\Http\Controllers\Api\RequirementController;
 use App\Http\Controllers\Api\SboAdviserRequestController;
 
@@ -128,6 +129,13 @@ Route::get('/role', function () {
     Route::post('manage-requirement/update', [RequirementController::class, 'updateRequirement']);
     Route::post('manage-requirement/search', [RequirementController::class, 'search']);
     Route::post('manage-requirement/delete-selected', [RequirementController::class, 'deleteSelectedRequirement']);
+    
+    
+    // Manage Sbo Officer d
+    Route::get('manage-officer/get-students', [OfficerController::class, 'getStudents']);
+    Route::get('manage-officer/get-school-department', [OfficerController::class, 'getSchoolDepartmentphp']);
+    Route::get('manage-officer/get-officers', [OfficerController::class, 'getOfficers']);
+    Route::post('manage-officer/create-officer', [OfficerController::class, 'createOfficer']);
 
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);

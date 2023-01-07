@@ -24,4 +24,6 @@ class School extends Model
     public function departments(){
         return $this->belongsToMany(Department::class, 'school_departments', 'school_id', 'department_id');
     }
+
+    
 }

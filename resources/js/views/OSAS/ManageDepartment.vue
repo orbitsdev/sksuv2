@@ -12,9 +12,7 @@
          
         </template>
         <template #filters-area>
-          <div v-if="isSchooLoading">
-            <BaseSpinner />
-          </div>
+         
           
         </template>
         <template #actions-area>

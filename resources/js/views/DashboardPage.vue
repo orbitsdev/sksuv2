@@ -399,9 +399,12 @@
                   </svg>
                   Manage Requirements
                 </router-link>
+
+                
               
               </div>
-              <div v-if="User.is('sbo-adviser')">
+
+              <div v-if="User.hasRoleOf(['sbo-adviser'])">
                 <router-link
                 :to="{ name: 'manage-sbo-officers' }"
                 href="#"
@@ -426,6 +429,7 @@
                 Manage Officers
               </router-link>
               </div>
+             
               
           
              
@@ -495,7 +499,8 @@
                     aria-expanded="false"
                     aria-haspopup="true"
                   >
-                  <span class="mr-3 capitalize"> {{User.first_name}} {{ User.last_name }}</span>
+                  <span>{{User.user_roles}} </span>
+                  <span class="mr-3 capitalize">  {{User.first_name}} {{ User.last_name }}</span>
                     <span class="sr-only">Open user menu</span>
                   
                     <img
@@ -590,6 +595,17 @@ export default {
     closeErrorDialog() {
       this.requestError = null;
     },
+
+    checkUserAccount(){
+
+      if(this.User.hasRoleOf(['sbo-student', 'sbo-adviser', 'guest'])){
+
+        if(this.User.schools.length == 0){
+            this.$router.push({ name: 'getting-started'});
+        }
+      }
+      
+    },  
     async logoutUser() {
       this.isLogout = true;
       await axiosApi
@@ -625,8 +641,10 @@ export default {
         if(this.$store.state.User == null){
           this.isScreenLoading = true;
 
-         this.$store.dispatch('getUser').then(res=>{         
-         this.$store.commit('setUser', res);
+          this.$store.dispatch('getUser').then(res=>{         
+           this.$store.commit('setUser', res);
+           console.log("from fetch");
+           this.checkUserAccount();
 
 
          }).catch(err=>{
@@ -641,47 +659,12 @@ export default {
          });
 
         }else{
-          this.$store.dispatch('logoutUser');
+          console.log("has data");
+          this.checkUserAccount();
+          
         }
       }
-      
-      // await axiosApi
-      //   .get("api/user")
-      //   .then((res) => {
-      //     if(res.data.sbo_request != null){
-      //       this.hasRuest = true;
-      //     };
-
-      //     let roles = [];
-      //     res.data.roles.forEach((role) => {
-      //       roles.push(role.name);
-      //     });
-
-      //     const userDetails = {
-      //       first_name: res.data.first_name,
-      //       last_name: res.data.last_name,
-      //       email: res.data.email,
-      //       roles: roles,
-      //       token: localStorage.getItem("token"),
-      //     };
-
-      //     this.$store.commit("setUserDetails", userDetails);
-      //     roles.forEach((role) => {
-      //       if (role == "guest" || role == "sbo-adviser" || role == "sbo-student") {
-      //         if (res.data.schools.length <= 0) {
-      //           this.$router.replace("/getting-started");
-      //         }
-      //       }
-      //     });
-
-
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   })
-      //   .finally(() => {
-      //     this.isScreenLoading = false;
-      //   });
+     
     },
   },
 };

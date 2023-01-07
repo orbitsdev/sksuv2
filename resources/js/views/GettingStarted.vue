@@ -191,12 +191,18 @@
 
 <script>
 import axiosApi from "../api/axiosApi";
+import { mapGetters } from "vuex";
+
 export default {
   created() {
     this.getUserDetails();
     this.loadSchool();
   },
 
+
+  computed: {
+    ...mapGetters(['User']),
+  },
   data() {
     return {
       schools: [],
@@ -231,43 +237,50 @@ export default {
       const newSchool = school;
       this.selectedSchool = newSchool;
     },
+
+    checkUserAccount(){
+
+if(this.User.hasRoleOf(['sbo-student', 'sbo-adviser', 'guest'])){
+
+  if(this.User.schools.length > 0){
+      this.$router.push({ name: 'dashboard'});
+  }
+}
+
+},  
     async getUserDetails() {
-      this.isScreenLoading = true;
-      await axiosApi
-        .get("api/user")
-        .then((res) => {
-          let roles = [];
-          res.data.roles.forEach((role) => {
-            roles.push(role.name);
-          });
-          const userDetails = {
-            first_name: res.data.first_name,
-            last_name: res.data.last_name,
-            email: res.data.email,
-            roles: roles,
-            token: localStorage.getItem("token"),
-          };
 
-          this.$store.commit("setUserDetails", userDetails);
+const token = localStorage.getItem('token');
 
-          roles.forEach((role) => {
-            if (role == "guest" || role == "sbo-adviser" || role == "sbo") {
-              if (res.data.schools.length>0) {
-                this.$router.replace("/dashboard");
-              }
-            }
-          });
-  
-        
+if(token !=  null){
 
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.isScreenLoading = false;
-        });
-    },
+  if(this.$store.state.User == null){
+    this.isScreenLoading = true;
+
+    this.$store.dispatch('getUser').then(res=>{         
+     this.$store.commit('setUser', res);
+     console.log("from fetch");
+     this.checkUserAccount();
+
+
+   }).catch(err=>{
+
+    this.requestError = err;
+    this.$store.dispatch('logoutUser');
+   }).finally(()=>{
+
+    this.isScreenLoading = false;
+
+
+   });
+
+  }else{
+    this.checkUserAccount();
+    
+  }
+}
+
+},
 
     async logoutUser() {
       this.isLogout = true;

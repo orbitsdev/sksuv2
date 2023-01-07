@@ -70,13 +70,7 @@ const routes = [
     },
 
 
-    {
-        name: "view-application",
-        path: "/dashboard/osas/manage-application/view/:id",
-        component: () => import("../views/FormPage.vue"),
-        props:true,
-        meta: { requireAuth: true, allowedRoles: ["osas"] },
-    },
+   
 
     {
         name: "dashboard",
@@ -86,49 +80,49 @@ const routes = [
         children: [
             {
                 name: "manage-school",
-                path: "/dashboard/osas/manage-school",
+                path: "manage-school",
                 component: () => import("../views/OSAS/ManageSchool.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
             {
                 name: "manage-school-department",
-                path: "/dashboard/osas/manage-school-department",
+                path: "manage-school-department",
                 component: () => import("../views/OSAS/ManageDepartment.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
             {
                 name: "manage-requirement",
-                path: "/dashboard/osas/manage-requirement",
+                path: "manage-requirement",
                 component: () => import("../views/OSAS/ManageRequirement.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
             {
                 name: "manage-sbo-adviser",
-                path: "/dashboard/osas/manage-sbo-adviser",
-                // redirect: '/dashboard/osas/manage-school/user',
+                path: "manage-sbo-adviser",
                 component: () => import("../views/OSAS/ManageSboAdviser.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
 
                 children: [
+                    
                     {
                         name: "manage-sbo-adviser-adviser",
-                        path: "/dashboard/osas/manage-sbo-adviser/advisers",
+                        path: "advisers",
                         component: () => import("../views/OSAS/SboAdviser.vue"),
                         meta: { allowedRoles: ["osas"] },
                     },
                     {
                         name: "manage-sbo-adviser-user",
-                        path: "/dashboard/osas/manage-sbo-adviser/users",
+                        path: "users",
                         component: () =>
                             import("../views/OSAS/SboAdviserUser.vue"),
                         meta: { allowedRoles: ["osas"] },
                     },
                     {
                         name: "manage-sbo-adviser-request",
-                        path: "/dashboard/osas/manage-sbo-adviser/requests",
+                        path: "requests",
                         component: () =>
                             import("../views/OSAS/SboAdviserRequest.vue"),
                         meta: { allowedRoles: ["osas"] },

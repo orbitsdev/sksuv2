@@ -25,6 +25,13 @@
 
 <script>
 
+export default {
+
+  created(){
+    this.$router.push({name: 'manage-sbo-adviser-user'})
+  }
+}
+
 </script>
 
 <style scoped>

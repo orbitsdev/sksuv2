@@ -36,21 +36,22 @@ class ManageSboAdviserControlller extends Controller
     }
 
     public function search(Request $request)
-    {
+    {   
 
-
-        $users = User::when($request->input('filter') != 'none', function ($query) use ($request) {
-            $query->whereHas('schools', function ($query) use ($request) {
+        
+         $users = User::when($request->input('filter') != 'none', function($query) use ($request){
+            $query->whereHas('schools', function($query) use($request){
                 $query->where('name', $request->input('filter'));
             });
-        })->whereHas('roles', function ($query) {
-            $query->where([
-                ['name', '!=',  'sbo-adviser'],
-                ['name', '!=',  'osas'],
-            ]);
-        })->where(function ($query) use ($request) {
-            $query->where('email', 'like', '%' . $request->input('search') . '%')->orWhere('first_name', 'like', '%' . $request->input('search') . '%')->orWhere('last_name', 'like', '%' . $request->input('search') . '%');
-        })->with('schools')->get();
+         })->whereDoesntHave('roles', function ($query) {
+            $query->whereIn('name', ['sbo-adviser','osas']);
+        })->where(function($query) use ($request){
+             $query->where('email', 'like', '%' . $request->input('search') . '%')->orWhere('first_name', 'like', '%' . $request->input('search') . '%')->orWhere('last_name', 'like', '%' . $request->input('search') . '%');
+     
+            })->with('roles', 'schools')->get();
+
+
+      
 
         return new SboAdviserResource($users);
     }
@@ -61,16 +62,13 @@ class ManageSboAdviserControlller extends Controller
         if ($request->input('filter') == 'none') {
             return $this->index();
         } else {
-            $users = User::whereHas('roles', function ($query) {
-                $query->where([
-                    ['name', '!=', 'sbo-adviser'],
-                    ['name', '!=', 'osas'],
-                ]);
+            $users = $users = User::whereDoesntHave('roles', function ($query) {
+                $query->whereIn('name', ['sbo-adviser','osas']);
             })->when($request->input('filter'), function ($query) use ($request) {
                 $query->whereHas('schools', function ($query) use ($request) {
                     $query->where('name', $request->input('filter'));
                 });
-            })->with('schools')->get();
+            })->with('roles', 'schools',)->get();
 
             return new SboAdviserResource($users);
         }
@@ -80,7 +78,7 @@ class ManageSboAdviserControlller extends Controller
     {
 
         $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'sbo-adviser');
+            $query->whereIn('name', ['sbo-adviser','osas']);
         })->with('schools', 'roles')->paginate(10);
 
 

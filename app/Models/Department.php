@@ -15,4 +15,8 @@ class Department extends Model
     public function schools(){
         return $this->belongsToMany(School::class, 'school_departments', 'department_id', 'school_id');
     }
+
+    public function officers(){
+        return $this->hasMany(SboOfficer::class, 'department_id');
+    }
 }

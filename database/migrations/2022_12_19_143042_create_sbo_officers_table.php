@@ -15,7 +15,13 @@ return new class extends Migration
     {
         Schema::create('sbo_officers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('adviser_id');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('department_id');
+            $table->text('position');
+            $table->foreign('adviser_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->timestamps();
         });
     }

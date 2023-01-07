@@ -35,13 +35,7 @@
           </div>
         </template>
         <template #actions-area>
-          <!-- <TableButton :mode="true" class="mr-2">
-                <i class="fa-regular fa-trash-can mr-2"></i> Selected (1 )
-              </TableButton> -->
-          <!-- <TableButton :mode="true">
-                <i class="fa-regular fa-trash-can mr-1"></i>
-                <span class="block">Delete All</span>
-              </TableButton> -->
+      
         </template>
       </BaseTableSetup>
     </template>
@@ -223,8 +217,9 @@ export default {
           filter: this.filterBy,
         })
         .then((res) => {
+
           this.sboadvisers = res.data.data;
-          console.log(res.data.data);
+
         });
     },
 
@@ -273,5 +268,6 @@ export default {
 };
 </script>
 
+
 <style scoped></style>
-php ar
+
