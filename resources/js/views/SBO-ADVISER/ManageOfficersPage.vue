@@ -328,12 +328,15 @@ export default {
         .finally(() => {});
     },
     async getOfficers() {
+      
+             console.log("HEYYYYYYYY");
+      
       await axiosApi
         .get("api/manage-officer/get-officers")
         .then((res) => {
 
             console.log(res.data.data);
-            this.officers = res.data.data;
+            // this.officers = res.data.data;
         
         })
         .catch((err) => {

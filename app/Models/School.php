@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Department;
+use App\Models\SboOfficer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,6 +25,19 @@ class School extends Model
     public function departments(){
         return $this->belongsToMany(Department::class, 'school_departments', 'school_id', 'department_id');
     }
+
+
+public function sboOfficers()
+{
+    return $this->hasManyThrough(
+        SboOfficer::class,
+        User::class,
+        'id', // Foreign key on users table...
+        'adviser_id', // Foreign key on sbo_officers table...
+        'id', // Local key on schools table...
+        'id' // Local key on users table...
+    );
+}
 
     
 }

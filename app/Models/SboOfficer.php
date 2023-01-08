@@ -28,6 +28,11 @@ class SboOfficer extends Model
     }
 
 
+    public function userSchool(){
+        return $this->hasManyThrough(School::class, SboOfficer::class, 'adviser_id', '');
+    }
+
+
     
 
 }
