@@ -1,185 +1,208 @@
 <template>
-  <BaseCard :subtitle="'Manage Department'">
+  <BaseCard :subtitle="'Manage Officer'">
     <template #header>
-     
       <BaseTableSetup>
         <template #searchs-area>
-          <TableButton class="mr-2"
+          <TableButton class="mr-2" @click="handleShowForm(null, 'add')"
             ><i class="fa-solid fa-plus mr-1"> </i> Add Officer
           </TableButton>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
         </template>
+        <template #actions-area>
+          <TableButton
+            @click="showDeleteConfirmation = true"
+            v-if="selectedOfficers.length > 0"
+            :mode="true"
+            class="mr-2"
+          >
+            <i class="fa-regular fa-trash-can mr-2"></i> Delete (
+            {{ this.selectedOfficers.length }} )
+          </TableButton>
+        </template>
       </BaseTableSetup>
 
-      <ul
-        role="list"
-        class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      <BaseTable
+        :thdata="['', 'Name', 'Position', 'Department', '']"
+        :isFetching="isFetching"
       >
-        <li
-          class="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow"
-          v-for="item in officers"
-          :key="item"
-        >
-          <div class="flex flex-1 flex-col p-8">
-            <img
-              class="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60"
-              alt=""
-            />
-            <h3 class="mt-6 text-sm font-medium text-gray-900">
-              {{ item.first_name }} {{ item.first_name }}
-            </h3>
-            <dl class="mt-1 flex flex-grow flex-col justify-between">
-              <dt class="sr-only">Title</dt>
-              <dd class="text-sm text-gray-500">Paradigm Representative</dd>
-              <dt class="sr-only">Role</dt>
-              <dd class="mt-3">
-                <span
-                  class="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
-                  >Admin</span
-                >
-              </dd>
-            </dl>
-          </div>
-          <div>
-            <div class="-mt-px flex divide-x divide-gray-200">
-              <div class="flex w-0 flex-1">
-                <a
-                  href="mailto:janecooper@example.com"
-                  class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
-                >
-                  <!-- Heroicon name: mini/envelope -->
-                  <svg
-                    class="h-5 w-5 text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z"
-                    />
-                    <path
-                      d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z"
-                    />
-                  </svg>
-                  <span class="ml-3">Email</span>
-                </a>
+        <template v-if="officers.length > 0" #data>
+          <tr v-for="officer in officers" :key="officer.id">
+            <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+              <input
+                v-model="selectedOfficers"
+                :value="officer.id"
+                type="checkbox"
+                class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
+              />
+            </td>
+            <td class="text-sm">
+              <div class="flex items-center">
+                <div class="">
+                  <div class="font-medium text-gray-900">
+                    {{ officer.student.first_name }} {{ officer.student.last_name }}
+                  </div>
+                </div>
               </div>
-              <div class="-ml-px flex w-0 flex-1">
-                <a
-                  href="tel:+1-202-555-0170"
-                  class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
-                >
-                  <!-- Heroicon name: mini/phone -->
-                  <svg
-                    class="h-5 w-5 text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                  <span class="ml-3">Call</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
+            </td>
 
-        <!-- More people... -->
-      </ul>
+            <td>
+              <div class="font-medium text-gray-900">{{ officer.position }}</div>
+            </td>
+            <td>
+              <div class="font-medium text-gray-900">{{ officer.department.name }}</div>
+            </td>
+
+            <td class="py-2 text-sm text-gray-500">
+              <button
+                :disabled="selectedOfficers.length > 0"
+                @click="handleShowForm(officer, 'update')"
+                type="button"
+                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+              >
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </BaseTable>
     </template>
 
     <teleport to="#app">
-      <BaseDialog :show="showForm" :width="'600'" :preventClose="true">
+      <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
         <template #c-content>
-<!-- 
-          {{ selectedStudent }}
-          {{ selectedPosition }}
-          {{ selectedDepartment }} -->
-          {{ officers }}
-            <div class="mb-4" >
-              <div>
-                <label
-                  class="block font-bold mb-2 text-gray-700 capitalize"
-                  >Choose Student from:  <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 m-0.5">{{ User.schools[0].name }} </span>
 
-                </label>
+          <div v-if="(isUpdatingMode == false && studentoptions.length == 0)"  >
+           
+            <div class="my-10 flex justify-center">
+              <img src="/assets/undraw_choosing_house_re_1rv7.svg" width="200" height="200" />
+              <div class="flex-col items-center justify-center p-4 ">
+                <p class="font-bold  text-center text-lg">
+                  No such students was available at your current school  
+                </p>
+                <p class=" text-center text-sm text-sm mt-4  ">
+                  Student must register to this school first
+                </p>
 
-                <select
+              </div>
+            </div>
+
+
+            <div class=" flex justify-center">
+              <TableButton mode @click="showForm = false" class="m-none"> Ok </TableButton>
+            </div>
+
+
+          </div>
+
+        <div v-else>
+
+          
+
+          <div v-if="isUpdatingMode == true">
+
+
+            <div class="0">
+              <img
+                class="h-20 w-20 rounded-full lg:h-24 lg:w-24"
+                src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
+                alt=""
+              />
+              <div class="space-y-2">
+                <div class="mt-4 text-xs font-medium lg:text-sm">
+                  <h3 class="capitalize">
+                    {{ this.selectedOfficer.student.first_name }}
+                    {{ this.selectedOfficer.student.last_name }}
+                  </h3>
+                  <p class="text-indigo-600">{{ this.selectedOfficer.position }}</p>
+                  <p class="text-indigo-600">
+                    {{ this.selectedOfficer.department.name }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <w-divider class="my6 my-2"></w-divider>
+          </div>
+
+          <div class="mb-4" v-if="isUpdatingMode == false">
+            <div>
+              <label class="block font-bold mb-2 text-gray-700 capitalize"
+                >Choose Student from:
+                <span
+                  class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 m-0.5"
+                  >{{ User.schools[0].name }}
+                </span>
+              </label>
+
+              <select
                 v-model="selectedStudent"
                 v-if="studentoptions.length > 0"
-                  class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
-                > 
-                  <option v-for="item in studentoptions" :key="item.id" :value="item.id"> {{ item.first_name }} {{ item.first_name }} </option>
-                </select>
-              </div>
-              <p class="text-xs mx-1 text-red-500 mt-1"
-              v-if="validationError != null && validationError.student_id"
-              > 
-            {{ validationError.student_id[0] }}
-            </p>
-   
-            
-              <!-- <p
-              class="text-xs text-red-500 mt-1"
-              v-if="validationError != null && validationError.title"
-            >
-              {{ validationError.title[0] }}
-            </p> -->
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
+              >
+                <option v-for="item in studentoptions" :key="item.id" :value="item.id">
+                  {{ item.first_name }} {{ item.id }}
+                </option>
+              </select>
             </div>
 
+            <p
+              class="text-xs mx-1 text-red-500 mt-1"
+              v-if="validationError != null && validationError.student_id"
+            >
+              {{ validationError.student_id[0] }}
+            </p>
+          </div>
 
-            <div class="mb-4" >
-              <div>
-                <label
-                  class="block font-bold mb-2 text-gray-700 capitalize"
-                  >Choose Sbo position
+          <div class="mb-4">
+            <div>
+              <label class="block font-bold mb-2 text-gray-700 capitalize"
+                >Choose Sbo position
+              </label>
 
-                </label>
-
-                <select
+              <select
                 v-model="selectedPosition"
                 v-if="position.length > 0"
-                  class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
-                > 
-                  <option v-for="item in position" :key="item.id" :value="item"> {{ item.name }} </option>
-                </select>
-              </div>
-              <p class="text-xs mx-1 text-red-500 mt-1"
-              v-if="validationError != null && validationError.position_name"
-              > 
-            {{ validationError.position[0] }}
-            </p>
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
+              >
+                <option v-for="item in position" :key="item.id" :value="item">
+                  {{ item.name }}
+                </option>
+              </select>
             </div>
-            <div class="mb-4" >
-              <div>
-                <label
-                  class="block font-bold mb-2 text-gray-700 capitalize"
-                  >Choose Department
+            <p
+              class="text-xs mx-1 text-red-500 mt-1"
+              v-if="validationError != null && validationError.position_name"
+            >
+              {{ validationError.position[0] }}
+            </p>
+          </div>
+          <div class="mb-4">
+            <div>
+              <label class="block font-bold mb-2 text-gray-700 capitalize"
+                >Choose Department
+              </label>
 
-                </label>
-
-                <select
+              <select
                 v-model="selectedDepartment"
                 v-if="departments.length > 0"
-                  class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
-                > 
-                  <option v-for="item in departments" :key="item.id" :value="item.id" class="capitalize"> <span class="capitalize">{{ item.name }}</span> </option>
-                </select>
-              </div>
-              <p class="text-xs mx-1 text-red-500 mt-1"
-              v-if="validationError != null && validationError.department_id"
-              > 
-            {{ validationError.department_id[0] }}
-            </p>
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
+              >
+                <option
+                  v-for="item in departments"
+                  :key="item.id"
+                  :value="item.id"
+                  class="capitalize"
+                >
+                  <span class="capitalize">{{ item.name }}</span>
+                </option>
+              </select>
             </div>
+            <p
+              class="text-xs mx-1 text-red-500 mt-1"
+              v-if="validationError != null && validationError.department_id"
+            >
+              {{ validationError.department_id[0] }}
+            </p>
+          </div>
 
           <div class="my-4"></div>
           <div class="my-2 flex justify-end">
@@ -187,14 +210,41 @@
             <div class="my-1 mx-2" v-if="isSaving">
               <BaseSpinner />
             </div>
-            <div >
-              <TableButton
-              @click="createOfficer"
-                class=""
-              >
-                Save
+            <div v-else>
+              <TableButton v-if="isUpdatingMode" @click="updateOfficer" class="">
+                Update
               </TableButton>
+              <TableButton v-else @click="createOfficer" class=""> Save </TableButton>
+            </div>
+          </div>
+        </div>
 
+        </template>
+      </BaseDialog>
+    </teleport>
+
+    <teleport to="#app">
+      <BaseDialog :show="showDeleteConfirmation" :width="'400'">
+        <template #c-content>
+          <div class="mb-4">
+            <p class="font-bold text-lg">
+              Are you sure do you want to delete selected officers?
+            </p>
+            <div class="my-10 flex justify-center">
+              <img src="/assets/undraw_throw_away_re_x60k.svg" width="200" height="200" />
+            </div>
+          </div>
+
+          <div class="my-4"></div>
+          <div class="my-2 flex justify-end">
+            <TableButton mode class="mr-2" @click="showDeleteConfirmation = false">
+              Close
+            </TableButton>
+            <div class="my-1 mx-2" v-if="isConfirming">
+              <BaseSpinner />
+            </div>
+            <div v-else>
+              <TableButton class="" @click="deleteSelectedOfficer"> Yes </TableButton>
             </div>
           </div>
         </template>
@@ -220,18 +270,17 @@ export default {
       officers: [],
       studentoptions: [],
       departments: [],
-      position: [
-      ],
-
+      position: [],
       selectedStudent: null,
       selectedDepartment: null,
-      selectedPosition:null,
-
-
+      selectedPosition: null,
+      selectedOfficer: null,
+      selectedOfficers: [],
+      isUpdatingMode: false,
+      showDeleteConfirmation: false,
+      isConfirming: false,
     };
   },
-
-
 
   created() {
     this.getOfficers();
@@ -239,56 +288,120 @@ export default {
     this.loadDepartment();
 
     this.position = [
-        { id:  1,  name: 'Governor', value: 'Governor'},
-        { id:  2,  name: 'Vice Governor', value: 'Vice Governor'},
-        { id:  3,  name: 'Board Member', value: 'Board Member'},
+      { id: 1, name: "Governor", value: "Governor" },
+      { id: 2, name: "Vice Governor", value: "Vice Governor" },
+      { id: 3, name: "Board Member", value: "Board Member" },
     ];
 
     this.selectedPosition = this.position[0];
-  
   },
 
   computed: {
-    ...mapGetters(['User']),
+    ...mapGetters(["User"]),
   },
 
   methods: {
+    async deleteSelectedOfficer() {
+      this.isConfirming = true;
+      axiosApi
+        .post("api/manage-officer/delete-selected-officer", {
+          officers: this.selectedOfficers,
+        })
+        .then((res) => {
+          this.getOfficers();
+          this.getStudent();
+          this.selectedOfficers = [];
+          this.showDeleteConfirmation = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.isConfirming = false;
+        });
+    },
 
+    async updateOfficer() {
+      this.isSaving = true;
 
-    async createOfficer(){
+      const newOfficer = {
+        officer_id: this.selectedOfficer.id,
+        position: this.selectedPosition.name,
+        department_id: this.selectedDepartment,
+      };
+
+      await axiosApi
+        .post("api/manage-officer/update-officer", newOfficer)
+        .then((res) => {
+          this.getOfficers();
+          this.getStudent();
+          this.selectedOfficers = [];
+          this.showDeleteConfirmation = false;
+          this.isUpdatingMode = false;
+          this.showForm = false;
+          this.selectedOfficer = null;
+        })
+        .catch((err) => {
+          if (err.response.status === 422) {
+            this.validationError = err.response.data.errors;
+          } else {
+            this.requestError = err;
+          }
+        })
+        .finally(() => {
+          this.isSaving = false;
+        });
+    },
+    handleShowForm(item, action) {
+      this.showForm = true;
+      this.validationError = {};
+
+      if (item == null && action == "add") {
+        this.isUpdatingMode = false;
+        this.selectedOfficer = null;
+
+        if (this.studentoptions.length == 0) {
+          this.getStudent();
+        }
+      }
+
+      if (item != null && action == "update") {
+        this.isUpdatingMode = true;
+        this.selectedOfficer = item;
+      }
+    },
+
+    async createOfficer() {
       this.isSaving = true;
 
       const newOfficer = {
         student_id: this.selectedStudent,
         position: this.selectedPosition.name,
-        department_id:  this.selectedDepartment, 
-
-      }
-
+        department_id: this.selectedDepartment,
+      };
 
       await axiosApi
-        .post("api/manage-officer/create-officer", newOfficer )
-        .then((res)=>{
-          console.log(res)
-      }).catch(err=>{
-        if (err.response.status === 422) {
+        .post("api/manage-officer/create-officer", newOfficer)
+        .then((res) => {
+          this.showForm = false;
+          this.getStudent();
+          this.getOfficers();
+        })
+        .catch((err) => {
+          if (err.response.status === 422) {
             this.validationError = err.response.data.errors;
           } else {
             this.requestError = err;
           }
-      }).finally(()=>{
+        })
+        .finally(() => {
           this.isSaving = false;
-      });
-
-      
-      },
-    
-
+        });
+    },
 
     async loadDepartment() {
-      
-    const alldeparment_api = "api/manage-department";
-    const school_department_api = "api/manage-officer/get-school-department";
+      const alldeparment_api = "api/manage-department";
+      const school_department_api = "api/manage-officer/get-school-department";
 
       this.isFetching = true;
       await axiosApi
@@ -296,10 +409,9 @@ export default {
         .then((res) => {
           this.departments = res.data.data;
 
-          if(this.departments.length > 0){
+          if (this.departments.length > 0) {
             this.selectedDepartment = this.departments[0].id;
           }
-          
         })
         .catch((err) => {
           this.requestError = err;
@@ -313,12 +425,9 @@ export default {
       await axiosApi
         .get("api/manage-officer/get-students")
         .then((res) => {
-
-
-
           this.studentoptions = res.data.data;
 
-          if(this.studentoptions.length > 0){
+          if (this.studentoptions.length > 0) {
             this.selectedStudent = this.studentoptions[0].id;
           }
         })
@@ -328,26 +437,26 @@ export default {
         .finally(() => {});
     },
     async getOfficers() {
-      
-             console.log("HEYYYYYYYY");
-      
       await axiosApi
         .get("api/manage-officer/get-officers")
         .then((res) => {
-
-            console.log(res.data.data);
-            // this.officers = res.data.data;
-        
+          this.officers = res.data.data;
         })
         .catch((err) => {
           this.requestError = err;
         })
         .finally(() => {});
     },
-
-
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.custom-close{
+  position: absolute;
+  top: -20px;
+  right: -20px;
+
+}
+</style>

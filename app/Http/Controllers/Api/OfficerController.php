@@ -12,7 +12,18 @@ use App\Models\Department;
 use App\Models\SboOfficer;
 
 class OfficerController extends Controller
+
 {
+
+    public function deleteSelectedOfficer(Request $request){
+
+    
+            SboOfficer::whereIn('id', $request->input('officers'))->delete();
+            return response()->json(['succes',  200]);
+
+    
+    }
+
     public function createOfficer(Request $request)
     {
 
@@ -32,16 +43,28 @@ class OfficerController extends Controller
     {
 
 
+
+
         $validated = $request->validate([
-            'student_id' => 'required',
             'department_id' => 'required',
             'position' => 'required',
+
+
         ]);
 
+    $adviser_id  = auth('sanctum')->user()->id;
+    $officer =  SboOfficer::where('id', $request->input('officer_id'))->first();
 
-        auth('sanctum')->user()->officers()->update($validated);
+    $officer->update([
+        'adviser_id'=> $adviser_id,
+        'department_id' => $request->input('department_id'),
+        'position' => $request->input('position'),
+    ]);
 
-        return response()->json(['success'], 200);
+   
+    return response()->json(['success', $request->input('student_id'), $officer, $request->input('student_id')], 200);
+
+    
     }
 
 
@@ -60,14 +83,14 @@ class OfficerController extends Controller
     {
 
         $school_id  = auth('sanctum')->user()->schools[0]->id;
-
-        $students  = User::select('id', 'first_name', 'last_name')->whereHas('roles', function ($query) {
-            $query->where('roles.name', 'sbo-student');
-        })->whereDoesntHave('roles', function ($query) {
-            $query->where('roles.name', '!=', 'sbo-student');
-        })->whereHas('schools', function ($query) use ($school_id) {
+        $students = User::select('id', 'first_name', 'last_name')->whereHas('roles', function($query){
+            $query->whereIn('roles.name',['sbo-student','guest']);
+        })->whereDoesntHave('officer')->whereHas('schools', function($query) use ($school_id){
             $query->where('schools.id', $school_id);
-        })->with('schools')->get();
+        })->get();
+
+     
+    
 
         return new UserResource($students);
     }
@@ -75,21 +98,19 @@ class OfficerController extends Controller
     {
 
         $school_id  = auth('sanctum')->user()->schools[0]->id;
-
-
-        // option1 
-        // $officers = SboOfficer::whereHas('adviser.schools', function($query) use($school_id){
-        //     $query->where('schools.id', $school_id);
-        // })->get();
         $adviser_id  = auth('sanctum')->user()->id;
+
         $officers = SboOfficer::where('adviser_id', $adviser_id)
             ->whereHas('adviser.schools', function ($query) use ($school_id) {
                 $query->where('schools.id', $school_id);
-            })->get();
-
-
-
+            })->with(['student'=> function($query){
+                $query->select('id','first_name', 'last_name');
+            },  'department'=> function($query){
+                $query->select('id', 'name');
+            }])->get();
 
         return new UserResource($officers);
     }
+
+   
 }

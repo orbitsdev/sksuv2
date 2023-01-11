@@ -136,6 +136,8 @@ Route::get('/role', function () {
     Route::get('manage-officer/get-school-department', [OfficerController::class, 'getSchoolDepartmentphp']);
     Route::get('manage-officer/get-officers', [OfficerController::class, 'getOfficers']);
     Route::post('manage-officer/create-officer', [OfficerController::class, 'createOfficer']);
+    Route::post('manage-officer/update-officer', [OfficerController::class, 'updateOfficer']);
+    Route::post('manage-officer/delete-selected-officer', [OfficerController::class, 'deleteSelectedOfficer']);
 
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
