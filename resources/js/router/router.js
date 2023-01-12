@@ -80,28 +80,28 @@ const routes = [
         children: [
             {
                 name: "manage-school",
-                path: "manage-school",
+                path: "osas/manage-school",
                 component: () => import("../views/OSAS/ManageSchool.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
             {
                 name: "manage-school-department",
-                path: "manage-school-department",
+                path: "osas/manage-school-department",
                 component: () => import("../views/OSAS/ManageDepartment.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
             {
                 name: "manage-requirement",
-                path: "manage-requirement",
+                path: "osas/manage-requirement",
                 component: () => import("../views/OSAS/ManageRequirement.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
             {
                 name: "manage-sbo-adviser",
-                path: "manage-sbo-adviser",
+                path: "osas/manage-sbo-adviser",
                 component: () => import("../views/OSAS/ManageSboAdviser.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
 
@@ -131,14 +131,14 @@ const routes = [
             },
             {
                 name: "manage-application",
-                path: "/dashboard/osas/manage-application",
+                path: "osas/manage-application",
                 component: () => import("../views/OSAS/ManageApplication.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
             },
            
             {
                 name: "manage-roles",
-                path: "/dashboard/osas/manage-roles",
+                path: "osas/manage-roles",
                 component: () => import("../views/OSAS/ManageRole.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
             },
@@ -147,7 +147,7 @@ const routes = [
             // SEND  SBO ADVISER ROLE REQUES
             {
                 name: "sbo-adviser-makerequest",
-                path: "/dashboard/sbo-adviser/make-request",
+                path: "sbo-adviser/make-request",
                 component: () =>
                     import("../views/SBO-ADVISER/MakeRequestPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["guest"] },
@@ -156,7 +156,7 @@ const routes = [
 
             {
                 name: "manage-sbo-officers",
-                path: "/dashboard/sbo-adviser/manage-sbo-offers",
+                path: "sbo-adviser/manage-sbo-offers",
                 component: () =>
                     import("../views/SBO-ADVISER/ManageOfficersPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },

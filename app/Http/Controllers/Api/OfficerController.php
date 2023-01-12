@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\OfficerResource;
-use App\Http\Resources\DepartmentResource;
-use App\Http\Resources\UserResource;
 use App\Models\Department;
 use App\Models\SboOfficer;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Controllers\OfficerResource;
+use App\Http\Resources\DepartmentResource;
 
 class OfficerController extends Controller
 
@@ -34,9 +35,23 @@ class OfficerController extends Controller
         ]);
 
 
+      
+
+        $student = User::where('id', $request->input('student_id'))->first();  
+        $guest_role_id = Role::select('id')->where('name', 'sbo-student')->first();
+
+        if(count($student->roles) > 0){
+            foreach($student->roles  as $role){
+
+                if($role->name == "guest"){
+                    $student->roles()->sync([$guest_role_id->id]);
+                }
+            }
+        }
+
         auth('sanctum')->user()->officers()->create($validated);
 
-        return response()->json(['success'], 200);
+        return response()->json(['success', $student, $guest_role_id->id], 200);
     }
 
     public function updateOfficer(Request $request)
@@ -83,7 +98,7 @@ class OfficerController extends Controller
     {
 
         $school_id  = auth('sanctum')->user()->schools[0]->id;
-        $students = User::select('id', 'first_name', 'last_name')->whereHas('roles', function($query){
+        $students = User::select('id', 'first_name', 'last_name','email')->whereHas('roles', function($query){
             $query->whereIn('roles.name',['sbo-student','guest']);
         })->whereDoesntHave('officer')->whereHas('schools', function($query) use ($school_id){
             $query->where('schools.id', $school_id);
@@ -104,7 +119,7 @@ class OfficerController extends Controller
             ->whereHas('adviser.schools', function ($query) use ($school_id) {
                 $query->where('schools.id', $school_id);
             })->with(['student'=> function($query){
-                $query->select('id','first_name', 'last_name');
+                $query->select('id','first_name', 'last_name', );
             },  'department'=> function($query){
                 $query->select('id', 'name');
             }])->get();

@@ -70,8 +70,7 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
         <template #c-content>
-
-          <div v-if="(isUpdatingMode == false && studentoptions.length == 0)"  >
+          <div v-if="(isUpdatingMode == false && studentoptions.length == 0 && isStudentFetching == false)"  >
            
             <div class="my-10 flex justify-center">
               <img src="/assets/undraw_choosing_house_re_1rv7.svg" width="200" height="200" />
@@ -139,7 +138,7 @@
                 class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
               >
                 <option v-for="item in studentoptions" :key="item.id" :value="item.id">
-                  {{ item.first_name }} {{ item.id }}
+                  {{ item.email}}
                 </option>
               </select>
             </div>
@@ -422,6 +421,8 @@ export default {
     },
 
     async getStudent() {
+
+      this.isStudentFetching = true;
       await axiosApi
         .get("api/manage-officer/get-students")
         .then((res) => {
@@ -434,7 +435,9 @@ export default {
         .catch((err) => {
           this.requestError = err;
         })
-        .finally(() => {});
+        .finally(() => {
+          this.isStudentFetching = false;
+        });
     },
     async getOfficers() {
       await axiosApi
