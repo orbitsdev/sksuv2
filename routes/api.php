@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\CurrentSboAdviserController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\DynamicFetchingController;
+use App\Http\Controllers\Api\FillUpApplicationController;
 use App\Http\Controllers\Api\ManageSchoolController;
 use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
@@ -131,14 +132,18 @@ Route::get('/role', function () {
     Route::post('manage-requirement/delete-selected', [RequirementController::class, 'deleteSelectedRequirement']);
     
     
-    // Manage Sbo Officer d
+    // Manage Sbo Officer 
     Route::get('manage-officer/get-students', [OfficerController::class, 'getStudents']);
     Route::get('manage-officer/get-school-department', [OfficerController::class, 'getSchoolDepartmentphp']);
     Route::get('manage-officer/get-officers', [OfficerController::class, 'getOfficers']);
     Route::post('manage-officer/create-officer', [OfficerController::class, 'createOfficer']);
     Route::post('manage-officer/update-officer', [OfficerController::class, 'updateOfficer']);
     Route::post('manage-officer/delete-selected-officer', [OfficerController::class, 'deleteSelectedOfficer']);
-
+    
+    
+    // SBO STUDENT 
+    
+    Route::get('application-form/get-application', [FillUpApplicationController::class, 'getApplcation']);
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
     Route::get('/oss/token', [CloudStorageController::class, 'getAccessToken']);

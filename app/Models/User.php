@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
 use App\Models\School;
+use App\Models\Response;
 use App\Models\SboOfficer;
 use App\Models\SocialAccount;
 use App\Models\SboAdviserRequest;
@@ -73,6 +74,10 @@ class User extends Authenticatable
 
     public function officer(){
         return $this->hasOne(SboOfficer::class, 'student_id');
+    }
+
+    public function responses(){
+        return $this->hasMany(Response::class);
     }
 
    

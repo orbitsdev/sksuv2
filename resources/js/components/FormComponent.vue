@@ -208,6 +208,7 @@ import { mapGetters } from "vuex";
     },
     methods: {
       loadDataforSelect() {},
+      
       async loadApplication() {
 
         this.isFetching = true;

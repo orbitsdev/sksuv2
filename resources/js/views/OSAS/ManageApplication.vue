@@ -314,6 +314,7 @@ export default {
       applicationforms: [],
       selectedApplicationFormToUpdate: null,
       formfields: [],
+
       isLoading: false,
       selectedApplicationToView: null,
     };

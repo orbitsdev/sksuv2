@@ -37,9 +37,10 @@ import BaseConfirmation from './components/BaseConfirmation.vue';
 import FieldTypeComponent from './components/FieldTypeComponent.vue';
 import Pagination from './components/Pagination.vue';
 import FormComponent from './components/FormComponent.vue';
+import CardSkeleton from './components/CardSkeleton.vue';
 
 
-// VUETIFY
+
 
 
 import axiosApi from "./api/axiosApi";
@@ -58,12 +59,15 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import WaveUI from 'wave-ui';
 import 'wave-ui/dist/wave-ui.css';
 new WaveUI(app, {});
-  
-// REGISTER
+
+
+
+
 app.use(router);
 app.use(store);
 app.use(Vue3Lottie);
 app.use(VueSweetalert2);
+// app.use(vuetify);
 app.component("App", App);
 
 // GLOBAL COMPONENT
@@ -94,10 +98,12 @@ app.component('Path', Path);
 app.component('BaseConfirmation', BaseConfirmation);
 app.component('FieldTypeComponent', FieldTypeComponent);
 app.component('FormComponent', FormComponent);
+app.component('CardSkeleton', CardSkeleton);
+
+
 
 
 
 router.isReady().then(()=>{
     app.mount("#app");
 });
-    

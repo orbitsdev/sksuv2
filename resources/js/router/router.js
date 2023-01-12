@@ -2,6 +2,8 @@ import { createRouter } from "vue-router";
 import { createWebHistory } from "vue-router";
 import store from "../store/store.js";
 
+
+
 const routes = [
     {
         name: "googledriveupload",
@@ -162,6 +164,29 @@ const routes = [
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
+           
+
+            {
+                name: "application-from-osas",
+                path: "sbo-student/applications",
+                component: () =>
+                    import("../views/SBO-STUDENT/ApplicationFormPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
+                children: [],
+            },
+
+            {
+                name: "take-application",
+                path: "sbo-student/applications/:applicationId(\\d+)/:title",
+                component: () =>
+                    import("../views/SBO-STUDENT/FillupFormPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
+                children: [],
+               
+                props: true,
+            },
+
+
         ],
     },
 

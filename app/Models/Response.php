@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Answer;
 use App\Models\ApplicationForm;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,10 @@ class Response extends Model
 
     public function application(){
         return $this->belongsTo(ApplicationForm::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     public function answers(){

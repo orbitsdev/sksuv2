@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('requirement_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('response_id')->constrained();
-            $table->foreignId('field_id')->constrained();
-            $table->string('answer_value')->constrained();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('requirement_files');
     }
 };

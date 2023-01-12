@@ -74,7 +74,7 @@
             </div>
             <div class="mt-5 h-0 flex-1 overflow-y-auto">
               <nav class="space-y-1 px-2">
-                <!-- Current: "bg-indigo-800 text-white", Default: "text-indigo-100 hover:bg-indigo-600" -->
+                <!-- Current: "bg-indigo-800 text-white", Default: "text-white hover:bg-green-600" -->
                 <a
                   href="#"
                   class="bg-indigo-800 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
@@ -100,7 +100,7 @@
 
                 <a
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/users -->
                   <svg
@@ -123,7 +123,7 @@
 
                 <a
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -146,7 +146,7 @@
 
                 <a
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/calendar -->
                   <svg
@@ -169,7 +169,7 @@
 
                 <a
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/inbox -->
                   <svg
@@ -192,7 +192,7 @@
 
                 <a
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/chart-bar -->
                   <svg
@@ -263,7 +263,7 @@
                 <router-link
                   :to="{ name: 'manage-school' }"
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -286,7 +286,7 @@
                 <router-link
                   :to="{ name: 'manage-school-department' }"
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -310,7 +310,7 @@
                 <router-link
                   :to="{ name: 'manage-sbo-adviser' }"
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -333,7 +333,7 @@
                 <router-link
                   :to="{ name: 'manage-roles' }"
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -356,7 +356,7 @@
                 <router-link
                   :to="{ name: 'manage-application' }"
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -379,7 +379,7 @@
                 <router-link
                   :to="{ name: 'manage-requirement' }"
                   href="#"
-                  class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
                   <!-- Heroicon name: outline/folder -->
                   <svg
@@ -408,7 +408,7 @@
                 <router-link
                 :to="{ name: 'manage-sbo-officers' }"
                 href="#"
-                class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
               >
                 <!-- Heroicon name: outline/folder -->
                 <svg
@@ -431,9 +431,9 @@
               </div>
               <div v-if="User.hasRoleOf(['sbo-student'])">
                 <router-link
-                :to="{ name: 'manage-sbo-officers' }"
+                :to="{ name: 'application-from-osas' }"
                 href="#"
-                class="text-indigo-100 hover:bg-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
               >
                 <!-- Heroicon name: outline/folder -->
                 <svg
@@ -451,7 +451,7 @@
                     d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
                   />
                 </svg>
-                Application Form
+                Applications
               </router-link>
               </div>
              
