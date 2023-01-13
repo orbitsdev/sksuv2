@@ -7,12 +7,15 @@
         </h1>
       </div>
 
+    
+      
+
       <div v-if="application.fields.length > 0" class="mt-4">
         <h1 class="text-2xl font-bold mb-2">General Fields</h1>
 
         <div class="grid grid-cols-2 gap-4">
           <div class="  " v-for="field in application.fields" :key="field.id">
-            <!-- {{ field }} -->
+            {{ field }}
             <div>
               <label class="block font-bold mb-2 text-gray-700" :for="field.name">{{
                 field.name
@@ -90,6 +93,7 @@
           </div>
         </div>
       </div>
+   
 
       <div v-if="application.requirements.length > 0" class="mt-6">
         <h1 class="my-2 text-2xl font-bold">Requirements</h1>
@@ -111,24 +115,50 @@
             <FilePondBase
               :label="'Drag & Drop your ' + requirement.file_type"
               :multiple="requirement.upload_type == 'single-upload' ? false : true"
-              :fileType="requirement.file_type == 'documents' ? fileType.documents : fileType.image"
+              :fileType="
+                requirement.file_type == 'documents' ? fileType.documents : fileType.image
+              "
               @fileIsUploading="requirement.handleLoading"
               @fileIsUploaded="requirement.setFile"
               @fileIsDeleted="requirement.removeFile"
-
               class="mt-2"
             />
             <LinearLoader v-if="requirement.isUploading" />
           </div>
         </div>
       </div>
+      <!-- {{ response }} -->
 
+      <div>
+        Response
+
+        <div v-if="response.answers.length > 0">
+
+
+          <div class="mx-1 border bg-green-50 p-1" v-for="item in response.answers" :key="item.id">
+            {{ item.id }}
+            {{ item.name }}
+          </div>
+        </div>
+
+        <div v-if="response.requirements_files.length > 0">
+
+          <div  class="mx-1 border bg-green-50 p-1" v-for="item in response.requirements_files" :key="item.id">
+            <p v-for="i in item.files" :key="i"> 
+              {{ i.file_name }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      
       <div class="mt-4">
         <div class="my-2 flex justify-end items-center">
           <div class="flex">
             <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
             <div>
-              <TableButton class="cursor-not-allowed"> Submit </TableButton>
+              <TableButton class="cursor-not-allowed" @click="submitData"> Submit </TableButton>
             </div>
           </div>
         </div>
@@ -152,6 +182,7 @@ export default {
       response: {
         application_id: null,
         answers: [],
+        requirements_files: [],
       },
     };
   },
@@ -169,11 +200,42 @@ export default {
   },
 
   methods: {
-    setFile(response) {},
+ 
 
-    removeFile(response) {},
+    async submitData() {
 
-    async submitData() {},
+
+      this.response.answers = [];
+      this.response.requirements_files = [];
+
+      this.application.fields.forEach(item => {
+
+        let field_with_answer = {
+          id: item.id,
+          name: item.name,
+          type: item.type,
+          answer: item.answer,
+        }
+      
+        this.response.answers.push(field_with_answer);
+        
+      });
+      
+      this.application.requirements.forEach(item => {
+        
+        let requirement_file = {
+          id: item.id,
+          name: item.name,
+          type: item.type,
+          collection_for_select: item.collection_for_select,
+          files: item.files,
+        }
+        this.response.requirements_files.push(requirement_file);
+
+      });
+
+
+    },
 
     async fetchDataForSelect(request_parameters) {
       axios
@@ -243,24 +305,21 @@ export default {
           files: [],
           isUploading: false,
 
-           handleLoading:(value) => {
+          handleLoading: (value) => {
             this.application.requirements[index].isUploading = value;
-            },
-        
-          setFile: (response) => {
-
-
-            this.application.requirements[index].files.push(response);
-            
           },
-          removeFile: (response) =>{
+
+          setFile: (response) => {
+            this.application.requirements[index].files.push(response);
+          },
+          removeFile: (response) => {
             console.log(response);
 
             const newFile = response;
 
-            this.application.requirements[index].files =this.application.requirements[index].files.filter(file=>  file.folder != newFile.folder); 
-         
-
+            this.application.requirements[index].files = this.application.requirements[
+              index
+            ].files.filter((file) => file.folder != newFile.folder);
           },
         };
         new_requirements.push(requirement);
@@ -285,14 +344,10 @@ export default {
             ...this.modifyFields(dataholder.fields),
           };
 
-
           // console.log(this.modifyRequirements(dataholder.requirements));
-
-
 
           dataholder.fields = modified_data.fields;
           dataholder.requirements = this.modifyRequirements(dataholder.requirements);
-          
 
           this.application = dataholder;
           this.fetchDataForSelect(modified_data.request_parameters);
