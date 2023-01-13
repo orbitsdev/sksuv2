@@ -2,7 +2,7 @@
   <div>
 
 
-    <!-- {{ applications }} -->
+
 
     <ul
       role="list"
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import { parse } from 'filepond';
 import axiosApi from "../../api/axiosApi";
 export default {
 
@@ -91,7 +92,10 @@ export default {
             console.log(item);
 
 
-            
+
+ 
+
+
             this.$router.push({name: 'take-application', params: {applicationId: item.id, title: item.title}});
 
              // this.$router.push({name:'take-application', paramns: {applicationId: item.id, title: item.title}}  );

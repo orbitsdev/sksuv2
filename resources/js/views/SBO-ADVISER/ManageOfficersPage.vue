@@ -23,7 +23,7 @@
 
       <BaseTable
         :thdata="['', 'Name', 'Position', 'Department', '']"
-        :isFetching="isFetching"
+        :isFetching="isSaving"
       >
         <template v-if="officers.length > 0" #data>
           <tr v-for="officer in officers" :key="officer.id">
@@ -361,6 +361,9 @@ export default {
 
         if (this.studentoptions.length == 0) {
           this.getStudent();
+        }
+        if (this.departments.length == 0) {
+          this.loadDepartment();
         }
       }
 

@@ -243,7 +243,10 @@ export default {
 if(this.User.hasRoleOf(['sbo-student', 'sbo-adviser', 'guest'])){
 
   if(this.User.schools.length > 0){
-      this.$router.push({ name: 'dashboard'});
+      
+    
+    this.$router.push({ name: 'dashboard'});
+      
   }
 }
 

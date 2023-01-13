@@ -226,7 +226,6 @@
       <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="flex flex-grow flex-col overflow-y-auto bg-green-900 pt-5">
-          
           <div class="flex flex-shrink-0 items-center px-4">
             <img
               class="h-8 w-auto"
@@ -399,65 +398,58 @@
                   </svg>
                   Manage Requirements
                 </router-link>
-
-                
-              
               </div>
 
               <div v-if="User.hasRoleOf(['sbo-adviser'])">
                 <router-link
-                :to="{ name: 'manage-sbo-officers' }"
-                href="#"
-                class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-              >
-                <!-- Heroicon name: outline/folder -->
-                <svg
-                  class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
+                  :to="{ name: 'manage-sbo-officers' }"
+                  href="#"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                  />
-                </svg>
-                Manage Officers
-              </router-link>
+                  <!-- Heroicon name: outline/folder -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                    />
+                  </svg>
+                  Manage Officers
+                </router-link>
               </div>
               <div v-if="User.hasRoleOf(['sbo-student'])">
                 <router-link
-                :to="{ name: 'application-from-osas' }"
-                href="#"
-                class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-              >
-                <!-- Heroicon name: outline/folder -->
-                <svg
-                  class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
+                  :to="{ name: 'application-from-osas' }"
+                  href="#"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                  />
-                </svg>
-                Applications
-              </router-link>
+                  <!-- Heroicon name: outline/folder -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                    />
+                  </svg>
+                  Applications
+                </router-link>
               </div>
-             
-              
-          
-             
             </nav>
           </div>
         </div>
@@ -515,7 +507,6 @@
               <!-- Profile dropdown -->
               <div class="relative ml-3">
                 <div>
-                  
                   <button
                     @click="showLogoutButton = !showLogoutButton"
                     type="button"
@@ -524,10 +515,12 @@
                     aria-expanded="false"
                     aria-haspopup="true"
                   >
-                  <span>{{User.user_roles}} </span>
-                  <span class="mr-3 capitalize">  {{User.first_name}} {{ User.last_name }}</span>
+                    <span>{{ User.user_roles }} </span>
+                    <span class="mr-3 capitalize">
+                      {{ User.first_name }} {{ User.last_name }}</span
+                    >
                     <span class="sr-only">Open user menu</span>
-                  
+
                     <img
                       class="h-8 w-8 rounded-full"
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -564,8 +557,10 @@
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8"></div>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
               <!-- {{ User }} -->
+
+              <!-- {{ this.$route.path }}
+              {{ User.hasRoleOf(["osas"]) }} -->
               <router-view> </router-view>
-  
             </div>
           </div>
         </main>
@@ -611,7 +606,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['User']),
+    ...mapGetters(["User"]),
   },
   created() {
     this.getUserDetails();
@@ -621,16 +616,27 @@ export default {
       this.requestError = null;
     },
 
-    checkUserAccount(){
+    checkUserAccount() {
+      if (this.$route.path == "/dashboard") {
+        if (this.User.hasRoleOf(["sbo-student", "sbo-adviser", "guest"])) {
 
-      if(this.User.hasRoleOf(['sbo-student', 'sbo-adviser', 'guest'])){
+          if (this.User.schools.length == 0) {
+            this.$router.push({ name: "getting-started" });
+          }
 
-        if(this.User.schools.length == 0){
-            this.$router.push({ name: 'getting-started'});
+          // redirect student to default page
+          if (this.User.hasRoleOf(["sbo-student"])) {
+            this.$router.push({ name: "application-from-osas" });
+          }
         }
+
+        if (this.User.hasRoleOf(["osas"])) {
+            this.$router.push({ name: "manage-school" });
+        }
+
+
       }
-      
-    },  
+    },
     async logoutUser() {
       this.isLogout = true;
       await axiosApi
@@ -658,38 +664,31 @@ export default {
         });
     },
     async getUserDetails() {
+      const token = localStorage.getItem("token");
 
-      const token = localStorage.getItem('token');
-
-      if(token !=  null){
-
-        if(this.$store.state.User == null){
+      if (token != null) {
+        if (this.$store.state.User == null) {
           this.isScreenLoading = true;
 
-          this.$store.dispatch('getUser').then(res=>{         
-           this.$store.commit('setUser', res);
-           console.log("from fetch");
-           this.checkUserAccount();
-
-
-         }).catch(err=>{
-
-          this.requestError = err;
-          this.$store.dispatch('logoutUser');
-         }).finally(()=>{
-
-          this.isScreenLoading = false;
-
-
-         });
-
-        }else{
+          this.$store
+            .dispatch("getUser")
+            .then((res) => {
+              this.$store.commit("setUser", res);
+              console.log("from fetch");
+              this.checkUserAccount();
+            })
+            .catch((err) => {
+              this.requestError = err;
+              this.$store.dispatch("logoutUser");
+            })
+            .finally(() => {
+              this.isScreenLoading = false;
+            });
+        } else {
           console.log("has data");
           this.checkUserAccount();
-          
         }
       }
-     
     },
   },
 };

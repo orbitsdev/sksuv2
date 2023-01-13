@@ -177,7 +177,7 @@ const routes = [
 
             {
                 name: "take-application",
-                path: "sbo-student/applications/:applicationId(\\d+)/:title",
+                path: "sbo-student/applications/:applicationId/:title",
                 component: () =>
                     import("../views/SBO-STUDENT/FillupFormPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
