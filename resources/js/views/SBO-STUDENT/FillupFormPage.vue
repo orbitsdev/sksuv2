@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6">
+  <div class="bg-white p-6 runded-lg shadow-sm">
     <div v-if="application != null">
       <div class="mb-2">
         <h1 class="text-4xl font-bold">
@@ -7,17 +7,15 @@
         </h1>
       </div>
 
-    
-      
-
       <div v-if="application.fields.length > 0" class="mt-4">
         <h1 class="text-2xl font-bold mb-2">General Fields</h1>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div class="  " v-for="field in application.fields" :key="field.id">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-4">
+          <div  v-for="field in application.fields" :key="field.id" >
+          <!-- <div  v-for="field in application.fields" :key="field.id" :class="[field.type == 'textarea' ? 'col-span-2' : '']"> -->
             {{ field }}
             <div>
-              <label class="block font-bold mb-2 text-gray-700" :for="field.name">{{
+              <label class="block font-bold  text-gray-700" :for="field.name">{{
                 field.name
               }}</label>
               <input
@@ -49,7 +47,7 @@
                 :id="field.name"
                 v-model="field.answer"
                 name="description"
-                class="block w-full rounded-lg p-2 border border-gray-400 focus:outline-none focus:border-green-500"
+                class=" block w-full rounded-lg p-2 border border-gray-400 focus:outline-none focus:border-green-500"
               ></textarea>
 
               <div v-if="field.type == 'select'" class="relative rounded-md shadow-sm">
@@ -81,7 +79,7 @@
                     v-if="field.collection_for_select == 'schools'"
                     class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
                     :id="field.name + field.id"
-                    v-model="field.answer"
+                    v-model="field.fields_answer"
                   >
                     <option v-for="item in field.data" :key="item.id" :value="item.id">
                       {{ item.name }}
@@ -93,72 +91,79 @@
           </div>
         </div>
       </div>
-   
 
       <div v-if="application.requirements.length > 0" class="mt-6">
         <h1 class="my-2 text-2xl font-bold">Requirements</h1>
 
-        <div class="grid grid-cols-2 gap-4 shadow-sm">
+        <div class="grid grid-cols-4 gap-x-4 gap-y-1 ">
           <div
             v-for="requirement in application.requirements"
             :key="requirement.id"
             class="  "
           >
-            {{ requirement }}
+           {{ requirement }}
 
-            <label class="block font-bold text-gray-700" :for="requirement.name"
+            <label class="block font-bold text-gray-700 " :for="requirement.name"
               >{{ requirement.name }}
             </label>
 
-            <span class="text-xs text-gray"> {{ requirement.file_type }} type </span>
+            <span class="text-xs text-gray capitalize text-gray-500">  {{ requirement.file_type }} |   </span>
+            <span class="text-xs text-gray capitalize text-gray-500 "> {{ requirement.upload_type }}   </span>
 
             <FilePondBase
-              :label="'Drag & Drop your ' + requirement.file_type"
+              :label="'Drag & Drop your  files here or <u>Browse</u>'"
               :multiple="requirement.upload_type == 'single-upload' ? false : true"
-              :fileType="
-                requirement.file_type == 'documents' ? fileType.documents : fileType.image
-              "
+              :fileType="requirement.file_type == 'documents' ? fileType.documents : fileType.image"
               @fileIsUploading="requirement.handleLoading"
               @fileIsUploaded="requirement.setFile"
               @fileIsDeleted="requirement.removeFile"
-              class="mt-2"
+              class="mt-2 tex-sm"
             />
             <LinearLoader v-if="requirement.isUploading" />
           </div>
         </div>
       </div>
-      <!-- {{ response }} -->
+   
 
-      <div>
-        Response
-
-        <div v-if="response.answers.length > 0">
-
-
-          <div class="mx-1 border bg-green-50 p-1" v-for="item in response.answers" :key="item.id">
-            {{ item.id }}
-            {{ item.name }}
+      <div class="border shadow p-4 bg-white">
+          {{ response }}
+        <div v-if="response.fields_answer.length > 0">
+          Fields
+          <div
+            class="mx-1 border bg-green-50 p-1"
+            v-for="item in response.fields_answer"
+            :key="item.id"
+          >
+          Field_id {{ item.id }}
+           FIled name {{ item.name }}
+           Field answer  {{ item.answer }}
           </div>
         </div>
 
         <div v-if="response.requirements_files.length > 0">
-
-          <div  class="mx-1 border bg-green-50 p-1" v-for="item in response.requirements_files" :key="item.id">
-            <p v-for="i in item.files" :key="i"> 
+          Requirements
+          <div
+            class="mx-1 border bg-green-50 p-1"
+            v-for="item in response.requirements_files"
+            :key="item.id"
+          >
+          {{ item.id }}
+            <p v-for="i in item.files" :key="i">
+              {{ i.file_name }}
               {{ i.file_name }}
             </p>
           </div>
         </div>
-
       </div>
 
-      
       <div class="mt-4">
         <div class="my-2 flex justify-end items-center">
           <div class="flex">
             <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
             <div>
-              <TableButton class="cursor-not-allowed" @click="submitData"> Submit </TableButton>
+              <TableButton class="" @click="submitData">
+                Submit
+              </TableButton>
             </div>
           </div>
         </div>
@@ -181,7 +186,7 @@ export default {
       isFetching: false,
       response: {
         application_id: null,
-        answers: [],
+        fields_answer: [],
         requirements_files: [],
       },
     };
@@ -200,39 +205,42 @@ export default {
   },
 
   methods: {
- 
-
     async submitData() {
-
-
-      this.response.answers = [];
+      this.response.fields_answer = [];
       this.response.requirements_files = [];
 
-      this.application.fields.forEach(item => {
-
+      this.application.fields.forEach((item) => {
         let field_with_answer = {
-          id: item.id,
+          field_id: item.id,
           name: item.name,
           type: item.type,
           answer: item.answer,
-        }
-      
-        this.response.answers.push(field_with_answer);
-        
+        };
+
+        this.response.fields_answer.push(field_with_answer);
       });
-      
-      this.application.requirements.forEach(item => {
-        
+
+      this.application.requirements.forEach((item) => {
         let requirement_file = {
-          id: item.id,
+          requirement_id: item.id,
           name: item.name,
           type: item.type,
           collection_for_select: item.collection_for_select,
           files: item.files,
-        }
+        };
+        
         this.response.requirements_files.push(requirement_file);
 
       });
+
+
+      let new_response = {
+        ...this.response,
+      }
+
+      console.log(new_response);
+
+      
 
 
     },
@@ -254,6 +262,10 @@ export default {
               if (field.id == data.data.field_id) {
                 field.data = data.data.data;
                 field.is_processing = false;
+                if(field.data.length > 0){
+                  field.answer = field.data[0].id;
+
+                }
               }
             }
           });

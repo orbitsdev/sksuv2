@@ -14,6 +14,7 @@
     pdfComponentExtraParams="toolbar=0&view=fit&page=1"
     :disabled="isDisabled"
     :label-idle="label"
+    :max-file="maxFile"
     :maxFileSize="maxSize"
     :allow-multiple="multiple"
     :accepted-file-types="fileType"
@@ -133,6 +134,9 @@ export default {
     FilePond,
   },
   props: {
+    maxFile: {
+      type: String,
+    },
     fileType: {
       type: String,
       default:
