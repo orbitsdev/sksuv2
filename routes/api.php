@@ -144,7 +144,9 @@ Route::get('/role', function () {
     // SBO STUDENT 
     
     Route::get('application-form/get-application', [FillUpApplicationController::class, 'getApplcation']);
-    Route::post('application-form/create-response', [FillUpApplicationController::class, 'createResponse']);
+    Route::post('application-form/response/create', [FillUpApplicationController::class, 'createResponse']);
+    
+  
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
     Route::get('/oss/token', [CloudStorageController::class, 'getAccessToken']);

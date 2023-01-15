@@ -11,11 +11,11 @@
         <h1 class="text-2xl font-bold mb-2">General Fields</h1>
 
         <div class="grid grid-cols-2 gap-x-4 gap-y-4">
-          <div  v-for="field in application.fields" :key="field.id" >
-          <!-- <div  v-for="field in application.fields" :key="field.id" :class="[field.type == 'textarea' ? 'col-span-2' : '']"> -->
-            {{ field }}
+          <div v-for="(field, index) in application.fields" :key="field.id">
+            <!-- <div  v-for="field in application.fields" :key="field.id" :class="[field.type == 'textarea' ? 'col-span-2' : '']"> -->
+            <!-- {{ field }} -->
             <div>
-              <label class="block font-bold  text-gray-700" :for="field.name">{{
+              <label class="block font-bold text-gray-700" :for="field.name">{{
                 field.name
               }}</label>
               <input
@@ -47,7 +47,7 @@
                 :id="field.name"
                 v-model="field.answer"
                 name="description"
-                class=" block w-full rounded-lg p-2 border border-gray-400 focus:outline-none focus:border-green-500"
+                class="block w-full rounded-lg p-2 border border-gray-400 focus:outline-none focus:border-green-500"
               ></textarea>
 
               <div v-if="field.type == 'select'" class="relative rounded-md shadow-sm">
@@ -79,7 +79,7 @@
                     v-if="field.collection_for_select == 'schools'"
                     class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
                     :id="field.name + field.id"
-                    v-model="field.fields_answer"
+                    v-model="field.answer"
                   >
                     <option v-for="item in field.data" :key="item.id" :value="item.id">
                       {{ item.name }}
@@ -88,6 +88,14 @@
                 </div>
               </div>
             </div>
+            <p
+              class="text-xs text-red-500 mt-1"
+              v-if="validationError && validationError[`answers.${index}.answer`]"
+            >
+              {{ validationError["answers." + index + ".answer"][0] }}
+
+              <!-- {{ index }} -->
+            </p>
           </div>
         </div>
       </div>
@@ -95,25 +103,31 @@
       <div v-if="application.requirements.length > 0" class="mt-6">
         <h1 class="my-2 text-2xl font-bold">Requirements</h1>
 
-        <div class="grid grid-cols-4 gap-x-4 gap-y-1 ">
+        <div class="grid grid-cols-4 gap-x-4 gap-y-1">
           <div
             v-for="requirement in application.requirements"
             :key="requirement.id"
             class="  "
           >
-           {{ requirement }}
+            {{ requirement }}
 
-            <label class="block font-bold text-gray-700 " :for="requirement.name"
+            <label class="block font-bold text-gray-700" :for="requirement.name"
               >{{ requirement.name }}
             </label>
 
-            <span class="text-xs text-gray capitalize text-gray-500">  {{ requirement.file_type }} |   </span>
-            <span class="text-xs text-gray capitalize text-gray-500 "> {{ requirement.upload_type }}   </span>
+            <span class="text-xs text-gray capitalize text-gray-500">
+              {{ requirement.file_type }} |
+            </span>
+            <span class="text-xs text-gray capitalize text-gray-500">
+              {{ requirement.upload_type }}
+            </span>
 
             <FilePondBase
               :label="'Drag & Drop your  files here or <u>Browse</u>'"
               :multiple="requirement.upload_type == 'single-upload' ? false : true"
-              :fileType="requirement.file_type == 'documents' ? fileType.documents : fileType.image"
+              :fileType="
+                requirement.file_type == 'documents' ? fileType.documents : fileType.image
+              "
               @fileIsUploading="requirement.handleLoading"
               @fileIsUploaded="requirement.setFile"
               @fileIsDeleted="requirement.removeFile"
@@ -123,47 +137,13 @@
           </div>
         </div>
       </div>
-   
-
-      <div class="border shadow p-4 bg-white">
-          {{ response }}
-        <div v-if="response.fields_answer.length > 0">
-          Fields
-          <div
-            class="mx-1 border bg-green-50 p-1"
-            v-for="item in response.fields_answer"
-            :key="item.id"
-          >
-          Field_id {{ item.id }}
-           FIled name {{ item.name }}
-           Field answer  {{ item.answer }}
-          </div>
-        </div>
-
-        <div v-if="response.requirements_files.length > 0">
-          Requirements
-          <div
-            class="mx-1 border bg-green-50 p-1"
-            v-for="item in response.requirements_files"
-            :key="item.id"
-          >
-          {{ item.id }}
-            <p v-for="i in item.files" :key="i">
-              {{ i.file_name }}
-              {{ i.file_name }}
-            </p>
-          </div>
-        </div>
-      </div>
 
       <div class="mt-4">
         <div class="my-2 flex justify-end items-center">
           <div class="flex">
             <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
             <div>
-              <TableButton class="" @click="submitData">
-                Submit
-              </TableButton>
+              <TableButton class="" @click="submitData"> Submit </TableButton>
             </div>
           </div>
         </div>
@@ -180,6 +160,7 @@ export default {
   computed: {
     ...mapGetters(["fileType"]),
   },
+
   data() {
     return {
       application: null,
@@ -189,6 +170,8 @@ export default {
         fields_answer: [],
         requirements_files: [],
       },
+      validationError: null,
+      requestError: null,
     };
   },
   props: {
@@ -221,28 +204,37 @@ export default {
       });
 
       this.application.requirements.forEach((item) => {
-        let requirement_file = {
+        let new_requirement_file = {
           requirement_id: item.id,
           name: item.name,
-          type: item.type,
-          collection_for_select: item.collection_for_select,
+          type: item.file_type,
+          upload_type: item.upload_type,
           files: item.files,
         };
-        
-        this.response.requirements_files.push(requirement_file);
 
+        this.response.requirements_files.push(new_requirement_file);
       });
 
-
       let new_response = {
-        ...this.response,
-      }
+        application_id: this.response.application_id,
+        answers: this.response.fields_answer,
+        requirements: this.response.requirements_files,
+      };
 
-      console.log(new_response);
+      axiosApi
+        .post("api/application-form/response/create", new_response)
+        .then((res) => {
+          console.log(res.data);
 
-      
-
-
+          this.validationError = null;
+        })
+        .catch((err) => {
+          if (err.response.status === 422) {
+            this.validationError = err.response.data.errors;
+          } else {
+            this.requestError = err;
+          }
+        });
     },
 
     async fetchDataForSelect(request_parameters) {
@@ -262,9 +254,8 @@ export default {
               if (field.id == data.data.field_id) {
                 field.data = data.data.data;
                 field.is_processing = false;
-                if(field.data.length > 0){
+                if (field.data.length > 0) {
                   field.answer = field.data[0].id;
-
                 }
               }
             }

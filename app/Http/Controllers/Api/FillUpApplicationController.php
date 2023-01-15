@@ -24,7 +24,17 @@ class FillUpApplicationController extends Controller
 
     public function createResponse(Request $request){
 
+        $request->validate([
+            'application_id' => 'required',
+            'answers.*.answer' => 'required',
+        ], [
+            'answers.*.answer'=> 'Field is required'
+        ]);
+
+
+
         return response()->json([$request->all()]);
+
     }
 
 }

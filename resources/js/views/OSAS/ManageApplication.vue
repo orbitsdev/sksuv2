@@ -159,8 +159,7 @@
                   <p
                     class="text-xs text-red-500 mt-1"
                     v-if="
-                      validationError != null &&
-                      validationError['fields.' + parentindex + '.name']
+                      validationError != null &&  validationError['fields.' + parentindex + '.name']
                     "
                   >
                     {{ validationError["fields." + parentindex + ".name"][0] }}
@@ -314,7 +313,6 @@ export default {
       applicationforms: [],
       selectedApplicationFormToUpdate: null,
       formfields: [],
-
       isLoading: false,
       selectedApplicationToView: null,
     };
