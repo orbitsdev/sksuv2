@@ -4,11 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApplicationFormResource;
+use App\Models\Answer;
 use App\Models\ApplicationForm;
 use Illuminate\Http\Request;
 
 class FillUpApplicationController extends Controller
 {
+
+    public function getApplications(){
+        
+
+        $applications = ApplicationForm::doesntHave('responses', 'and', function ($query) {
+            $query->where('user_id', auth('sanctum')->user()->id);
+        })->with('fields', 'requirements')->paginate(10);
+        return new ApplicationFormResource($applications);    
+    }
 
     public function getApplcation(Request $request)
     {
@@ -29,11 +39,32 @@ class FillUpApplicationController extends Controller
             'answers.*.answer' => 'required',
         ], [
             'answers.*.answer'=> 'Field is required'
+            
         ]);
 
+        // get application
+     $application_form =   ApplicationForm::where('id', $request->input('application_id'))->first();
+
+     //create response
+       $response = $application_form->responses()->create([
+        'user_id'=> auth('sanctum')->user()->id
+       ]);
 
 
-        return response()->json([$request->all()]);
+       //create answers
+
+       foreach($request->input('answers') as $answer){
+
+        $response->answers()->create([
+        'field_id' => $answer['field_id'],            
+        'answer_value' => $answer['answer'],            
+        ]);
+
+       }
+            
+
+
+        return response()->json(['seuccess', $request->input('answers')]);
 
     }
 

@@ -143,6 +143,7 @@ Route::get('/role', function () {
     
     // SBO STUDENT 
     
+    Route::get('application-form/all-application', [FillUpApplicationController::class, 'getApplications']);
     Route::get('application-form/get-application', [FillUpApplicationController::class, 'getApplcation']);
     Route::post('application-form/response/create', [FillUpApplicationController::class, 'createResponse']);
     

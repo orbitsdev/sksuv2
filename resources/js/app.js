@@ -38,6 +38,7 @@ import FieldTypeComponent from './components/FieldTypeComponent.vue';
 import Pagination from './components/Pagination.vue';
 import FormComponent from './components/FormComponent.vue';
 import CardSkeleton from './components/CardSkeleton.vue';
+import EmptyCard from './components/EmptyCard.vue';
 
 
 
@@ -99,6 +100,7 @@ app.component('BaseConfirmation', BaseConfirmation);
 app.component('FieldTypeComponent', FieldTypeComponent);
 app.component('FormComponent', FormComponent);
 app.component('CardSkeleton', CardSkeleton);
+app.component('EmptyCard', EmptyCard);
 
 
 
