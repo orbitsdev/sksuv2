@@ -39,6 +39,7 @@ import Pagination from './components/Pagination.vue';
 import FormComponent from './components/FormComponent.vue';
 import CardSkeleton from './components/CardSkeleton.vue';
 import EmptyCard from './components/EmptyCard.vue';
+import Loader1 from './components/Loader1.vue';
 
 
 
@@ -101,6 +102,7 @@ app.component('FieldTypeComponent', FieldTypeComponent);
 app.component('FormComponent', FormComponent);
 app.component('CardSkeleton', CardSkeleton);
 app.component('EmptyCard', EmptyCard);
+app.component('Loader1', Loader1);
 
 
 

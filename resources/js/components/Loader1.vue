@@ -1,0 +1,36 @@
+
+
+<template>
+    <span class="loader"></span>
+</template>
+
+<script>
+    export default {
+        
+    }
+</script>
+
+<style scoped>
+.loader {
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    position: relative;
+    background: #059669;
+    box-sizing: border-box;
+    animation: flipX 1s linear infinite;
+  }
+  
+  @keyframes flipX {
+    0% {
+      transform: perspective(200px) rotateX(0deg) rotateY(0deg);
+    }
+    50% {
+      transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
+    }
+    100% {
+      transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
+    }
+  }
+      
+</style>

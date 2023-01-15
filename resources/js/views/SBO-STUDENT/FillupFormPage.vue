@@ -143,7 +143,8 @@
           <div class="flex">
             <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
             <div>
-              <TableButton class="" @click="submitData"> Submit </TableButton>
+              <BaseSpinner class="mx-2" v-if="isSaving"/>
+              <TableButton  v-else class="" @click="submitData"> Submit </TableButton>
             </div>
           </div>
         </div>
@@ -167,6 +168,7 @@ export default {
     return {
       application: null,
       isFetching: false,
+      isSaving:false,
       response: {
         application_id: null,
         fields_answer: [],
@@ -191,6 +193,8 @@ export default {
 
   methods: {
     async submitData() {
+
+      this.isSaving = true;
       this.response.fields_answer = [];
       this.response.requirements_files = [];
 
@@ -226,9 +230,10 @@ export default {
       axiosApi
         .post("api/application-form/response/create", new_response)
         .then((res) => {
-          console.log(res.data);
-
           this.validationError = null;
+          console.log(res.data);
+          // console.log(res.data.id);
+        //  this.$router.push({name: 'monitor-app', params: {id: res.data.id} });
         })
         .catch((err) => {
           if (err.response.status === 422) {
@@ -236,6 +241,8 @@ export default {
           } else {
             this.requestError = err;
           }
+        }).finally(()=>{
+          this.isSaving = false;
         });
     },
 

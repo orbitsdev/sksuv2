@@ -3,6 +3,18 @@
 
 
 
+    <div v-if="isFetching">
+
+      <div class="h-screen  flex justify-center items-center">
+
+        <Loader1/>
+
+      </div>
+   
+    </div>
+    <div v-else>
+
+    
 
    <div v-if="applications.length > 0">
     <ul
@@ -50,22 +62,25 @@
       <EmptyCard :url="'/assets/undraw_thoughts_re_3ysu.svg'" :m="'No Application Is Available'"/>
 
   </div>
-    <teleport to="#app">
-      <BaseErrorDialog
-        :show="requestError != null"
-        :width="'400'"
-        :transition="'slide-fade-down'"
-      >
-        <template #c-content>
-          <RequestError
-            :statusCode="requestError.statusCode"
-            @close="requestError = null"
-            :message="requestError.message"
-          />
-        </template>
-        <template #c-actions> </template>
-      </BaseErrorDialog>
-    </teleport>
+  
+  </div>
+
+  <teleport to="#app">
+    <BaseErrorDialog
+      :show="requestError != null"
+      :width="'400'"
+      :transition="'slide-fade-down'"
+    >
+      <template #c-content>
+        <RequestError
+          :statusCode="requestError.statusCode"
+          @close="requestError = null"
+          :message="requestError.message"
+        />
+      </template>
+      <template #c-actions> </template>
+    </BaseErrorDialog>
+  </teleport>
   </div>
 </template>
 
@@ -139,5 +154,34 @@ export default {
   height: 100%;
   background: rgba(16, 116, 84, 0.70);
   transition: all 0.3s ease-out;
+}
+
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 80%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
+
+.skeleton-text {
+  width: 100%;
+  height: 0.7rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.skeleton-text__body {
+  width: 75%;
+}
+
+.skeleton-footer {
+  width: 30%;
 }
 </style>

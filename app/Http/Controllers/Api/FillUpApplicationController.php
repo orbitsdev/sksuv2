@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ApplicationFormResource;
 use App\Models\Answer;
-use App\Models\ApplicationForm;
 use Illuminate\Http\Request;
+use App\Models\ApplicationForm;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\FileController;
+use App\Http\Resources\ApplicationFormResource;
+use App\Models\Response;
+use App\Models\ResponseRequirement;
 
 class FillUpApplicationController extends Controller
 {
@@ -63,8 +66,27 @@ class FillUpApplicationController extends Controller
        }
             
 
+       $c= [];
+    if( count($request->input('requirements')) > 0 ){
 
-        return response()->json(['seuccess', $request->input('answers')]);
+        foreach($request->input('requirements') as $requirements){
+
+            $response_requirement = $response->response_requirements()->create([
+                'requirement_id'=>  $requirements['requirement_id']
+            ]);
+            
+            if(count($requirements['files']) > 0){
+               
+                FileController::storeFiles($requirements['files'], 'requirements', 'public_uploads', $response);
+ 
+            }
+        }
+    }       
+     
+
+
+        // return response()->json(['seuccess',"id"=> $response->id]);
+        return response()->json(['seuccess',"id"=> $c]);
 
     }
 

@@ -185,6 +185,23 @@ const routes = [
                
                 props: true,
             },
+            {
+                name: "monitor-applications",
+                path: "sbo-student/monitor/applications",
+                component: () => import("../views/SBO-STUDENT/MonitorPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
+               
+
+            },
+
+            {
+                
+                    name: "monitor-app",
+                    path: "sbo-student/monitor/applications/:id",
+                    component: () => import("../views/SBO-STUDENT/ApplicationPage.vue"),
+                    props: true,
+                
+            }
 
 
         ],
