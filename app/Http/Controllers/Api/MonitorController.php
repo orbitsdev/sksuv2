@@ -22,7 +22,7 @@ class MonitorController extends Controller
             }]);
 
         }, 'response_requirements'=> function($query){
-                $query->select('id', 'response_id', 'requirement_id' );
+                $query->select('id', 'response_id', 'requirement_id' )->with('files');
         }])->select('id','application_form_id','user_id')->get();
         return new ResponseResource($responses);
         
