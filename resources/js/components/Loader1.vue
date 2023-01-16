@@ -1,7 +1,7 @@
 
 
 <template>
-    <span class="loader"></span>
+  <div class="spinner"></div>
 </template>
 
 <script>
@@ -11,26 +11,23 @@
 </script>
 
 <style scoped>
-.loader {
-    width: 48px;
-    height: 48px;
-    display: inline-block;
-    position: relative;
-    background: #059669;
-    box-sizing: border-box;
-    animation: flipX 1s linear infinite;
+.spinner {
+  width: 56px;
+  height: 56px;
+  --c: radial-gradient(farthest-side,#166534 92%,#0000);
+  background: var(--c) 50% 0,
+         var(--c) 50% 100%,
+         var(--c) 100% 50%,
+         var(--c) 0    50%;
+  background-size: 13.4px 13.4px;
+  background-repeat: no-repeat;
+  animation: spinner-kh173p 1s infinite;
+}
+
+@keyframes spinner-kh173p {
+  to {
+     transform: rotate(.5turn);
   }
-  
-  @keyframes flipX {
-    0% {
-      transform: perspective(200px) rotateX(0deg) rotateY(0deg);
-    }
-    50% {
-      transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
-    }
-    100% {
-      transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
-    }
-  }
+}
       
 </style>

@@ -109,7 +109,7 @@
             :key="requirement.id"
             class="  "
           >
-            {{ requirement }}
+            <!-- {{ requirement }} -->
 
             <label class="block font-bold text-gray-700" :for="requirement.name"
               >{{ requirement.name }}
@@ -233,7 +233,7 @@ export default {
           this.validationError = null;
           console.log(res.data);
           // console.log(res.data.id);
-        //  this.$router.push({name: 'monitor-app', params: {id: res.data.id} });
+         this.$router.push({name: 'monitor-app', params: {id: res.data.id} });
         })
         .catch((err) => {
           if (err.response.status === 422) {

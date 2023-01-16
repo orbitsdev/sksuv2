@@ -20,6 +20,7 @@ use App\Http\Controllers\Mail\NewPasswordMailController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
 use App\Http\Controllers\Api\ManageSboAdviserControlller;
 use App\Http\Controllers\Api\ManageUserRoleController;
+use App\Http\Controllers\Api\MonitorController;
 use App\Http\Controllers\Api\OfficerController;
 use App\Http\Controllers\Api\RequirementController;
 use App\Http\Controllers\Api\SboAdviserRequestController;
@@ -147,6 +148,7 @@ Route::get('/role', function () {
     Route::get('application-form/get-application', [FillUpApplicationController::class, 'getApplcation']);
     Route::post('application-form/response/create', [FillUpApplicationController::class, 'createResponse']);
     
+    Route::get('monitor/response', [MonitorController::class, 'getAllResponse']);
   
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);

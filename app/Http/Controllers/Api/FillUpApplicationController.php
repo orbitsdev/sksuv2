@@ -53,20 +53,19 @@ class FillUpApplicationController extends Controller
         'user_id'=> auth('sanctum')->user()->id
        ]);
 
-
        //create answers
-
        foreach($request->input('answers') as $answer){
-
         $response->answers()->create([
         'field_id' => $answer['field_id'],            
         'answer_value' => $answer['answer'],            
         ]);
 
        }
-            
+    
 
        $c= [];
+
+    // if it has requirements files store to the cloud
     if( count($request->input('requirements')) > 0 ){
 
         foreach($request->input('requirements') as $requirements){
@@ -77,7 +76,7 @@ class FillUpApplicationController extends Controller
             
             if(count($requirements['files']) > 0){
                
-                FileController::storeFiles($requirements['files'], 'requirements', 'public_uploads', $response);
+                FileController::storeFiles($requirements['files'], 'requirements', 'public_uploads', $response_requirement);
  
             }
         }
@@ -85,8 +84,8 @@ class FillUpApplicationController extends Controller
      
 
 
-        // return response()->json(['seuccess',"id"=> $response->id]);
-        return response()->json(['seuccess',"id"=> $c]);
+        return response()->json(['seuccess',"id"=> $response->id]);
+        // return response()->json(['seuccess',"id"=> $c]);
 
     }
 

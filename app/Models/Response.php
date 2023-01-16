@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Answer;
+
 use App\Models\ApplicationForm;
 use App\Models\ResponseRequirement;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ class Response extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function application(){
+    public function application_form(){
         return $this->belongsTo(ApplicationForm::class);
     }
 
