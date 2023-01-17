@@ -28,12 +28,18 @@ class Response extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function files(){
-        return $this->belongsToMany(File::class, 'response_files', 'response_id', 'file_id');
-    }
+    // public function files(){
+    //     return $this->belongsToMany(File::class, 'response_files', 'response_id', 'file_id');
+    // }
 
     public function response_requirements(){
         return $this->hasMany(ResponseRequirement::class);
     }
+
+    public function approvals(){
+        return $this->hasMany(Approval::class);
+    }
+
+    
 
 }

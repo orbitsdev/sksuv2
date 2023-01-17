@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
 use App\Models\School;
+use App\Models\Approval;
 use App\Models\Response;
 use App\Models\SboOfficer;
 use App\Models\SocialAccount;
@@ -78,6 +79,10 @@ class User extends Authenticatable
 
     public function responses(){
         return $this->hasMany(Response::class);
+    }
+
+    public function approvals(){
+        return $this->hasMany(Approval::class);
     }
 
    

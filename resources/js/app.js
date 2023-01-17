@@ -40,6 +40,7 @@ import FormComponent from './components/FormComponent.vue';
 import CardSkeleton from './components/CardSkeleton.vue';
 import EmptyCard from './components/EmptyCard.vue';
 import Loader1 from './components/Loader1.vue';
+import TimelineCard from './components/TimelineCard.vue';
 
 
 
@@ -103,6 +104,7 @@ app.component('FormComponent', FormComponent);
 app.component('CardSkeleton', CardSkeleton);
 app.component('EmptyCard', EmptyCard);
 app.component('Loader1', Loader1);
+app.component('TimelineCard', TimelineCard);
 
 
 

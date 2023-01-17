@@ -149,6 +149,7 @@ Route::get('/role', function () {
     Route::post('application-form/response/create', [FillUpApplicationController::class, 'createResponse']);
     
     Route::get('monitor/response', [MonitorController::class, 'getAllResponse']);
+    Route::post('monitor/response', [MonitorController::class, 'applicationWithResponse']);
   
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);

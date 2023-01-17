@@ -6,7 +6,6 @@
           {{ application.title }}
         </h1>
       </div>
-
       <div v-if="application.fields.length > 0" class="mt-4">
         <h1 class="text-2xl font-bold mb-2">General Fields</h1>
 
@@ -356,7 +355,6 @@ export default {
             ...this.modifyFields(dataholder.fields),
           };
 
-          // console.log(this.modifyRequirements(dataholder.requirements));
 
           dataholder.fields = modified_data.fields;
           dataholder.requirements = this.modifyRequirements(dataholder.requirements);

@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Answer;
+use App\Models\Response;
 use Illuminate\Http\Request;
 use App\Models\ApplicationForm;
+use App\Models\ResponseRequirement;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Resources\ApplicationFormResource;
-use App\Models\Response;
-use App\Models\ResponseRequirement;
 
 class FillUpApplicationController extends Controller
 {
 
-    public function getApplications(){
-        
+    public function getApplications()
+    {
 
-        $applications = ApplicationForm::doesntHave('responses', 'and', function ($query) {
-            $query->where('user_id', auth('sanctum')->user()->id);
-        })->with('fields', 'requirements')->paginate(10);
-        return new ApplicationFormResource($applications);    
+
+        // $applications = ApplicationForm::doesntHave('responses', 'and', function ($query) {
+        //     $query->where('user_id', auth('sanctum')->user()->id);
+        // })->with('fields', 'requirements')->paginate(10);
+        $applications = ApplicationForm::with('fields', 'requirements')->paginate(10);
+        return new ApplicationFormResource($applications);
     }
 
     public function getApplcation(Request $request)
@@ -35,58 +38,70 @@ class FillUpApplicationController extends Controller
         //  return response()->json([$request->all()]);
     }
 
-    public function createResponse(Request $request){
+    public function createResponse(Request $request)
+    {
 
         $request->validate([
             'application_id' => 'required',
             'answers.*.answer' => 'required',
         ], [
-            'answers.*.answer'=> 'Field is required'
-            
+            'answers.*.answer' => 'Field is required'
+
         ]);
 
         // get application
-     $application_form =   ApplicationForm::where('id', $request->input('application_id'))->first();
+        $application_form =   ApplicationForm::where('id', $request->input('application_id'))->first();
 
-     //create response
-       $response = $application_form->responses()->create([
-        'user_id'=> auth('sanctum')->user()->id
-       ]);
+        //create response
+        $response = $application_form->responses()->create([
+            'user_id' => auth('sanctum')->user()->id
+        ]);
+    
+        
+        $adviser = auth('sanctum')->user()->officer->adviser;
+        
 
-       //create answers
-       foreach($request->input('answers') as $answer){
-        $response->answers()->create([
-        'field_id' => $answer['field_id'],            
-        'answer_value' => $answer['answer'],            
+        // create adviser aprrover
+        $response->approvals()->create([    
+            'user_id' => $adviser->id,
+            'role' => null,
+            'decision' => 'processing',
+        
         ]);
 
-       }
-    
-
-       $c= [];
-
-    // if it has requirements files store to the cloud
-    if( count($request->input('requirements')) > 0 ){
-
-        foreach($request->input('requirements') as $requirements){
-
-            $response_requirement = $response->response_requirements()->create([
-                'requirement_id'=>  $requirements['requirement_id']
+        //create answers
+        foreach ($request->input('answers') as $answer) {
+            $response->answers()->create([
+                'field_id' => $answer['field_id'],
+                'answer_value' => $answer['answer'],
             ]);
-            
-            if(count($requirements['files']) > 0){
-               
-                FileController::storeFiles($requirements['files'], 'requirements', 'public_uploads', $response_requirement);
- 
+        }
+
+
+        $c = [];
+
+        // if it has requirements files store to the cloud
+        if (count($request->input('requirements')) > 0) {
+
+            foreach ($request->input('requirements') as $requirements) {
+
+                // create response requirements
+                $response_requirement = $response->response_requirements()->create([
+                    'requirement_id' =>  $requirements['requirement_id']
+                ]);
+
+                if (count($requirements['files']) > 0) {
+
+                    FileController::storeFiles($requirements['files'], 'requirements', 'public_uploads', $response_requirement);
+                }
             }
         }
-    }       
-     
 
 
-        return response()->json(['seuccess',"id"=> $response->id]);
+
+
+        return response()->json(['seuccess', "id" => $response->id]);
         // return response()->json(['seuccess',"id"=> $c]);
 
     }
-
 }
