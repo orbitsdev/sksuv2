@@ -108,7 +108,7 @@
             :key="requirement.id"
             class="  "
           >
-            <!-- {{ requirement }} -->
+            {{ requirement }}
 
             <label class="block font-bold text-gray-700" :for="requirement.name"
               >{{ requirement.name }}
@@ -140,7 +140,7 @@
       <div class="mt-4">
         <div class="my-2 flex justify-end items-center">
           <div class="flex">
-            <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
+            <TableButton mode class="mr-2" @click="this.$router.back()"> Back </TableButton>
             <div>
               <BaseSpinner class="mx-2" v-if="isSaving"/>
               <TableButton  v-else class="" @click="submitData"> Submit </TableButton>

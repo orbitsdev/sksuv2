@@ -104,23 +104,7 @@
         <template #c-content>
           <EditApplication :data="response"/>
 
-          <div class="my-4"></div>
-          <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
-            <div class="my-1 mx-2" v-if="isSaving">
-              <BaseSpinner />
-            </div>
-            <div v-else>
-              <TableButton
-             
-                class=""
-                @click="updateResponse"
-              >
-                Save
-              </TableButton>
-              
-            </div>
-          </div>
+       
         </template>
 
        
