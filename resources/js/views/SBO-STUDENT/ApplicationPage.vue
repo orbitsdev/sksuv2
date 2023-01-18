@@ -102,7 +102,7 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'600'" :preventClose="true">
         <template #c-content>
-          <EditApplication :data="response"/>
+          <EditApplication @close="showForm = false" :data="response"/>
 
        
         </template>

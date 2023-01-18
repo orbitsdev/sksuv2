@@ -10,7 +10,7 @@
         <!-- {{ application.application_form.title }} -->
         {{ application.form_title }}
       </h3>
-      <p class="mt-1 max-w-2xl text-sm font-bold">General Information</p>
+      <p class="mt-1 max-w-2xl text-sm font-bold uppercase ">General Information</p>
       <w-divider class="my-1"></w-divider>
 
       <div v-if="application.fields.length > 0" class="">
@@ -94,14 +94,17 @@
       </div>
 
       <div v.if="application.requirements.length > 0">
-        <!-- {{application.requirements}} -->
+
+        <p class="mt-1 max-w-2xl text-sm font-bold uppercase ">Requirement Attachment </p>
+      <w-divider class="my-1"></w-divider>
+
 
         <div
+        
           v-for="(requirement_file, parentindex) in application.requirements"
           :key="requirement_file.id"
         >
-          <!-- {{ requirement_file.fileToBeRemove }} -->
-          {{ requirement_file.files }}
+       
 
           <p class="block font-bold text-gray-700">
             {{ requirement_file.name }}
@@ -156,7 +159,7 @@
 
       <div class="my-4"></div>
           <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" @click="showForm = false"> Close </TableButton>
+            <TableButton mode class="mr-2" @click="this.$emit('close')"> Close </TableButton>
             <div class="my-1 mx-2" v-if="isSaving">
               <BaseSpinner />
             </div>
@@ -183,6 +186,7 @@ import { mapGetters } from "vuex";
 export default {
   props: ["data"],
 
+  emits: ['close'],
   computed: {
     ...mapGetters(["fileType"]),
   },
