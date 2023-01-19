@@ -15,6 +15,18 @@ use App\Http\Resources\ApplicationFormResource;
 class FillUpApplicationController extends Controller
 {
 
+
+    public function updateResponse(Request $request){
+       $request->validate([
+        'fields.*.answer_value' => 'required'
+       ], [
+        'fields.*.answer_value'=> 'Field is required'
+       ]);
+
+        return response()->json(['success', $request->all()]);
+
+    }
+
     public function getApplications()
     {
 

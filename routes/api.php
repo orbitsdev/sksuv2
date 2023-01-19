@@ -147,6 +147,7 @@ Route::get('/role', function () {
     Route::get('application-form/all-application', [FillUpApplicationController::class, 'getApplications']);
     Route::get('application-form/get-application', [FillUpApplicationController::class, 'getApplcation']);
     Route::post('application-form/response/create', [FillUpApplicationController::class, 'createResponse']);
+    Route::post('application-form/response/update', [FillUpApplicationController::class, 'updateResponse']);
     
     Route::get('monitor/response', [MonitorController::class, 'getAllResponse']);
     Route::post('monitor/response', [MonitorController::class, 'applicationWithResponse']);

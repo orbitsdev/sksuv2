@@ -5,16 +5,16 @@
     </div>
   </div>
   <div v-else>
-    <div v-if="application.application_id != null">
+    <div v-if="application.response_id != null">
       <h3 class="text-lg font-extrabold leading-6">
         <!-- {{ application.application_form.title }} -->
-        {{ application.form_title }}
+        {{ application.application_form_title }}
       </h3>
       <p class="mt-1 max-w-2xl text-sm font-bold uppercase ">General Information</p>
       <w-divider class="my-1"></w-divider>
 
       <div v-if="application.fields.length > 0" class="">
-        <div v-for="field in application.fields" :key="field.id" class="mb-4">
+        <div v-for="(field,index) in application.fields" :key="field.id" class="mb-4">
           <!-- {{ field }} -->
           <div>
             <label class="block font-bold text-gray-700" :for="field.name">{{
@@ -90,7 +90,16 @@
               </div>
             </div>
           </div>
+          <p
+          class="text-xs text-red-500 mt-1"
+          v-if="validationError && validationError[`fields.${index}.answer_value`]"
+        >
+          {{ validationError["fields." + index + ".answer_value"][0] }}
+  
+          <!-- {{ index }} -->
+        </p>
         </div>
+       
       </div>
 
       <div v.if="application.requirements.length > 0">
@@ -169,7 +178,7 @@
                 class=""
                 @click="updateResponse"
               >
-                Save
+                Update
               </TableButton>
               
             </div>
@@ -194,15 +203,17 @@ export default {
   data() {
     return {
       application: {
-        application_id: null,
-        form_id: null,
-        form_title: null,
+        response_id: null,
+        application_form_id: null,
+        application_form_title: null,
         fields: [],
         requirements: [],
       },
       isSaving: false,
       isFetching: false,
-      fields: [],
+      validationError: null,
+      requestError: null,
+
     };
   },
 
@@ -211,6 +222,75 @@ export default {
   },
 
   methods: {
+
+    async updateResponse(){
+      
+      this.isSaving = true;
+
+
+      let new_fields = [];
+      let new_requirements = [];
+
+      this.application.fields.forEach(item => {
+
+        // get only th important field data
+        let new_field = {
+          field_name: item.name,
+          field_id:  item.id,
+          answer_id: item.answer_id,
+          answer_value: item.answer,
+        }
+
+        new_fields.push(new_field);
+
+      });
+
+
+
+      // also the requirements
+
+      this.application.requirements.forEach(item => {
+
+        let new_requirement = {
+          requirement_id: item.id,
+          response_id: item.response_id,
+          files: item.files,
+          fileToBeRemove: item.fileToBeRemove,
+        };
+
+        new_requirements.push(new_requirement);
+
+      });
+
+
+        let response_data = {
+        response_id: this.application.response_id,
+        application_form_id: this.application.application_form_id,
+        application_form_title:this.application.application_form_title,
+        fields: new_fields,
+        requirements: new_requirements,
+        }
+
+
+
+        await axiosApi.post("api/application-form/response/update", response_data).then(res=>{
+            console.log(res.data);
+            this.validationError = null;
+        }).catch(err=>{
+
+          if (err.response.status === 422) {
+            this.validationError = err.response.data.errors;
+          } else {
+            this.requestError = err;
+          }
+
+        }).finally(()=>{
+          this.isSaving = false;
+        });
+
+
+
+    },
     getFileTypeData(someValue) {
       if (someValue == "documents") {
         return this.fileType.documents;
@@ -298,9 +378,9 @@ export default {
         return a.index - b.index;
       });
 
-      this.application.application_id = dataholder.id;
-      this.application.form_id = dataholder.application_form.id;
-      this.application.form_title = dataholder.application_form.title;
+      this.application.response_id = dataholder.id;
+      this.application.application_form_id = dataholder.application_form.id;
+      this.application.application_form_title = dataholder.application_form.title;
       this.application.fields = new_fields;
       // console.log(request_parameters);
       this.fetchDataForSelect(request_parameters);
