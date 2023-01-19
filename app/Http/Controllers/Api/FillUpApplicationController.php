@@ -16,6 +16,9 @@ use App\Models\Requirement;
 class FillUpApplicationController extends Controller
 {
 
+    public function searchByDate(Request $request){
+        
+    }
 
     public function updateResponse(Request $request)
     {

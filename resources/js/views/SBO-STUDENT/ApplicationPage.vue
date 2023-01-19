@@ -135,6 +135,7 @@ import axiosApi from "../../api/axiosApi";
 export default {
   props: ["id"],
 
+  
   components: {
     EditApplication,
   },
