@@ -175,6 +175,8 @@ export default {
             return a.field.index - b.field.index;
           });
 
+          // console.log(res.data.data);
+
           this.response = res.data.data;
         })
         .catch((err) => {

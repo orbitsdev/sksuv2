@@ -11,40 +11,58 @@ use App\Models\ResponseRequirement;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Resources\ApplicationFormResource;
+use App\Models\Requirement;
 
 class FillUpApplicationController extends Controller
 {
 
 
-    public function updateResponse(Request $request){
-       $request->validate([
-        'fields.*.answer_value' => 'required'
-       ], [
-        'fields.*.answer_value'=> 'Field is required'
-       ]);
+    public function updateResponse(Request $request)
+    {
+        $request->validate([
+            'fields.*.answer_value' => 'required'
+        ], [
+            'fields.*.answer_value' => 'Field is required'
+        ]);
 
 
-       //update answer
+        // update answer
 
-       if(count($request->input('fields'))>0 ){
-       
-        foreach($request->input('fields') as $field_and_answer){
-            $answer = Answer::where('id', $field_and_answer['answer_id'])->where('field_id',$field_and_answer['field_id'])->update([
-                'answer_value' => $field_and_answer['answer_value']
-            ]);
+        if (count($request->input('fields')) > 0) {
+
+
+
+            $fields = collect($request->input('fields'));
+            $fields->groupBy('field_id')->map(function ($answer) {
+                return Answer::whereIn('id', $answer->pluck('answer_id'))->update(['answer_value' => $answer->first()['answer_value']]);
+            });
         }
 
-       }
-
-    
+        if (count($request->input('requirements')) > 0) {
 
 
-       
 
-        
+            foreach ($request->input('requirements') as $requirement) {
+
+                if(count($requirement['fileToBeRemove']) > 0){
+                 $response_requirement = ResponseRequirement::where('id', $requirement['response_requirement_id'])->first();
+                 FileController::removeFiles($requirement['fileToBeRemove'], 'public_uploads', $response_requirement);
+
+                }
+
+                if (count($requirement['files']) > 0) {
+                    $response_requirement = ResponseRequirement::where('id', $requirement['response_requirement_id'])->first();
+
+                    FileController::storeFiles($requirement['files'], 'requirements', 'public_uploads', $response_requirement);
+                }
+            }
+
+        }
+
+
+
 
         return response()->json(['success', $request->all()]);
-
     }
 
     public function getApplications()
@@ -88,17 +106,17 @@ class FillUpApplicationController extends Controller
         $response = $application_form->responses()->create([
             'user_id' => auth('sanctum')->user()->id
         ]);
-    
-        
+
+
         $adviser = auth('sanctum')->user()->officer->adviser;
-        
+
 
         // create adviser aprrover
-        $response->approvals()->create([    
+        $response->approvals()->create([
             'user_id' => $adviser->id,
             'role' => null,
             'decision' => 'processing',
-        
+
         ]);
 
         //create answers
@@ -128,7 +146,6 @@ class FillUpApplicationController extends Controller
                 }
             }
         }
-
 
 
 
