@@ -10,11 +10,11 @@
         <!-- {{ application.application_form.title }} -->
         {{ application.application_form_title }}
       </h3>
-      <p class="mt-1 max-w-2xl text-sm font-bold uppercase ">General Information</p>
+      <p class="mt-1 max-w-2xl text-sm font-bold uppercase">General Information</p>
       <w-divider class="my-1"></w-divider>
 
       <div v-if="application.fields.length > 0" class="">
-        <div v-for="(field,index) in application.fields" :key="field.id" class="mb-4">
+        <div v-for="(field, index) in application.fields" :key="field.id" class="mb-4">
           <!-- {{ field }} -->
           <div>
             <label class="block font-bold text-gray-700" :for="field.name">{{
@@ -72,7 +72,7 @@
                   :id="field.name"
                   v-model="field.answer"
                 >
-                  <option v-for="item in field.data" :key="item.id" :value="item.id">
+                  <option v-for="item in field.data" :key="item.id" :value="item.name">
                     {{ item.name }}
                   </option>
                 </select>
@@ -91,30 +91,24 @@
             </div>
           </div>
           <p
-          class="text-xs text-red-500 mt-1"
-          v-if="validationError && validationError[`fields.${index}.answer_value`]"
-        >
-          {{ validationError["fields." + index + ".answer_value"][0] }}
-  
-          <!-- {{ index }} -->
-        </p>
+            class="text-xs text-red-500 mt-1"
+            v-if="validationError && validationError[`fields.${index}.answer_value`]"
+          >
+            {{ validationError["fields." + index + ".answer_value"][0] }}
+
+            <!-- {{ index }} -->
+          </p>
         </div>
-       
       </div>
 
       <div v.if="application.requirements.length > 0">
-
-        <p class="mt-1 max-w-2xl text-sm font-bold uppercase ">Requirement Attachment </p>
-      <w-divider class="my-1"></w-divider>
-
+        <p class="mt-1 max-w-2xl text-sm font-bold uppercase">Requirement Attachment</p>
+        <w-divider class="my-1"></w-divider>
 
         <div
-        
           v-for="(requirement_file, parentindex) in application.requirements"
           :key="requirement_file.id"
         >
-       
-
           <p class="block font-bold text-gray-700">
             {{ requirement_file.name }}
             <span class="text-xs"> ( {{ requirement_file.upload_type }} ) </span>
@@ -167,25 +161,16 @@
       </div>
 
       <div class="my-4"></div>
-          <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" @click="this.$emit('close')"> Close </TableButton>
-            <div class="my-1 mx-2" v-if="isSaving">
-              <BaseSpinner />
-            </div>
-            <div v-else>
-              <TableButton
-             
-                class=""
-                @click="updateResponse"
-              >
-                Update
-              </TableButton>
-              
-            </div>
-          </div>
+      <div class="my-2 flex justify-end">
+        <TableButton mode class="mr-2" @click="this.$emit('close')"> Close </TableButton>
+        <div class="my-1 mx-2" v-if="isSaving">
+          <BaseSpinner />
+        </div>
+        <div v-else>
+          <TableButton class="" @click="updateResponse"> Update </TableButton>
+        </div>
+      </div>
     </div>
-
-
   </div>
 </template>
 
@@ -195,7 +180,7 @@ import { mapGetters } from "vuex";
 export default {
   props: ["data"],
 
-  emits: ['close'],
+  emits: ["close", "updated"],
   computed: {
     ...mapGetters(["fileType"]),
   },
@@ -213,7 +198,6 @@ export default {
       isFetching: false,
       validationError: null,
       requestError: null,
-
     };
   },
 
@@ -222,35 +206,27 @@ export default {
   },
 
   methods: {
-
-    async updateResponse(){
-      
+    async updateResponse() {
       this.isSaving = true;
-
 
       let new_fields = [];
       let new_requirements = [];
 
-      this.application.fields.forEach(item => {
-
+      this.application.fields.forEach((item) => {
         // get only th important field data
         let new_field = {
           field_name: item.name,
-          field_id:  item.id,
+          field_id: item.id,
           answer_id: item.answer_id,
           answer_value: item.answer,
-        }
+        };
 
         new_fields.push(new_field);
-
       });
-
-
 
       // also the requirements
 
-      this.application.requirements.forEach(item => {
-
+      this.application.requirements.forEach((item) => {
         let new_requirement = {
           requirement_id: item.id,
           response_id: item.response_id,
@@ -259,37 +235,35 @@ export default {
         };
 
         new_requirements.push(new_requirement);
-
       });
 
-
-        let response_data = {
+      let response_data = {
         response_id: this.application.response_id,
         application_form_id: this.application.application_form_id,
-        application_form_title:this.application.application_form_title,
+        application_form_title: this.application.application_form_title,
         fields: new_fields,
         requirements: new_requirements,
-        }
+      };
 
+      console.log(response_data);
 
-
-        await axiosApi.post("api/application-form/response/update", response_data).then(res=>{
-            console.log(res.data);
-            this.validationError = null;
-        }).catch(err=>{
-
+      await axiosApi
+        .post("api/application-form/response/update", response_data)
+        .then((res) => {
+          console.log(res.data);
+          this.validationError = null;
+          this.$emit("updated");
+        })
+        .catch((err) => {
           if (err.response.status === 422) {
             this.validationError = err.response.data.errors;
           } else {
             this.requestError = err;
           }
-
-        }).finally(()=>{
+        })
+        .finally(() => {
           this.isSaving = false;
         });
-
-
-
     },
     getFileTypeData(someValue) {
       if (someValue == "documents") {
@@ -331,7 +305,11 @@ export default {
                 field.data = data.data.data;
                 field.is_processing = false;
                 if (field.data.length > 0) {
-                  field.answer = field.data[0].id;
+                  field.data.forEach((i) => {
+                    if (field.asnwer == i.name) {
+                      field.answer = i.name;
+                    }
+                  });
                 }
               }
             }

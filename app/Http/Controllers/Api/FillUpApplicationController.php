@@ -23,6 +23,26 @@ class FillUpApplicationController extends Controller
         'fields.*.answer_value'=> 'Field is required'
        ]);
 
+
+       //update answer
+
+       if(count($request->input('fields'))>0 ){
+       
+        foreach($request->input('fields') as $field_and_answer){
+            $answer = Answer::where('id', $field_and_answer['answer_id'])->where('field_id',$field_and_answer['field_id'])->update([
+                'answer_value' => $field_and_answer['answer_value']
+            ]);
+        }
+
+       }
+
+    
+
+
+       
+
+        
+
         return response()->json(['success', $request->all()]);
 
     }
