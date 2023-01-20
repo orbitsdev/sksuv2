@@ -154,6 +154,7 @@ Route::get('/role', function () {
     Route::post('monitor/response', [MonitorController::class, 'applicationWithResponse']);
     Route::post('monitor/search', [MonitorController::class, 'search']);
     Route::post('monitor-form/searby/date', [MonitorController::class, 'searchByDate']);
+    Route::post('monitor-form/searby/delete', [MonitorController::class, 'deleteSpicificResponse']);
     
     // ALIBABA
     Route::post('cloud/upload', [CloudStorageController::class, 'uploadFile']);
