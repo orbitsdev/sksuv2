@@ -1,4 +1,13 @@
 <template>
+
+
+
+
+
+
+
+
+
   <BaseCard :subtitle="'Manage Officer'">
     <template #header>
       <BaseTableSetup>
@@ -27,7 +36,7 @@
       >
         <template v-if="officers.length > 0" #data>
           <tr v-for="officer in officers" :key="officer.id">
-            <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+            <td class="whitespace-normal relative w-12 px-6 sm:w-16 sm:px-8">
               <input
                 v-model="selectedOfficers"
                 :value="officer.id"
@@ -35,7 +44,7 @@
                 class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
               />
             </td>
-            <td class="text-sm">
+            <td class="whitespace-normal text-sm">
               <div class="flex items-center">
                 <div class="">
                   <div class="font-medium text-gray-900">
@@ -52,7 +61,7 @@
               <div class="font-medium text-gray-900">{{ officer.department.name }}</div>
             </td>
 
-            <td class="py-2 text-sm text-gray-500">
+            <td class="whitespace-normal py-2 text-sm text-gray-500">
               <button
                 :disabled="selectedOfficers.length > 0"
                 @click="handleShowForm(officer, 'update')"
@@ -84,7 +93,6 @@
 
               </div>
             </div>
-
 
             <div class=" flex justify-center">
               <TableButton mode @click="showForm = false" class="m-none"> Ok </TableButton>
@@ -263,7 +271,7 @@ export default {
       isSaving: false,
       isFetching: false,
       isStudentFetching: false,
-      showForm: true,
+      showForm: false,
       requestError: null,
       validationError: {},
       officers: [],

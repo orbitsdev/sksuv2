@@ -1,7 +1,7 @@
 <template>
   <LoadingScreen v-if="isScreenLoading" />
   <section v-else>
-    <div>
+    <div class="">
       <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
       <div class="relative z-40 hidden" role="dialog" aria-modal="true">
         <!--
@@ -223,9 +223,11 @@
       </div>
 
       <!-- Static sidebar for desktop -->
-      <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-        <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex flex-grow flex-col overflow-y-auto bg-green-900 pt-5">
+      <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col ">
+
+      <!-- bg set -->
+
+        <div class="flex flex-grow flex-col overflow-y-auto  bg-green-900 pt-5">
           <div class="flex flex-shrink-0 items-center px-4">
             <img
               class="h-8 w-auto"
@@ -424,6 +426,30 @@
                   </svg>
                   Manage Officers
                 </router-link>
+                <router-link
+                  :to="{ name: 'officers-documents' }"
+                  href="#"
+                  class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                >
+                  <!-- Heroicon name: outline/folder -->
+                  <svg
+                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                    />
+                  </svg>
+                  
+                  Officers Documents
+                </router-link>
               </div>
               <div v-if="User.hasRoleOf(['sbo-student'])">
                 <router-link
@@ -477,8 +503,8 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-1 flex-col md:pl-64">
-        <div class="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
+      <div class="flex flex-1 flex-col md:pl-64 " >
+        <div class="sticky top-0 z-10 flex h-16 flex-shrink-0  shadow">
           <button
             type="button"
             class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -501,7 +527,7 @@
               />
             </svg>
           </button>
-          <div class="flex flex-1 justify-between px-4">
+          <div class="flex bg-white flex-1 justify-between px-4">
             <div class="flex flex-1"></div>
             <div class="ml-4 flex items-center md:ml-6">
               <button
@@ -528,7 +554,7 @@
               </button>
 
               <!-- Profile dropdown -->
-              <div class="relative ml-3">
+              <div class="relative ml-3 ">
                 <div>
                   <button
                     @click="showLogoutButton = !showLogoutButton"
@@ -575,7 +601,7 @@
           </div>
         </div>
 
-        <main class="my-6">
+        <main class="py-6 min-h-screen  bg-center bg-cover bg-no-repeat   ">
           <div class="">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8"></div>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
@@ -717,4 +743,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+
+.bg-my-image {
+  background: no-repeat left top, linear-gradient(#124a2a, #0c672a30), url('/assets/sksu.jpg');
+}
+</style>

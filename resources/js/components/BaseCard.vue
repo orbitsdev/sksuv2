@@ -1,12 +1,12 @@
 
 
 <template>
-    <div class="w-full min-h-full bg-white shadow border  p-3 ">
+    <div class="w-full min-h-full bg-white shadow rounded-sm  p-4 ">
         
         <h2 v-if="!!title" class="text-2xl text-gray-300   ">
             {{ title }}
         </h2>
-        <h3 v-if="!!subtitle" class="text-base ">
+        <h3 v-if="!!subtitle" class="text-2xl font-bold uppercase ">
             {{ subtitle }}
         </h3>
         <slot name="header">

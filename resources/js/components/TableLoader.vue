@@ -26,7 +26,8 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background: white;
+    z-index: 200;
+    background: rgba(197, 196, 203, 0.1);
 }
 
 .loader,
@@ -36,7 +37,7 @@
   -webkit-animation: load1 700ms infinite ease-in-out;
   animation: load1 700ms infinite ease-in-out;
   width: 6px;
-  height: 8px;
+  height: 3px ;
 }
 .loader {
   color: #12542f;

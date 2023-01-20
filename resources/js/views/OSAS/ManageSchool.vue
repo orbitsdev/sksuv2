@@ -1,5 +1,5 @@
 <template>
-  <BaseCard class="relative" :subtitle="'Manage Schools'">
+  <BaseCard class="relative" :subtitle="'Manage School'">
     <template #header>
 
       <BaseTableSetup>

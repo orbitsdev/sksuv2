@@ -41,6 +41,7 @@ import CardSkeleton from './components/CardSkeleton.vue';
 import EmptyCard from './components/EmptyCard.vue';
 import Loader1 from './components/Loader1.vue';
 import TimelineCard from './components/TimelineCard.vue';
+import Loader2 from './components/Loader2.vue';
 
 
 
@@ -105,6 +106,7 @@ app.component('CardSkeleton', CardSkeleton);
 app.component('EmptyCard', EmptyCard);
 app.component('Loader1', Loader1);
 app.component('TimelineCard', TimelineCard);
+app.component('Loader2', Loader2);
 
 
 

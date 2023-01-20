@@ -156,11 +156,18 @@ const routes = [
                 children: [],
             },
 
+            // SBO ADVISER PAGE
             {
                 name: "manage-sbo-officers",
                 path: "sbo-adviser/manage-sbo-offers",
-                component: () =>
-                    import("../views/SBO-ADVISER/ManageOfficersPage.vue"),
+                component: () => import("../views/SBO-ADVISER/ManageOfficersPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
+                children: [],
+            },
+            {
+                name: "officers-documents",
+                path: "sbo-adviser/officers/documents",
+                component: () => import("../views/SBO-ADVISER/DocumentPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
