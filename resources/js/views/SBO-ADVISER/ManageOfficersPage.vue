@@ -87,15 +87,15 @@
                 <p class="font-bold  text-center text-lg">
                   No such students was available at your current school  
                 </p>
-                <p class=" text-center text-sm text-sm mt-4  ">
+                <p class=" text-center  ">
                   Student must register to this school first
                 </p>
 
               </div>
             </div>
 
-            <div class=" flex justify-center">
-              <TableButton mode @click="showForm = false" class="m-none"> Ok </TableButton>
+            <div class=" flex justify-center  ">
+              <TableButton  @click="showForm = false"  class="w-full"> I Understand </TableButton>
             </div>
 
 

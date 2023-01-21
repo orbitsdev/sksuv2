@@ -21,7 +21,7 @@
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
-      class="block  px-2 text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+      class="block py-2 px-2 text-gray-600 placeholder-gray-500 focus:border-gray-300 focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
       :placeholder="placeholder"
     />
    

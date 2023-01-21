@@ -8,64 +8,74 @@
               <!-- <TableButton class="mr-2" 
                 ><i class="fa-solid fa-plus mr-1"> </i> Add Officer
               </TableButton> -->
+
               <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
+
+            
             </template>
             <template #actions-area>
-              <TableButton
-                :mode="true"
-                class="mr-2"
-              >
-                <i class="fa-regular fa-trash-can mr-2"></i>  CLICK ME
-              </TableButton>
             </template>
           </BaseTableSetup>
 
           <BaseTable
-          :thdata="['','Applications', 'Officers', 'Status', 'Submitted Date ']"
+          :thdata="['Application','Files','Status', 'Submitted At','Officer', '']"
           :isFetching="isSaving"
         >
 
         <template  #data>
-            <tr >
-                <td class="whitespace-normal relative w-12 px-6 sm:w-16 sm:px-8">
-                
-                </td>
-                <td class="whitespace-normal text-sm">
-                  <div class="flex items-center">
-                    <div class="">
-                      <div class="font-medium text-gray-900">
-                        Enrollmen Acrredtion for Sbo Student Organuzaution
-                      </div>
-                    </div>
-                  </div>
-                </td>
-    
-                <td class="whitespace-normal">
+          <tr>
+
+            <td class="whitespace-normal text-sm">
+              <div class="flex items-center">
+                <div class="">
                   <div class="font-medium text-gray-900">
-                    Mariak Kate Romo 
+              ENROLL MEN ACCREDITATION 
                   </div>
-                  <div class="mt-1 font-medium text-gray-900">
-                    Governor 
-                  </div>
-                </td>
-                <td class="whitespace-normal">
-                  <div class="font-medium text-gray-900">ExampleData</div>
-                </td>
-    
-                <td class="whitespace-normal py-2 text-sm text-gray-500">
-                  <button
-                    type="button"
-                    class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-                  >
-                    <i class="fa-regular fa-pen-to-square"></i>
-                  </button>
-                </td>
-              </tr>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div class=" rounded text-blue   text-xs font-bold leading-5  "> <i class="pr-1  fa-regular fa-file"></i> 5 Requrements</div>
+              <div class=" rounded text-blue   text-xs font-bold leading-5  "> <i class="pr-1  fa-solid fa-paperclip"></i> 2 Attachments </div>
+            </td>
+            <td>
+              <span class="inline-flex rounded bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">Approved</span>
+              <!-- <span class="inline-flex rounded bg-blue-100 px-2 text-xs font-semibold leading-5 text-green-800">Pending</span>
+              <span class="inline-flex rounded bg-red-100 px-2 text-xs font-semibold leading-5 text-green-800">Denied</span> -->
+            </td>
+            <td>
+              <div class="font-medium text-gray-900">11/2023</div>
+            </td>
+
+            
+            <td   class="w-full max-w-0 py-4  pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none ">
+              <p class="font-bold"> Kate Romo</p>
+              <dd class=" truncate text-gray-700">Governor</dd>
+            </td>
+            <td class="whitespace-normal py-2 text-sm text-gray-500">
+              <button
+
+                type="button"
+                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+              >
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+            </td>
+          </tr>
         </template>
         </BaseTable>
 
           
     </template>
+
+    <teleport to="#app">
+      <BaseDialog :show="true" :width="'860'">
+        <template #c-content>
+
+        </template>
+      </BaseDialog>
+    </teleport>
     
     </BaseCard>
 
