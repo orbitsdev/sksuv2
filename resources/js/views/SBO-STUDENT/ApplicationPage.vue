@@ -8,6 +8,8 @@
 
     <div v-else>
       <div v-if="response != null">
+        
+
         <div class="overflow-hidden bg-white shadow sm:rounded-lg">
           <div class="flex items-center justify-between">
             <div class="px-4 py-5 sm:px-6">
@@ -135,7 +137,6 @@ import axiosApi from "../../api/axiosApi";
 export default {
   props: ["id"],
 
-  
   components: {
     EditApplication,
   },

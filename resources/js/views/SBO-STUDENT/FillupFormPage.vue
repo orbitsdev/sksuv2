@@ -108,7 +108,7 @@
             :key="requirement.id"
             class="  "
           >
-            {{ requirement }}
+
 
             <label class="block font-bold text-gray-700" :for="requirement.name"
               >{{ requirement.name }}

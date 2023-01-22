@@ -7,7 +7,11 @@
     </div>
 
     <div v-else>
-      <div class="flex justify-between items-center mb-4">
+      
+
+      <div   v-if="applications.length > 0"> 
+
+        <div class="flex justify-between items-center mb-4">
         <div class="relative inline-flex items-center justify-center shadow">
           <i class="absolute fa fa-search text-gray-400 top-5 left-4"></i>
           <input
@@ -30,9 +34,8 @@
           </div>
         </div>
       </div>
-
-      <ul
-        v-if="applications.length > 0"
+        <ul
+      
         role="list"
         class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
       >
@@ -90,6 +93,9 @@
           </div>
         </li>
       </ul>
+      </div>
+
+      
       <EmptyCard
         v-else
         :url="'/assets/undraw_thoughts_re_3ysu.svg'"
