@@ -605,7 +605,7 @@
         </template>
 
         <teleport to="#app">
-            <BaseDialog :show="true" :width="'600'">
+            <BaseDialog :show="showDecisionForm" :width="'600'">
                 <template #c-content>
                     <div class="">
                         <div class="">
@@ -849,7 +849,7 @@
                                 </div>
 
                             </div>
-                            <div class="bg-green-50 rounded  p-4">
+                            <!-- <div class="bg-green-50 rounded  p-4">
                                
                               <p class="text-green-700 font-bold uppercase"> Remarks </p>
                               <p class="text-gray-600 text-sm mt-1">To help the applicant understand what needs to be  corrected
@@ -862,22 +862,75 @@
                               name="description"
                               class="mt-4 block w-full rounded-lg p-2 border border-gray-200 focus:outline-none focus:border-green-500"
                             ></textarea>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="mt-8 flex justify-between items-center border-t  pt-4 ">
                       <div>
-                        <button  class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border  shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Close</button>
+                        <button  class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border  shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" @click="showDecisionForm = false">Close</button>
                       </div>
                       <div>
 
                         <button  class="hover:shadow mr-2 rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Approve</button>
-                        <button  class="hover:shadow mr-2 rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Deny</button>
+                        <button  class="hover:shadow mr-2 rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Return </button>
                       </div>
                     </div>
                 </template>
             </BaseDialog>
+
+            
         </teleport>
+
+        <teleport to="#app">
+          <BaseDialog  :show="true" :width="'620'">
+            <template  #c-content>
+             
+
+  
+            <div class=" rounded-lg  text-green-800 bg-blue-50  py-1 px-3 ">
+              <div class="flex items-center">
+                <div
+                    role="img"
+                    aria-label="monitor icon"
+                    tabindex="0"
+                    class="focus:outline-none  bg-blue-100 rounded-full flex items-center justify-center "
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                
+                </div>
+                <p
+                    tabindex="0"
+                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
+                >
+                Please specify if there is a mistake or missing files in the information This way, the applicant can correct and resubmit the application for your review.
+                </p>
+            </div>
+            
+            </div>
+
+            <div class="mt-4">
+              <p
+              class="text-base font-bold leading-none text-gray-800"
+          >
+              Remarks
+          </p>
+              <textarea placeholder="Description" class="mt-2 focus:ring-1 focus:ring-gray-200  py-3 pl-3 overflow-y-auto h-24 border placeholder-gray-600 rounded   w-full resize-none focus:outline-none"></textarea>
+          </div>
+          <div class="flex justify-end item-center   pt-4 ">
+           
+            <div>
+      
+              <button  class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border  shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" @click="showDecisionForm = false">Close</button>
+              <button  class="hover:shadow mr-2 rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Return </button>
+            </div>
+          </div>
+
+            </template>
+          </BaseDialog>
+        </teleport>
+    
     </BaseCard>
 </template>
 
@@ -886,6 +939,7 @@ export default {
     data() {
         return {
             search: "",
+            showDecisionForm: true,
         };
     },
 };
