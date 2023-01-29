@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\Field;
+use App\Models\Approval;
 use App\Models\Requirement;
 use Illuminate\Http\Request;
 use App\Models\ApplicationForm;
 use App\Http\Controllers\Controller;
 use App\Models\ApplicationFormRequirement;
 use App\Http\Resources\ApplicationFormResource;
+use App\Models\ApplicationFormApproval;
 
 class ApplicationFormController extends Controller
 {
@@ -68,12 +71,14 @@ class ApplicationFormController extends Controller
             }
         }
 
+    
         ApplicationForm::whereIn('id', $request->input('applicationforms'))->delete();
+        ApplicationFormApproval::whereIn('application_form_id', $request->input('applicationforms'))->delete();
         return response()->json(['success'], 200);
     }
     public function getApplicationForms()
     {
-        $applications  =  ApplicationForm::with('fields', 'requirements')->paginate(10);
+        $applications  =  ApplicationForm::with('fields', 'requirements','application_form_approvals')->paginate(10);
         return new ApplicationFormResource($applications);
     }
 
@@ -117,6 +122,21 @@ class ApplicationFormController extends Controller
             $new_application_form->requirements()->sync($requirements);
         }
 
+        if(count($request->input('approvers')) > 0 ){
+           
+            $authroize_roles = Role::whereIn('id', $request->input('approvers'))->select('id','name')->get();
+            foreach($authroize_roles as $role ){
+                
+                $new_application_form->application_form_approvals()->create([
+                    'user_id'=> null,
+                    'role_id'=> $role->id,
+                    'role_name'=> $role->name,
+                    'status'=> 'null'
+                ]);
+            }
+          
+        }
+
 
         return response()->json([$request->only('name'), $request->only('fields'), count($request->fields)]);
     }
@@ -140,10 +160,41 @@ class ApplicationFormController extends Controller
 
         // update application 
             $application_form = ApplicationForm::where('id', $request->input('id'))->first();
+
+        
             $application_form->update(
                 [
                   'title' => $request->title,
                 ]);
+
+            if(count($request->input('approvers'))> 0){
+               
+                // delete data where noit exist
+                $application_form->application_form_approvals()->whereNotIn('role_id',  $request->input('approvers'))->delete();
+                $authroize_roles = Role::whereIn('id', $request->input('approvers'))->select('id','name')->get();
+
+                foreach($authroize_roles as $role){                   
+                
+                    $approval = $application_form->application_form_approvals->where('role_id' , $role->id)->first();
+                   
+                    if(!$approval){
+                        $application_form->application_form_approvals()->create([
+                            'user_id'=> null,
+                            'role_id'=> $role->id,
+                            'role_name'=> $role->name,
+                            'status'=> 'null'
+                        ]);
+                    }
+                    
+                }
+
+                
+            }else{
+
+                if(count( $application_form->application_form_approvals) > 0 ){
+                    $application_form->application_form_approvals()->delete();
+                }
+            }
 
          // update each fields  of the application
         

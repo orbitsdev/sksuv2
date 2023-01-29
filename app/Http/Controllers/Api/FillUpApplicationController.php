@@ -82,7 +82,9 @@ class FillUpApplicationController extends Controller
     public function getApplcation(Request $request)
     {
 
-        $application = ApplicationForm::select('id', 'title')->where('id', $request->input('application_id'))->with(['fields', 'requirements' => function ($query) {
+        $application = ApplicationForm::select('id', 'title')->where('id', $request->input('application_id'))->with(['fields'=> function($query){
+            $query->orderBy('index', 'asc');
+        }, 'requirements' => function ($query) {
             $query->select('requirements.id', 'requirements.name', 'requirements.file_type', 'requirements.upload_type');
         }])->first();
 
@@ -115,12 +117,26 @@ class FillUpApplicationController extends Controller
 
 
         // create adviser aprrover
-        $response->approvals()->create([
-            'user_id' => $adviser->id,
-            'role' => null,
-            'decision' => 'processing',
+        
+        if(count($application_form->application_form_approvals) > 0){
 
-        ]);
+            foreach($application_form->application_form_approvals as $approval){
+                $response->response_approvals()->create(
+                    [
+                        'user_id'=> null,
+                        'role_id'=> $approval->role_id,
+                        'role_name'=> $approval->role_name,
+                        'status'=> 'null'
+                    ]
+                );
+            }
+                
+            // $response->response_approvals()->create([
+            //     'user_id'=> null,
+            //     'role_name'=> $role->name,
+            //     'status'=> 'null'
+            // ]);
+        }
 
         //create answers
         foreach ($request->input('answers') as $answer) {

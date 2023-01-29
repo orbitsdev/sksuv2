@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use App\Models\Field;
+use App\Models\Approval;
 use App\Models\Response;
 use App\Models\Requirement;
+use App\Models\ResponseApproval;
+use App\Models\ApplicationFormApproval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -32,4 +35,18 @@ class ApplicationForm extends Model
     public function responses(){
         return $this->hasMany(Response::class);
     }
+
+    public function approvals(){
+
+        return $this->hasMany(ResponseApproval::class);
+        
+        // return $this->belongsToMany(Approval::class, 'application_form_approvals', 'application_form_id', 'approval_id');
+    }
+    
+    public function application_form_approvals(){
+        return $this->hasMany(ApplicationFormApproval::class);
+    }
+
+
+
 }

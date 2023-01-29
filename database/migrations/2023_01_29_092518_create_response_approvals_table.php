@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('approvals', function (Blueprint $table) {
+        Schema::create('response_approvals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->nullable();
-            $table->string('role')->nullable();
-            $table->string('decision')->nullable();
+            $table->foreignId('response_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->string('role_id');
+            $table->string('role_name');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('approvals');
+        Schema::dropIfExists('response_approvals');
     }
 };

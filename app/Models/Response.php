@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\User;
 use App\Models\Answer;
 
+use App\Models\Approval;
 use App\Models\ApplicationForm;
 use App\Models\ResponseRequirement;
 use Illuminate\Database\Eloquent\Model;
@@ -37,8 +38,16 @@ class Response extends Model
     }
 
     public function approvals(){
-        return $this->hasMany(Approval::class);
+        return $this->belongsToMany(Approval::class , 'response_approvals', 'response_id', 'approval_id' );
     }
+
+
+
+    public function response_approvals(){
+        return $this->hasMany(ResponseApproval::class);
+    }
+
+
 
     
 

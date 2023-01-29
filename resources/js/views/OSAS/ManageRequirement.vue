@@ -85,7 +85,6 @@
         <template #c-content>
 
           <p class="text-base font-bold">Requirement Name</p>
-          <w-divider class="my6"></w-divider>
 
           <div class="py-2">
             <div>

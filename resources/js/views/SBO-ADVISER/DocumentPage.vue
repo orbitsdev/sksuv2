@@ -1,12 +1,10 @@
 <template>
     <BaseCard :subtitle="'Officers Documents'">
         <template #header>
+            {{ applications }}
             <BaseTableSetup>
                 <template #searchs-area>
-                    <!-- <TableButton class="mr-2" 
-                ><i class="fa-solid fa-plus mr-1"> </i> Add Officer
-              </TableButton> -->
-
+               
                     <BaseSearchInput
                         :placeholder="'Search Name ...'"
                         v-model="search"
@@ -18,7 +16,7 @@
             <BaseTable
                 :thdata="[
                     'Application',
-                    'Files',
+                    'Attachments',
                     'Status',
                     'Submitted At',
                     'Officer',
@@ -27,117 +25,74 @@
                 :isFetching="isSaving"
             >
                 <template #data>
-                    <!-- <tr>
-            <td class="whitespace-normal text-sm">
-              <div class="flex items-center">
-                <div class="">
-                  <div class="font-medium text-gray-900">ENROLL MEN ACCREDITATION</div>
-                </div>
-              </div>
-            </td>
+                
+                    <tr class="" v-for="item in  applications" :key="item.id">
 
-            <td>
-              <div class="rounded text-blue text-xs font-bold leading-5">
-                <i class="pr-1 fa-regular fa-file"></i> 5 Requrements
-              </div>
-              <div class="rounded text-blue text-xs font-bold leading-5">
-                <i class="pr-1 fa-solid fa-paperclip"></i> 2 Attachments
-              </div>
-            </td>
-            <td>
-              <span
-                class="inline-flex rounded  px-2 text-xs font-semibold leading-5 text-green-800"
-                >Approved</span
-              >
-              <span class="inline-flex rounded bg-blue-100 px-2 text-xs font-semibold leading-5 text-green-800">Pending</span>
-              <span class="inline-flex rounded bg-red-100 px-2 text-xs font-semibold leading-5 text-green-800">Denied</span>
-            </td>
-            <td>
-              <div class="font-medium text-gray-900">11/2023</div>
-            </td>
 
-            <td
-              class="w-full max-w-0 py-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
-            >
-              <p class="font-bold">Kate Romo</p>
-              <dd class="truncate text-gray-700">Governor</dd>
-            </td>
-            <td class="whitespace-normal py-2 text-sm text-gray-500">
-              <button
-                type="button"
-                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-              >
-                <i class="fa-regular fa-pen-to-square"></i>
-              </button>
-            </td>
-          </tr> -->
-
-                    <tr class="">
-                        <td class="py-4 sm:pl-6 pl-4">
+                        <td class="whitespace-normal  py-4 sm:pl-6 pl-4">
                             <div class="flex items-center">
                                 <div
-                                    aria-label="briefcase icon"
-                                    role="img"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-gray-100 rounded flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg1.svg"
-                                        alt="dixons"
-                                    />
-                                </div>
-                                <div class="pl-5">
+                                role="img"
+                                aria-label="monitor icon"
+                                tabindex="0"
+                                class="focus:outline-none w-8 h-8 bg-green-100 rounded-full flex items-center justify-center"
+                            >
+                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-700">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                  </svg>
+                            </div>
+                                
+
+                                
+                                <div class="whitespace-normal text-wrap pl-5">
                                     <p
                                         tabindex="0"
-                                        class="focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
+                                        class="whitespace-normal text-wrap focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
                                     >
-                                        Dixons
+                                        Dixons {{ item.application_form.title }} Lorem ipsum dolor, sit amet consectetur 
                                     </p>
-                                    <p
+                                    <!-- <p
                                         tabindex="0"
                                         class="focus:outline-none text-xs leading-3 text-gray-500"
                                     >
                                         meguc@ruj.io
-                                    </p>
+                                    </p> -->
                                 </div>
                             </div>
                         </td>
-                        <td class="py-4 sm:pl-6 pl-4">
+                        <td class="whitespace-normal py-4 sm:pl-6 pl-4">
                             <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="monitor icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg7.svg"
-                                        alt="technology"
-                                    />
-                                </div>
                                 <p
                                     tabindex="0"
                                     class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
                                 >
-                                    Technology
-                                </p>
+                                    {{ item.response_requirements.length}} Requrements
+                                 </p> 
+                            </div>
+                            <div class="flex items-center">
+                                
+                                <p
+                                    tabindex="0"
+                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
+                                >
+                                    {{ item.response_requirements.length}} Uploaded 
+                                 </p> 
                             </div>
                         </td>
-                        <td class="py-4 sm:pl-6 pl-4">
+                        <td class="whitespace-normal py-4 sm:pl-6 pl-4">
                             <p
                                 tabindex="0"
                                 class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
                             >
-                                23.4k
                             </p>
-                            <p
+                            <p v-for="approver in item.approvals" :key="approver.id"
                                 tabindex="0"
                                 class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
                             >
-                                in 24 hours
+                                {{ approver.user.roles }}
                             </p>
                         </td>
-                        <td class="py-4 sm:pl-6 pl-4">
+                        <td class="whitespace-normal py-4 sm:pl-6 pl-4">
                             <p
                                 tabindex="0"
                                 class="focus:outline-none text-sm leading-none text-gray-800"
@@ -145,7 +100,7 @@
                                 $891.2
                             </p>
                         </td>
-                        <td class="py-4 sm:px-6 px-4">
+                        <td class="whitespace-normal py-4 sm:px-6 px-4">
                             <div class="flex items-center">
                                 <p
                                     tabindex="0"
@@ -160,446 +115,9 @@
                             </div>
                         </td>
                     </tr>
-                    <tr class="">
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-gray-100 rounded flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg2.svg"
-                                        alt="motels"
-                                    />
-                                </div>
-                                <div class="pl-5">
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
-                                    >
-                                        Motels
-                                    </p>
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-xs leading-3 text-gray-500"
-                                    >
-                                        meguc@ruj.io
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="coffee icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-green-100 rounded-full flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg8.svg"
-                                        alt="grocery"
-                                    />
-                                </div>
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    Grocery
-                                </p>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
-                            >
-                                78k
-                            </p>
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
-                            >
-                                in 24 hours
-                            </p>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm leading-none text-gray-800"
-                            >
-                                $668
-                            </p>
-                        </td>
-                        <td class="py-4 sm:px-6 px-4">
-                            <div class="flex items-center">
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm font-semibold pr-3 leading-none text-gray-800"
-                                >
-                                    97%
-                                </p>
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg11.svg"
-                                    alt="up"
-                                />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="paint icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-gray-100 rounded flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg3.svg"
-                                        alt="zipcar"
-                                    />
-                                </div>
-                                <div class="pl-5">
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
-                                    >
-                                        Zipcar
-                                    </p>
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-xs leading-3 text-gray-500"
-                                    >
-                                        meguc@ruj.io
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="watch-icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg9.svg"
-                                        alt="fashion"
-                                    />
-                                </div>
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    Fashion
-                                </p>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
-                            >
-                                162
-                            </p>
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
-                            >
-                                in 24 hours
-                            </p>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm leading-none text-gray-800"
-                            >
-                                $522.2
-                            </p>
-                        </td>
-                        <td class="py-4 sm:px-6 px-4">
-                            <div class="flex items-center">
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm font-semibold pr-3 leading-none text-gray-800"
-                                >
-                                    98%
-                                </p>
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg10.svg"
-                                    alt="down"
-                                />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="star icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-gray-100 rounded flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg4.svg"
-                                        alt="owing"
-                                    />
-                                </div>
-                                <div class="pl-5">
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
-                                    >
-                                        Owing
-                                    </p>
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-xs leading-3 text-gray-500"
-                                    >
-                                        meguc@ruj.io
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="monitor icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg7.svg"
-                                        alt="technology"
-                                    />
-                                </div>
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    Technology
-                                </p>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
-                            >
-                                214
-                            </p>
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
-                            >
-                                in 24 hours
-                            </p>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm leading-none text-gray-800"
-                            >
-                                $81.2
-                            </p>
-                        </td>
-                        <td class="py-4 sm:px-6 px-4">
-                            <div class="flex items-center">
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm font-semibold pr-3 leading-none text-gray-800"
-                                >
-                                    68%
-                                </p>
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg10.svg"
-                                    alt="down"
-                                />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="book icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-gray-100 rounded flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg5.svg"
-                                        alt="cafes"
-                                    />
-                                </div>
-                                <div class="pl-5">
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
-                                    >
-                                        Cafes
-                                    </p>
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-xs leading-3 text-gray-500"
-                                    >
-                                        meguc@ruj.io
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="coffee icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-green-100 rounded-full flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg8.svg"
-                                        alt="grocery"
-                                    />
-                                </div>
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    Grocery
-                                </p>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
-                            >
-                                78k
-                            </p>
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
-                            >
-                                in 24 hours
-                            </p>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm leading-none text-gray-800"
-                            >
-                                $668
-                            </p>
-                        </td>
-                        <td class="py-4 sm:px-6 px-4">
-                            <div class="flex items-center">
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm font-semibold pr-3 leading-none text-gray-800"
-                                >
-                                    24%
-                                </p>
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg10.svg"
-                                    alt="down"
-                                />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-gray-100 rounded flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg6.svg"
-                                        alt="kmart"
-                                    />
-                                </div>
-                                <div class="pl-5">
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
-                                    >
-                                        Kmart
-                                    </p>
-                                    <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-xs leading-3 text-gray-500"
-                                    >
-                                        meguc@ruj.io
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <div
-                                    role="img"
-                                    aria-label="monitor icon"
-                                    tabindex="0"
-                                    class="focus:outline-none w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"
-                                >
-                                    <img
-                                        src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg7.svg"
-                                        alt="technology"
-                                    />
-                                </div>
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    Technology
-                                </p>
-                            </div>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
-                            >
-                                990
-                            </p>
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
-                            >
-                                in 24 hours
-                            </p>
-                        </td>
-                        <td class="py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm leading-none text-gray-800"
-                            >
-                                $891.2
-                            </p>
-                        </td>
-                        <td class="py-4 sm:px-6 px-4">
-                            <div class="flex items-center">
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm font-semibold pr-3 leading-none text-gray-800"
-                                >
-                                    68%
-                                </p>
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg11.svg"
-                                    alt="up"
-                                />
-                            </div>
-                        </td>
-                    </tr>
+                    
+                    
+                    
                 </template>
             </BaseTable>
         </template>
@@ -882,7 +400,7 @@
         </teleport>
 
         <teleport to="#app">
-          <BaseDialog  :show="true" :width="'620'">
+          <BaseDialog  :show="showRemarksForm" :width="'620'">
             <template  #c-content>
              
 
@@ -916,13 +434,13 @@
           >
               Remarks
           </p>
-              <textarea placeholder="Description" class="mt-2 focus:ring-1 focus:ring-gray-200  py-3 pl-3 overflow-y-auto h-24 border placeholder-gray-600 rounded   w-full resize-none focus:outline-none"></textarea>
+              <textarea  class="mt-2 focus:ring-1 focus:ring-gray-200  py-3 pl-3 overflow-y-auto h-24 border placeholder-gray-600 rounded   w-full resize-none focus:outline-none"></textarea>
           </div>
           <div class="flex justify-end item-center   pt-4 ">
            
             <div>
       
-              <button  class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border  shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" @click="showDecisionForm = false">Close</button>
+              <button  class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border  shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600" @click="showRemarksForm = false">Close</button>
               <button  class="hover:shadow mr-2 rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Return </button>
             </div>
           </div>
@@ -935,13 +453,34 @@
 </template>
 
 <script>
+import axiosApi from '../../api/axiosApi';
 export default {
+
+    created () {
+        this.getAllOfficersApplications();
+    },
     data() {
         return {
             search: "",
-            showDecisionForm: true,
+            showDecisionForm: false,
+            showRemarksForm: false,
+            isFetching: false,
+            applications: [],
         };
     },
+    methods: {
+        async getAllOfficersApplications(){
+                this.isFetching = true;
+
+                await axiosApi.get('api/officers/documents').then(res=> {
+                        console.log(res.data.data);
+                        this.applications = res.data.data;
+
+                }).finally(()=>{
+                    this.isFetching = false;
+                });
+        }
+    }
 };
 </script>
 

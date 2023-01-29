@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('approvals', function (Blueprint $table) {
+        Schema::create('remarks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->nullable();
-            $table->string('role')->nullable();
-            $table->string('decision')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('approvals');
+        Schema::dropIfExists('remarks');
     }
 };

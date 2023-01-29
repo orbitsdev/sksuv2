@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\ApplicationFormController;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -8,22 +7,24 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\GoogleController;
-use App\Http\Controllers\Api\FilePondController;
-use App\Http\Controllers\Api\NewPasswordController;
-use App\Http\Controllers\Api\CloudStorageController;
-use App\Http\Controllers\Api\CurrentSboAdviserController;
-use App\Http\Controllers\Api\DepartmentController;
-use App\Http\Controllers\Api\DynamicFetchingController;
-use App\Http\Controllers\Api\FillUpApplicationController;
-use App\Http\Controllers\Api\ManageSchoolController;
-use App\Http\Controllers\Mail\NewPasswordMailController;
-use App\Http\Controllers\Api\GoogleDriveStorageController;
-use App\Http\Controllers\Api\ManageSboAdviserControlller;
-use App\Http\Controllers\Api\ManageUserRoleController;
 use App\Http\Controllers\Api\MonitorController;
 use App\Http\Controllers\Api\OfficerController;
+use App\Http\Controllers\Api\ApprovalController;
+use App\Http\Controllers\Api\FilePondController;
+use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\RequirementController;
+use App\Http\Controllers\Api\CloudStorageController;
+use App\Http\Controllers\Api\ManageSchoolController;
+use App\Http\Controllers\Api\ManageUserRoleController;
+use App\Http\Controllers\Api\ApplicationFormController;
+use App\Http\Controllers\Api\DynamicFetchingController;
+use App\Http\Controllers\Mail\NewPasswordMailController;
+use App\Http\Controllers\Api\CurrentSboAdviserController;
+use App\Http\Controllers\Api\FillUpApplicationController;
+use App\Http\Controllers\Api\ManageSboAdviserControlller;
 use App\Http\Controllers\Api\SboAdviserRequestController;
+use App\Http\Controllers\Api\GoogleDriveStorageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,6 +141,16 @@ Route::get('/role', function () {
     Route::post('manage-officer/create-officer', [OfficerController::class, 'createOfficer']);
     Route::post('manage-officer/update-officer', [OfficerController::class, 'updateOfficer']);
     Route::post('manage-officer/delete-selected-officer', [OfficerController::class, 'deleteSelectedOfficer']);
+    
+    
+    // officers documents 
+    Route::get('officers/documents', [ApprovalController::class, 'getAllOfficerApplications']);
+    
+    //get arppover 
+    Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);
+
+
+
     
     
     // SBO STUDENT 

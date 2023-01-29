@@ -23,7 +23,7 @@
         </template>
       </BaseTableSetup>
       <BaseTable
-        :thdata="['', 'Title', 'Fields', 'Requiments', 'Status', '']"
+        :thdata="['', 'Title', 'Fields', 'Requiments', 'Authorize To Approve','Status','']"
         :isFetching="isFetching"
       >
         <template #data>
@@ -65,7 +65,7 @@
                 >
               </div>
             </td>
-            <td class="whitespace-nowrap py-4 text-sm pl-2">
+            <td class="whitespace-normal py-4 text-sm pl-2">
               <div v-if="item.requirements.length > 0">
                 <div class="grid grid-cols-1 gap-1 break-words">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
@@ -85,6 +85,19 @@
               </div>
             </td>
 
+            <td class="whitespace-normal ">
+              <div v-if="item.application_form_approvals.length > 0">
+                  
+                <span class="capitalize px-2 rounded  bg-green-100 text-green-800 m-1 inline-block " v-for="authorize in item.application_form_approvals " :key="authorize">
+                      {{ authorize.role_name }}
+                      <!-- {{ authorize}} -->
+                </span>
+
+              </div>
+              <span class="capitalize" v-else>
+                    Not Restricted 
+              </span>
+            </td>
             <td>
               <span class="capitalize">
                 {{ item.status }}
@@ -127,6 +140,7 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'800'" :preventClose="true">
         <template #c-content>         
+        
           <p class="text-base font-bold">Application Title</p>
           <BaseInput v-model="formtitle" />
           <p
@@ -217,8 +231,11 @@
                 <i class="fa-solid fa-plus mr-1"></i> <span class="mr-1"> Field </span>
               </Button>
             </div>
-            <div class="mt-2">
-              <p class="text-base font-bold">Attach Requiments</p>
+            <div v-if="isRequirementLoading" class="min-h-23 h-24 flex items-center">
+              <Loader1/>
+            </div>
+            <div class="mt-2" v-else>
+              <p class="text-base font-bold">Requirement Check List  </p>
               <w-divider class="my6"></w-divider>
               <div class="">
                 <div v-for="requirement in requirements" :key="requirement.id">
@@ -236,6 +253,32 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+            <div v-if="isRolesLoading" class="min-h-23 h-24 flex items-center">
+              <Loader1/>
+            </div>
+          <div class="mt-2" v-else>
+            <p class="text-base font-bold">Authorize Roles for Approval</p>
+            <w-divider class="my6">
+            </w-divider>
+
+              
+            {{ selectedApprover }}
+              <div v-for="approver in approvers" :key="approver">
+                <!-- {{ approver }} -->
+                <div class="flex items-center p-1 my-1">
+                  <input
+                  v-model="selectedApprover"
+                  :value="approver.id"
+                    type="checkbox"
+                    class="w-4 h-4 accent-green-600 text-white mr-1 border-blue-700 border-2 cursor-pointer"
+                  />
+                  <label :for="approver.id"  class="mr-1 capitalize cursor-pointer">
+                    <!-- Role Name -->
+                    {{approver.name}}
+                  </label>
+                </div>              
             </div>
           </div>
 
@@ -310,17 +353,23 @@ export default {
       selectedRequirements: [],
       selectedApplicationForms: [],
       requirements: [],
+      approvers: [1,2,3],
       applicationforms: [],
       selectedApplicationFormToUpdate: null,
       formfields: [],
       isLoading: false,
       selectedApplicationToView: null,
+      selectedApprover:[],
+      isRolesLoading: false,
     };
   },
 
   created() {
+    
     this.loadApplicationForms();
     this.loadRequirements();
+    this.loadApprovers();
+
   },
 
   watch: {
@@ -352,6 +401,8 @@ export default {
       this.formfields = [];
 
       this.selectedRequirements = [];
+      this.selectedApprover = [];
+   
 
       // display initial existing feilds
       if (item.fields.length > 0) {
@@ -411,6 +462,26 @@ export default {
         });
       }
 
+      // console.log(item.application_form_approvals);
+
+      if(item.application_form_approvals.length > 0){
+       
+
+          item.application_form_approvals.forEach(ap => {
+              this.selectedApprover.push(ap.role_id);
+          });
+
+
+
+          console.log(this.selectedApprover);
+      }
+      // if(item.application_form_approvals.length > 0){ 
+          
+      //       item.application_form_approvals.forEach(approver => {
+      //         this.selectedApprover.push(approver.id);
+      //       });
+      // }
+
       let newfields = [];
       let selected_collection_for_select = null;
 
@@ -463,6 +534,7 @@ export default {
         title: this.formtitle,
         fields: newfields,
         requirements: this.selectedRequirements,
+        approvers: this.selectedApprover
       };
 
       await axiosApi
@@ -474,6 +546,7 @@ export default {
           this.formtitle = "";
           this.formfields = [];
           this.selectedRequirements = [];
+          this.selectedApprover = [];
           this.selectedApplicationFormToUpdate = null;
           this.loadApplicationForms();
         })
@@ -494,6 +567,8 @@ export default {
       this.isUpdatingMode = false;
       this.formtitle = "";
       this.formfields = [];
+      this.selectedApprover = [];
+
       this.showForm = true;
     },
 
@@ -591,6 +666,21 @@ export default {
           this.isFetching = false;
         });
     },
+
+    async loadApprovers(){  
+
+        this.isRolesLoading = true;
+
+        await axiosApi.get('api/form/approvers').then(res=>{
+
+          this.approvers = res.data.data;
+            // console.log(res.data.data);
+        }).catch(err=>{
+
+        }).finally(()=>{
+          this.isRolesLoading = false;
+        });
+    },
     async loadRequirements() {
       this.isRequirementLoading = true;
 
@@ -637,6 +727,7 @@ export default {
         title: this.formtitle,
         fields: newfields,
         requirements: this.selectedRequirements,
+        approvers: this.selectedApprover,
       };
 
       await axiosApi
@@ -648,6 +739,7 @@ export default {
           this.formtitle = "";
           this.formfields = [];
           this.selectedRequirements = [];
+          this.selectedApprover = [];
           this.loadApplicationForms();
         })
         .catch((err) => {
