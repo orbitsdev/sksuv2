@@ -100,7 +100,9 @@ export default {
     function handleFilePondProcessFiles() {
       context.emit("fileIsUploading", false);
     }
-    function handleFilePondError(response) {}
+    function handleFilePondError(response) {
+      context.emit("fileIsUploading", false);
+    }
 
     function handleFilePondRevert(folder, load, error) {
       axiosApi
@@ -129,7 +131,7 @@ export default {
       handleFilePondRevert,
     };
   },
-  emits: ["fileIsUploaded", "fileIsDeleted", "fileIsUploading"],
+  emits: ["fileIsUploaded", "fileIsDeleted", "fileIsUploading", "hasError"],
   components: {
     FilePond,
   },

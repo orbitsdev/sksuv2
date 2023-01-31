@@ -42,6 +42,7 @@ import EmptyCard from './components/EmptyCard.vue';
 import Loader1 from './components/Loader1.vue';
 import TimelineCard from './components/TimelineCard.vue';
 import Loader2 from './components/Loader2.vue';
+import ConfirmCard from './components/ConfirmCard.vue';
 
 
 
@@ -107,6 +108,7 @@ app.component('EmptyCard', EmptyCard);
 app.component('Loader1', Loader1);
 app.component('TimelineCard', TimelineCard);
 app.component('Loader2', Loader2);
+app.component('ConfirmCard', ConfirmCard);
 
 
 

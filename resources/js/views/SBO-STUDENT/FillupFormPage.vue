@@ -132,7 +132,7 @@
               @fileIsDeleted="requirement.removeFile"
               class="mt-2 tex-sm"
             />
-            <LinearLoader v-if="requirement.isUploading" />
+            <!-- <LinearLoader v-if="requirement.isUploading" /> -->
           </div>
         </div>
       </div>
