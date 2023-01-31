@@ -8,6 +8,7 @@ use App\Http\Resources\RolesResources;
 use App\Models\Response;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApprovalController extends Controller
 {
@@ -15,23 +16,41 @@ class ApprovalController extends Controller
 
     public function getAllOfficerApplications(){ 
 
-            $current_adviser_id = auth('sanctum')->user()->id;     
-
+            $current_adviser_id = auth('sanctum')->user()->id;    
+            $current_adviser_role = auth('sanctum')->user()->roles->where('name', 'sbo-adviser')->first();
             $response = Response::whereHas('user', function($query) use($current_adviser_id) {
                $query->whereHas('officer', function($query)use ($current_adviser_id) {
                 $query->where('adviser_id', $current_adviser_id);
                }); 
             })->with([
+                'user.officer',
                 'application_form',
-                'answers',
-                'approvals.user.roles', 
                 'response_requirements', 
                 'response_requirements.requirement',
                 'response_requirements.files',
-
+                'application_form',
+                'answers',
+                'response_approvals'=> function($query) use ($current_adviser_role){
+                    $query->where([
+                        ['role_id', $current_adviser_role->id],
+                        ['role_name', $current_adviser_role->name]
+                    ]);
+                }
+                
             ])->get();
+            // with([
+            //     'application_form',
+            //     'answers',
+            //     'approvals.user.roles', 
+            //     'response_requirements', 
+            //     'response_requirements.requirement',
+            //     'response_requirements.files',
+
+            // ])->get();
 
             return new ResponseResource($response);
+
+            // return response()->json([$current_adviser_role]);
 
     }
 

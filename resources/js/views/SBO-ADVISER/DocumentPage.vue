@@ -16,21 +16,22 @@
             <BaseTable
                 :thdata="[
                     'Application',
-                    'Attachments',
-                    'Status',
-                    'Submitted At',
+                   
+                    'Approval Status',
+                    'Indorsed Status',
                     'Officer',
+                    'Submitted At',
                     '',
                 ]"
                 :isFetching="isSaving"
             >
                 <template #data>
                 
-                    <tr class="" v-for="item in  applications" :key="item.id">
+                    <tr class="">
 
 
-                        <td class="whitespace-normal  py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
+                        <td class="whitespace-normal  py-4 ">
+                            <div class="flex ">
                                 <div
                                 role="img"
                                 aria-label="monitor icon"
@@ -47,73 +48,135 @@
                                 <div class="whitespace-normal text-wrap pl-5">
                                     <p
                                         tabindex="0"
-                                        class="whitespace-normal text-wrap focus:outline-none text-sm font-semibold leading-none text-gray-800 pb-2"
+                                        class="whitespace-normal font-bold text-wrap focus:outline-none text-sm  leading-none text-gray-800 pb-2"
                                     >
-                                        Dixons {{ item.application_form.title }} Lorem ipsum dolor, sit amet consectetur 
+                                        Dixons Enollment Accreditation
                                     </p>
-                                    <!-- <p
-                                        tabindex="0"
-                                        class="focus:outline-none text-xs leading-3 text-gray-500"
-                                    >
-                                        meguc@ruj.io
-                                    </p> -->
+                                    <div>
+                                    <p class=" ml-1 ">Attachments</p>
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center mr-1">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-blue-700 ">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" />
+                                              </svg>
+                                              
+                                        </div>
+                                        <p
+                                            tabindex="0"
+                                            class="focus:outline-none text-sm leading-tight p-1 rounded  text-pink-700 "
+                                        >
+                                         5  Checklist 
+                                         </p> 
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-1">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-4 h-4 text-blue-700 ">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                              </svg>
+
+                                           
+                                              
+                                              
+                                        </div>
+                                        <p
+                                            tabindex="0"
+                                            class="focus:outline-none text-sm leading-tight p-1 rounded  text-blue-700   "
+                                        >
+                                            5 Uploads
+                                         </p> 
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="whitespace-normal py-4 sm:pl-6 pl-4">
-                            <div class="flex items-center">
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    {{ item.response_requirements.length}} Requrements
-                                 </p> 
+                      
+                        <td class="whitespace-normal py-4 ">
+
+                            <div class="flex items-center ">
+                                <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center mr-1">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-yellow-700">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+                                    </svg>
+      
+                                    
+                              </div>
+                  <p
+                      tabindex="0"
+                      class="focus:outline-none text-sm  leading-none text-gray-800"
+                  >
+                  Processing
+                  </p>
                             </div>
-                            <div class="flex items-center">
-                                
-                                <p
-                                    tabindex="0"
-                                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
-                                >
-                                    {{ item.response_requirements.length}} Uploaded 
-                                 </p> 
+                           
+                           
+                          
+                        </td>
+                        <td class="whitespace-normal py-4 ">
+                            <div class="flex items-center ">
+                                <div class="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center mr-1">
+<!-- 
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-yellow-700">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+                                    </svg> -->
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-purple-700">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                      </svg>
+                                      
+      
+                                    
+                              </div>
+                  <p
+                      tabindex="0"
+                      class="focus:outline-none text-sm  leading-none text-gray-800"
+                  >
+                  Not Yet Inodorsed
+                  </p>
                             </div>
+                           
+                           
                         </td>
-                        <td class="whitespace-normal py-4 sm:pl-6 pl-4">
-                            <p
-                                tabindex="0"
-                                class="focus:outline-none text-sm font-semibold leading-none text-gray-800"
-                            >
-                            </p>
-                            <p v-for="approver in item.approvals" :key="approver.id"
-                                tabindex="0"
-                                class="focus:outline-none text-xs leading-3 text-gray-500 pt-2"
-                            >
-                                {{ approver.user.roles }}
-                            </p>
-                        </td>
-                        <td class="whitespace-normal py-4 sm:pl-6 pl-4">
+                        <td class="whitespace-normal py-4 ">
                             <p
                                 tabindex="0"
                                 class="focus:outline-none text-sm leading-none text-gray-800"
                             >
-                                $891.2
+                              Maria Kte Romoe Bonifiacio
                             </p>
+                            
+                            <p
+                                 tabindex="0"
+                                class="focus:outline-none text-xs leading-none text-blue-600 font-semibold mt-1"
+                            >
+                            (  GOVERNOR  ) </p>
+
+                            </td>
+                        <td class="whitespace-normal">
+                            <div class="flex items-center">
+                                <p
+                                    tabindex="0"
+                                    class="focus:outline-none text-sm  leading-none text-gray-800"
+                                >
+                                    January 12 202032
+                                </p>
+                            
+                            </div>
                         </td>
-                        <td class="whitespace-normal py-4 sm:px-6 px-4">
+                        <td class="whitespace-normal py-4 ">
                             <div class="flex items-center">
                                 <p
                                     tabindex="0"
                                     class="focus:outline-none text-sm font-semibold pr-3 leading-none text-gray-800"
                                 >
-                                    68%
+                                    Options
                                 </p>
-                                <img
-                                    src="https://tuk-cdn.s3.amazonaws.com/can-uploader/card89-svg10.svg"
-                                    alt="down"
-                                />
+                               
                             </div>
                         </td>
+                      
                     </tr>
                     
                     
@@ -420,7 +483,7 @@
                 </div>
                 <p
                     tabindex="0"
-                    class="focus:outline-none text-sm leading-tight text-gray-500 pl-3"
+                    class="focus:outline-none text-sm leading-tight text-gray-500 "
                 >
                 Please specify if there is a mistake or missing files in the information This way, the applicant can correct and resubmit the application for your review.
                 </p>

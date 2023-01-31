@@ -8,6 +8,7 @@ use App\Models\Answer;
 
 use App\Models\Approval;
 use App\Models\ApplicationForm;
+use App\Models\ResponseApproval;
 use App\Models\ResponseRequirement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

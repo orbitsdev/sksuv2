@@ -1,4 +1,6 @@
 <template>
+
+
   <BaseCard :subtitle="'Manage Form'">
     <template #header>
       <BaseTableSetup>
@@ -90,7 +92,7 @@
                   
                 <span class="capitalize px-2 rounded  bg-green-100 text-green-800 m-1 inline-block " v-for="authorize in item.application_form_approvals " :key="authorize">
                       {{ authorize.role_name }}
-                      <!-- {{ authorize}} -->
+                    
                 </span>
 
               </div>
@@ -169,7 +171,6 @@
                     type="text"
                     class="w-full p-1 border"
                   />
-                  <!-- <BaseInput /> -->
                   <p
                     class="text-xs text-red-500 mt-1"
                     v-if="
@@ -264,9 +265,7 @@
             </w-divider>
 
               
-            {{ selectedApprover }}
               <div v-for="approver in approvers" :key="approver">
-                <!-- {{ approver }} -->
                 <div class="flex items-center p-1 my-1">
                   <input
                   v-model="selectedApprover"
@@ -275,7 +274,6 @@
                     class="w-4 h-4 accent-green-600 text-white mr-1 border-blue-700 border-2 cursor-pointer"
                   />
                   <label :for="approver.id"  class="mr-1 capitalize cursor-pointer">
-                    <!-- Role Name -->
                     {{approver.name}}
                   </label>
                 </div>              
