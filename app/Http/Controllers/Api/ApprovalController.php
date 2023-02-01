@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ResponseResource;
 use App\Http\Resources\RolesResources;
 use App\Models\Response;
+use App\Models\ResponseApproval;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,6 +14,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ApprovalController extends Controller
 {
     
+    public function approveForm(Request $request){
+        
+        // $approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->update([
+        //     'status'=> $request->input('status')
+        // ]);
+        $approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->update([
+            'status'=> $request->input('status')
+        ]);
+
+        return response()->json([$approval]);
+
+    }   
 
     public function getAllOfficerApplications(){ 
 

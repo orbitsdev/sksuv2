@@ -32,6 +32,7 @@ class MonitorController extends Controller
         // delete response_requirement and answers
         $response->response_requirements()->delete();
         $response->answers()->delete();
+        $response->response_approvals()->delete();
         // delete response
         $response->delete();
 

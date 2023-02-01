@@ -148,6 +148,7 @@ Route::get('/role', function () {
     
     //get arppover 
     Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);
+    Route::post('form/approve', [ApprovalController::class, 'approveForm']);
 
 
 

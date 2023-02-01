@@ -1,7 +1,14 @@
 <template>
   <BaseCard :subtitle="'Officers Documents'">
     <template #header>
-      {{ selectedItem }}
+      <h1> {{confirmMode}}</h1>
+      <hr>
+
+      <p v-if="selectedItem != null">
+
+        {{ selectedItem.response_approvals }}
+      </p>
+
       <BaseTableSetup>
         <template #searchs-area>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
@@ -66,7 +73,7 @@
                 <div class="whitespace-normal  align-top text-wrap pl-4">
                   <p
                     tabindex="0"
-                    class="whitespace-normal  align-top font-bold text-wrap focus:outline-none text-base leading-none text-gray-800 pb-2"
+                    class="whitespace-normal  align-top font-semibold text-wrap focus:outline-none text-sm leading-none text-gray-800 pb-2"
                   >
                     {{ item.application_form.title }}
                   </p>
@@ -137,7 +144,7 @@
               <div v-if="item.response_approvals.length > 0">
                 <p
                 tabindex="0"
-                class="focus:outline-none text-sm leading-none text-gray-800 font-bold "
+                class="focus:outline-none text-sm leading-none text-gray-800 font-semibold "
               >
                   Approval Satus
               </p>
@@ -153,7 +160,7 @@
             <div class="mt-4">
               <p
               tabindex="0"
-              class="focus:outline-none text-sm leading-none text-gray-800 font-bold"
+              class="focus:outline-none text-sm leading-none text-gray-800 font-semibold"
             >
               Indorsed Status
             </p>
@@ -179,7 +186,7 @@
             <td class="whitespace-normal  align-top py-4">
               <p
                 tabindex="0"
-                class="focus:outline-none text-sm leading-none text-gray-800 font-bold capitalize"
+                class="focus:outline-none text-sm leading-none text-gray-800 font-semibold capitalize"
               > 
 
               {{ item.user.first_name  }}               {{ item.user.last_name  }}
@@ -198,23 +205,26 @@
             <td class="whitespace-normal  align-top py-3">
               
 
-              <DateCard>
+              <DateCard class="mt-2">
                 <template #label> 
                   Officer Submitted
                 </template>
                 {{ formatDate(item.created_at) }}
+  
               </DateCard>
-              <DateCard class="mt-2">
+              <DateCard class="mt-2" >
                 <template #label> 
                   Aprroved Date
                 </template>
-                {{ formatDate(item.created_at) }}
+                {{ formatDate(item.update_at) }}
+  
               </DateCard>
-              <DateCard class="mt-2">
+              <DateCard class="mt-2" >
                 <template #label> 
                   Indorsed Date
                 </template>
                 {{ formatDate(item.created_at) }}
+  
               </DateCard>
               
             </td>
@@ -293,27 +303,6 @@
                 </p>
                 <w-divider class="my6 mb-6"></w-divider>
 
-                <!-- <div class="mb-4" v-for="rq in selectedItem.response_requirements " :key="rq.id">
-                  <div>
-                    <p class="text-base font-bold leading-none text-gray-800">
-                      {{ rq.requirement.name }}
-                    </p>
-
-                    <div class="flex flex-wrap mt-3" v-if="rq.files.length > 0" >
-                      <div class="flex items-center mr-2" v-for="file in  rq.files" :key="file.id">
-                        <div class="focus:outline-none">
-                          <img
-                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
-                            alt="icon"
-                          />
-                        </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2"> {{ file.file_name }}</p>
-                      
-                      </div>
-                    </div>
-
-                  </div>
-                </div> -->
 
                 <div class="mb-4"  v-for="rq in selectedItem.response_requirements " :key="rq.id">
                   <div>
@@ -321,7 +310,7 @@
                       {{ rq.requirement.name }}
                     </p>
                     <div class="flex flex-wrap mt-4" v-if="rq.files.length > 0" >
-                      <div class="flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
+                      <a href="#" class="hover:shadow-lg py-1 px-2  border rounded-full flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
                         <div class="focus:outline-none">
                           <img
                             src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
@@ -329,16 +318,7 @@
                           />
                         </div>
                         <p class="text-sm leading-none text-gray-600 ml-2">{{ file.file_name }}</p>
-                      </div>
-                      <div class="flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
-                        <div class="focus:outline-none">
-                          <img
-                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
-                            alt="icon"
-                          />
-                        </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">{{ file.file_name }}</p>
-                      </div>
+                      </a>
                     </div>
 
                     <div class="flex flex-wrap mt-3" v-else>
@@ -366,71 +346,6 @@
                     
                   </div>
                 </div>
-<!-- 
-                <div class="mb-4">
-                  <div>
-                    <p class="text-base font-bold leading-none text-gray-800">
-                      Employee Performance
-                    </p>
-                    <div class="flex flex-wrap mt-4">
-                      <div class="flex items-center mr-2 mt-1">
-                        <div class="focus:outline-none">
-                          <img
-                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
-                            alt="icon"
-                          />
-                        </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">Document</p>
-                      </div>
-                      <div class="flex items-center mr-2 mt-1">
-                        <div class="focus:outline-none">
-                          <img
-                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
-                            alt="icon"
-                          />
-                        </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">Document</p>
-                      </div>
-                      <div class="flex items-center mr-2 mt-1">
-                        <div class="focus:outline-none">
-                          <img
-                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
-                            alt="icon"
-                          />
-                        </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">Document</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-4">
-                  <div>
-                    <p class="text-base font-bold leading-none text-gray-800">
-                      Employee Performance
-                    </p>
-                    <div class="flex flex-wrap mt-3">
-                      <div class="flex items-center mr-2">
-                        <div class="focus:outline-none">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="w-6 h-6"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                            />
-                          </svg>
-                        </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">No File</p>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
 
              
               </div>
@@ -452,10 +367,19 @@
             <div>
               
               <button
-              @click="showConfirmationForm('approving')"
+              v-if="(confirmMode == 'null' || confirmMode == 'processing') "
+              @click="showConfirmationForm"
                 class="hover:shadow mr-2 rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
               >
                 Approve
+              </button>
+              <button
+              v-if="confirmMode == 'approved' "
+
+              @click="showConfirmationForm"
+                class="hover:shadow mr-2 rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              >
+              Uapprove
               </button>
               <button
               @click="showRemarksForm = true "
@@ -536,12 +460,12 @@
           <template #c-content>
 
             
-            <ConfirmCard v-if="confirmMode == 'approving' " :title="'Are Your Sure?'" :message="'Do you want to approve this application'">
+            <ConfirmCard v-if="(confirmMode == 'null' || confirmMode == 'processing' )  " :title="'Are Your Sure?'" :message="'Do you want to approve this application'">
+              <div class=" col-span-1  flex justify-center items-center" v-if="isSaving">
+                  <BaseSpinner/>
+              </div>
+              <button v-else @click="approveForm" class="col-span-1  transition duration-150 ease-in-out hover:bg-green-600 bg-green-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm">Yes</button>
                 <button class=" col-span-1  ml-3 bg-gray-100  transition duration-150 text-gray-600  ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm" @click="showConfirmation = false"> Close</button>
-                <!-- <div class=" col-span-1 bg-red-400  flex justify-center items-center">
-                    <BaseSpinner/>
-                </div> -->
-                <button class="col-span-1  transition duration-150 ease-in-out hover:bg-green-600 bg-green-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm">Yes</button>
             </ConfirmCard>
 
 
@@ -571,14 +495,58 @@ export default {
       isFetching: false,
       applications: [],
       isSaving: false,
-      confirmMode: 'approving',
+      confirmMode: null,
       selectedItem:null,
+      requestError :null,
     };
   },
   methods: {
+    
+   async approveForm(){
+      
+    this.isSaving = true;
+    
+
+      // console.log(this.selectedItem);
+      let current_approval = this.findApproval(this.selectedItem);
+    
+
+      let current_status = '';
+
+      if(current_approval.status == 'null' || 'processing'){
+        current_status = 'approved';
+      }
+      
+      if(current_approval.status == 'approved'){
+        current_status = 'unapproved';
+      }
+
+
+      let decision_data = {
+          response_id: this.selectedItem.id,
+          approval_id: current_approval.id,
+          status: current_status,
+      };
+      // console.log(decision_data);
+
+          await axiosApi.post('api/form/approve', decision_data ).then(res=>{
+              console.log(res.data);
+              this.showConfirmation = false; 
+              this.showDecisionForm = false;
+              this.selectedItem = null;
+              this.confirmMode = null;
+
+              this.getAllOfficersApplications();
+              
+          }).catch(err=>{
+              console.log(err);
+          }).finally(()=>{
+            this.isSaving = false;
+          });
+    },
 
     formatDate(date) {
-      return moment(date).format("MMM, D YYYY");
+      return moment(date).format("MMM, D YYYY hh:mm a");
     },
     totalFiles(item) {
     let total = 0;
@@ -593,12 +561,21 @@ export default {
       this.showDecisionForm = false;
     },
     showApprovalForm(item){
-
+      
       this.selectedItem = item;
-        this.showDecisionForm  =true;
+
+      let current_approval = this.findApproval(item);
+      this.confirmMode = current_approval.status;
+      this.showDecisionForm  = true;
     },
 
-    showConfirmationForm(mode){
+    findApproval(item){
+      let current_approval = item.response_approvals.find(element => element.role_name === 'sbo-adviser' && element.response_id === item.id);
+    
+      return current_approval;
+    },
+
+    showConfirmationForm(){
       
     
       this.showConfirmation = true;
