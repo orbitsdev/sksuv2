@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\User;
 use App\Models\Answer;
 
+use App\Models\Remark;
 use App\Models\Approval;
 use App\Models\ApplicationForm;
 use App\Models\ResponseApproval;
@@ -46,6 +47,10 @@ class Response extends Model
 
     public function response_approvals(){
         return $this->hasMany(ResponseApproval::class);
+    }
+
+    public function remarks(){
+        return $this->hasMany(Remark::class);
     }
 
 

@@ -101,7 +101,7 @@ class MonitorController extends Controller
             $query->select('id', 'response_id', 'requirement_id')->with(
                 'files'
             );
-        }, 'approvals.user.roles'])->select('id', 'application_form_id', 'user_id', 'created_at')->get();
+        },])->select('id', 'application_form_id', 'user_id', 'created_at')->get();
 
 
         return new ResponseResource($responses);

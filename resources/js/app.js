@@ -43,6 +43,9 @@ import Loader1 from './components/Loader1.vue';
 import TimelineCard from './components/TimelineCard.vue';
 import Loader2 from './components/Loader2.vue';
 import ConfirmCard from './components/ConfirmCard.vue';
+import IndorseCard from './components/IndorseCard.vue';
+import StatusCard from './components/StatusCard.vue';
+import DateCard from './components/DateCard.vue';
 
 
 
@@ -109,6 +112,9 @@ app.component('Loader1', Loader1);
 app.component('TimelineCard', TimelineCard);
 app.component('Loader2', Loader2);
 app.component('ConfirmCard', ConfirmCard);
+app.component('IndorseCard', IndorseCard);
+app.component('StatusCard', StatusCard);
+app.component('DateCard', DateCard);
 
 
 

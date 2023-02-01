@@ -29,7 +29,8 @@ class ApprovalController extends Controller
                 'response_requirements.requirement',
                 'response_requirements.files',
                 'application_form',
-                'answers',
+                'answers.field',
+                'remarks',
                 'response_approvals'=> function($query) use ($current_adviser_role){
                     $query->where([
                         ['role_id', $current_adviser_role->id],

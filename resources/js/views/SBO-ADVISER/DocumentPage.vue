@@ -1,7 +1,7 @@
 <template>
   <BaseCard :subtitle="'Officers Documents'">
     <template #header>
-      {{ applications }}
+      {{ selectedItem }}
       <BaseTableSetup>
         <template #searchs-area>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
@@ -11,19 +11,35 @@
 
       <BaseTable
         :thdata="[
+          '',
           'Application',
-
           'Status',
-       
           'Officer',
-          'Submitted At',
+          'Dates',
           '',
         ]"
-        :isFetching="isSaving"
+        :isFetching="isFetching"
       >
         <template #data>
-          <tr class="" v-for="item in applications" :key="item.id">
-            <td class="whitespace-normal py-4">
+
+          <tr v-if="applications.length < 0">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            
+          </tr>
+          <tr v-else class="" v-for="item in applications" :key="item.id">
+
+            <td class="whitespace-normal  align-top relative w-12 px-6 sm:w-16 sm:px-8">
+              <input
+                type="checkbox"
+                class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
+              />
+            </td>
+            <td class="whitespace-normal  align-top py-4">
               <div class="flex">
                 <div
                   role="img"
@@ -47,18 +63,17 @@
                   </svg>
                 </div>
 
-                <div class="whitespace-normal text-wrap pl-5">
+                <div class="whitespace-normal  align-top text-wrap pl-4">
                   <p
                     tabindex="0"
-                    class="whitespace-normal font-bold text-wrap focus:outline-none text-sm leading-none text-gray-800 pb-2"
+                    class="whitespace-normal  align-top font-bold text-wrap focus:outline-none text-base leading-none text-gray-800 pb-2"
                   >
                     {{ item.application_form.title }}
                   </p>
                   <div>
-                    <p class="ml-1 text-sm">Attachments</p>
-                    <div class="flex items-center my-1  mt-2">
+                    <div class="flex items-center">
                       <div
-                        class="w-6 h-6 rounded-full flex items-center justify-center mr-2"
+                        class="w-5 h-5 rounded-full flex items-center justify-center mr-2"
                       >
                       <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +81,7 @@
                       viewBox="0 0 24 24"
                       strokeWidth="{1.5}"
                       stroke="currentColor"
-                      class="w-6 h-6 text-blue-700"
+                      class="w-6 h-6 text-orange-700"
                     >
                       <path
                         strokeLinecap="round"
@@ -75,34 +90,29 @@
                       />
                     </svg>
                       </div>
-                      <p
-                        tabindex="0"
-                        class="focus:outline-none text-sm leading-none bg-blue-100 text-blue-900 px-3 py-1 rounded-full font-semibold"
-                      >
-                      {{ item.response_requirements.length > 0 ? item.response_requirements.length : '' }} Requirements
+                     
+                      <StatusCard class="mt-2 first-letter:capitalize bg-orange-100 text-orange-900"> 
+                        {{ item.response_requirements.length > 0 ? item.response_requirements.length : '' }} Requirements
                          
-                      </p>
+                      </StatusCard>
                     </div>
-                    <div class="flex items-center mt-2">
+                    <div class="flex items-center ">
                       <div
-                        class="w-6 h-6 rounded-full flex items-center justify-center mr-2"
+                        class="w-5 h-5 mt-2 rounded-full flex items-center justify-center mr-2"
                       >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  text-green-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  text-lime-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                       </svg>
                       
                       </div>
-                      <p
-                        tabindex="0"
-                        class="focus:outline-none text-sm leading-none bg-green-100 text-green-900 px-3 py-1 rounded-full font-semibold"
-                      >
 
-                      <!-- {{ item.response_requirements.requirement }} -->
-
-                      <!-- {{ item.response_requirements.files > 0 ? item.response_requirements.files.length : '' }} Uploads -->
-                      </p>
+                      <StatusCard class="mt-2 first-letter:capitalize bg-lime-100 text-lime-900"> 
+                        {{ totalFiles(item.response_requirements) }}   Uploads
+                         
+                      </StatusCard>
+                     
                     </div>
-                    <div class="flex items-center mt-2">
+                    <div v-if="item.remarks.length > 0 " class="flex items-center mt-2">
                       <div
                         class="w-6 h-6 rounded-full flex items-center justify-center mr-2"
                       >
@@ -115,7 +125,7 @@
                         tabindex="0"
                         class="focus:outline-none text-sm leading-none bg-red-100 text-red-900 px-3 py-1 rounded-full font-semibold"
                       >
-                        5 Remarks
+                        5  {{ item.remarks.length  }}
                       </p>
                     </div>
                   </div>
@@ -123,84 +133,94 @@
               </div>
             </td>
 
-            <td class="whitespace-normal py-4">
-              <p
+            <td class="whitespace-normal  align-top py-4">
+              <div v-if="item.response_approvals.length > 0">
+                <p
                 tabindex="0"
-                class="focus:outline-none text-sm leading-none text-gray-800 font-bold"
+                class="focus:outline-none text-sm leading-none text-gray-800 font-bold "
               >
-                Approval Status
+                  Approval Satus
               </p>
-              <div class="">
-                <p
-                  tabindex="0"
-                  class="mt-2 focus:outline-none text-sm leading-none bg-blue-100 text-blue-900 px-3 py-1 inline-block rounded-full font-semibold"
-                >
-                  Processing
-                </p>
-                <p
-                  tabindex="0"
-                  class="mt-2 focus:outline-none text-sm leading-none bg-green-100 text-green-900 px-3 py-1 inline-block rounded-full font-semibold"
-                >
-                  Approved
-                </p>
-                <p
-                  tabindex="0"
-                  class="mt-2 focus:outline-none text-sm leading-none bg-red-100 text-red-900 px-3 py-1 inline-block rounded-full font-semibold"
-                >
-                  Denied
-                </p>
+              <div class="" v-for="ap in item.response_approvals" :key="ap.id">
+                <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="ap.status == 'null'">Processing  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="ap.status == 'processing'">{{ ap.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-green-100 text-green-900"  v-if="ap.status == 'approved'"> {{ ap.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-red-100 text-red-900"  v-if="ap.status == 'denied'"> {{ ap.status }}  </StatusCard>
               </div>
+            </div>
+            <div v-else></div>
+
+            <div class="mt-4">
               <p
-                tabindex="0"
-                class="focus:outline-none  mt-2 text-sm leading-none text-gray-800 font-bold"
-              >
-                Indorsed Status
-              </p>
-              <div class=" flex items-center">
-                <p
-                  tabindex="0"
-                  class="mt-2 focus:outline-none text-sm leading-none bg-green-100 text-green-900 px-3 py-1 inline-block rounded-full font-semibold"
-                >
-                  Indorsed
-                </p>
-                <p
-                  tabindex="0"
-                  class="mt-2 focus:outline-none text-sm leading-none bg-gray-100 text-gray-900 px-3 py-1 inline-block rounded-full font-semibold"
-                >
-                  Not Yet
-                </p>
-                
-              </div>
+              tabindex="0"
+              class="focus:outline-none text-sm leading-none text-gray-800 font-bold"
+            >
+              Indorsed Status
+            </p>
+            <div class=" flex items-center">
+              <StatusCard class="mt-2 first-letter:capitalize bg-green-100 text-green-900"> 
+                Indorsed
+              </StatusCard>
+             
+              <StatusCard class="mt-2 first-letter:capitalize bg-gray-100 text-gray-900"> 
+                Not Yet
+              </StatusCard>
+             
+              
+            </div>
+            </div>
+            <div>
+
+            </div>
+             
+
             </td>
             
-            <td class="whitespace-normal py-4">
+            <td class="whitespace-normal  align-top py-4">
               <p
                 tabindex="0"
-                class="focus:outline-none text-sm leading-none text-gray-800 font-bold"
-              >
-                Maria Kte Romoe Bonifiacio
+                class="focus:outline-none text-sm leading-none text-gray-800 font-bold capitalize"
+              > 
+
+              {{ item.user.first_name  }}               {{ item.user.last_name  }}
+
               </p>
 
-              <p
-                tabindex="0"
-                class="mt-2 focus:outline-none text-sm leading-none inline-block bg-purple-100 text-purple-600 px-3 py-1 rounded-full font-semibold"
-              >
-                Governor
-              </p>
+              
+              <StatusCard class="mt-2 first-letter:capitalize bg-gray-100 text-gray-700 font-semibold"> 
+                 {{ item.user.officer.position }} 
+                 
+              </StatusCard>
+              
+
+
             </td>
-            <td class="whitespace-normal">
-              <div class="flex items-center">
-                <p
-                  tabindex="0"
-                  class="focus:outline-none text-sm leading-none text-gray-800"
-                >
-                  January 12, 2021
-                </p>
-              </div>
+            <td class="whitespace-normal  align-top py-3">
+              
+
+              <DateCard>
+                <template #label> 
+                  Officer Submitted
+                </template>
+                {{ formatDate(item.created_at) }}
+              </DateCard>
+              <DateCard class="mt-2">
+                <template #label> 
+                  Aprroved Date
+                </template>
+                {{ formatDate(item.created_at) }}
+              </DateCard>
+              <DateCard class="mt-2">
+                <template #label> 
+                  Indorsed Date
+                </template>
+                {{ formatDate(item.created_at) }}
+              </DateCard>
+              
             </td>
-            <td class="whitespace-normal py-4">
+            <td class="whitespace-normal  align-top py-4">
               <button
-              @click="showApprovalForm"
+              @click="showApprovalForm(item)"
                 type="button"
                 class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
@@ -213,12 +233,12 @@
     </template>
 
     <teleport to="#app">
-      <BaseDialog :show="showDecisionForm" :width="'600'">
+      <BaseDialog :show="showDecisionForm" :width="'600'" :preventClose="true">
         <template #c-content>
-          <div class="">
+          <div v-if="selectedItem !=  null" class="">
             <div class="">
-              <h1 class="text-lg text-gray-800 font-semibold mb-4">
-                Enrollment Accreditaion Application
+              <h1 class="text-2xl text-gray-800 font-bold leading-5 mb-4">
+                {{selectedItem.application_form.title}} 
               </h1>
 
               <div class="flex bg-green-700 rounded-md relative">
@@ -234,9 +254,9 @@
                     </div>
                   </div>
                   <div class="flex flex-col justify-center pl-3 py-2 sm:py-0">
-                    <p class="text-sm font-bold text-white pb-1">Jon Harrison</p>
+                    <p class="text-lg font-bold text-white  capitalize">{{selectedItem.user.first_name}} {{selectedItem.user.last_name}} </p>
                     <div class="flex flex-col sm:flex-row items-start sm:items-center">
-                      <p class="text-xs text-white leading-5">Vice Governor</p>
+                      <p class="text-sm text-white leading-5">{{selectedItem.user.officer.position}}</p>
                     </div>
                   </div>
                 </div>
@@ -244,74 +264,109 @@
             </div>
 
             <div>
-              <div class="mt-8">
-                <p class="text-base font-bold leading-none text-gray-800 uppercase">
-                  GENERAL INFORMATION
-                </p>
-                <w-divider class="my6 mb-6"></w-divider>
-
-                <div class="mb-4">
-                  <div>
-                    <p class="text-base font-bold leading-none text-gray-800">Fullname</p>
-                    <div class="flex flex-wrap mt-2">
-                      <p class="text-sm leading-none text-gray-600">
-                        Maria teresisa Angela
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <div>
-                    <p class="text-base font-bold leading-none text-gray-800">Contact</p>
-                    <div class="flex flex-wrap mt-2">
-                      <p class="text-sm leading-none text-gray-600">
-                        Maria teresisa Angela
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-4">
-                  <div>
-                    <p class="text-base font-bold leading-none text-gray-800">
-                      Desciption
+              <div class="mt-6">
+               
+                  <div v-if="selectedItem.answers.length > 0">
+                    <p class="text-base font-bold leading-none text-gray-800 uppercase">
+                      GENERAL INFORMATION
                     </p>
-                    <div class="flex flex-wrap mt-2">
-                      <p class="text-sm leading-none text-gray-600">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores,
-                        architecto? Unde, quae commodi. Culpa odio asperiores, magnam nam
-                        totam atque sapiente dolore adipisci perferendis nihil, minima
-                        enim voluptatibus beatae eius.
-                      </p>
+                    <w-divider class="my6 mb-6"></w-divider>
+                      <!-- {{ selectedItem.answers }} -->
+                    <div class="mb-4" v-for="af in selectedItem.answers" :key="af.id">
+                      
+                      <div>
+                        <p class="text-base font-bold leading-none text-gray-800 capitalize"  >{{ af.field.name }}</p>
+                        <div class="flex flex-wrap mt-2">
+                          <p class="text-sm leading-none text-gray-600 capitalize" >
+                            {{ af.answer_value }}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
               </div>
+             <div v-if="selectedItem.response_requirements.length > 0">
+            
               <div class="mt-8">
                 <p class="text-base font-bold leading-none text-gray-800 uppercase">
                   Requirements & Attachment
                 </p>
                 <w-divider class="my6 mb-6"></w-divider>
 
-                <div class="mb-4">
+                <!-- <div class="mb-4" v-for="rq in selectedItem.response_requirements " :key="rq.id">
                   <div>
                     <p class="text-base font-bold leading-none text-gray-800">
-                      Employee Performance
+                      {{ rq.requirement.name }}
                     </p>
-                    <div class="flex flex-wrap mt-3">
-                      <div class="flex items-center mr-2">
+
+                    <div class="flex flex-wrap mt-3" v-if="rq.files.length > 0" >
+                      <div class="flex items-center mr-2" v-for="file in  rq.files" :key="file.id">
                         <div class="focus:outline-none">
                           <img
                             src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
                             alt="icon"
                           />
                         </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">Document</p>
+                        <p class="text-sm leading-none text-gray-600 ml-2"> {{ file.file_name }}</p>
+                      
                       </div>
                     </div>
+
+                  </div>
+                </div> -->
+
+                <div class="mb-4"  v-for="rq in selectedItem.response_requirements " :key="rq.id">
+                  <div>
+                    <p class="text-base font-bold leading-none text-gray-800">
+                      {{ rq.requirement.name }}
+                    </p>
+                    <div class="flex flex-wrap mt-4" v-if="rq.files.length > 0" >
+                      <div class="flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
+                        <div class="focus:outline-none">
+                          <img
+                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
+                            alt="icon"
+                          />
+                        </div>
+                        <p class="text-sm leading-none text-gray-600 ml-2">{{ file.file_name }}</p>
+                      </div>
+                      <div class="flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
+                        <div class="focus:outline-none">
+                          <img
+                            src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
+                            alt="icon"
+                          />
+                        </div>
+                        <p class="text-sm leading-none text-gray-600 ml-2">{{ file.file_name }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-wrap mt-3" v-else>
+                      <div class="flex items-center mr-2">
+                        <div class="focus:outline-none">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                            />
+                          </svg>
+                        </div>
+                        <p class="text-sm leading-none text-gray-600 ml-2">No File</p>
+                      </div>
+                    </div>
+
+                    
                   </div>
                 </div>
-
+<!-- 
                 <div class="mb-4">
                   <div>
                     <p class="text-base font-bold leading-none text-gray-800">
@@ -375,38 +430,29 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div></div>
+             
               </div>
-              <!-- <div class="bg-green-50 rounded  p-4">
-                               
-                              <p class="text-green-700 font-bold uppercase"> Remarks </p>
-                              <p class="text-gray-600 text-sm mt-1">To help the applicant understand what needs to be  corrected
-                                Please specify if there is a mistake or missing files in the information This way, the applicant can correct and resubmit the application for your review. 
-                              </p>
-                             
+             </div>
+              
 
-                              <textarea
-
-                              name="description"
-                              class="mt-4 block w-full rounded-lg p-2 border border-gray-200 focus:outline-none focus:border-green-500"
-                            ></textarea>
-                            </div> -->
+            
             </div>
           </div>
           <div class="mt-8 flex justify-between items-center border-t pt-4">
             <div>
               <button
                 class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                @click="showDecisionForm = false"
+                @click="closeApprovalForm()"
               >
                 Close
               </button>
             </div>
             <div>
+              
               <button
-              @click="showConfirmation = true"
+              @click="showConfirmationForm('approving')"
                 class="hover:shadow mr-2 rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
               >
                 Approve
@@ -424,7 +470,7 @@
     </teleport>
 
     <teleport to="#app">
-      <BaseDialog :show="showRemarksForm" :width="'620'">
+      <BaseDialog :show="showRemarksForm" :width="'620'" :preventClose="true">
         <template #c-content>
           <div class="rounded-lg text-green-800 bg-blue-50 py-1 px-3">
             <div class="flex items-center">
@@ -488,13 +534,19 @@
     <teleport to="#app">
         <BaseDialog :show="showConfirmation" :width="'500'" :preventClose="true">
           <template #c-content>
-            <ConfirmCard :title="'Are Your Sure?'" :message="'Do you want to approve this application'">
+
+            
+            <ConfirmCard v-if="confirmMode == 'approving' " :title="'Are Your Sure?'" :message="'Do you want to approve this application'">
                 <button class=" col-span-1  ml-3 bg-gray-100  transition duration-150 text-gray-600  ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm" @click="showConfirmation = false"> Close</button>
                 <!-- <div class=" col-span-1 bg-red-400  flex justify-center items-center">
                     <BaseSpinner/>
                 </div> -->
                 <button class="col-span-1  transition duration-150 ease-in-out hover:bg-green-600 bg-green-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm">Yes</button>
             </ConfirmCard>
+
+
+          
+
           </template>
         </BaseDialog>
       </teleport>
@@ -503,10 +555,13 @@
 
 <script>
 import axiosApi from "../../api/axiosApi";
+import moment from "moment";
 export default {
   created() {
     this.getAllOfficersApplications();
   },
+
+  
   data() {
     return {
       search: "",
@@ -516,13 +571,42 @@ export default {
       isFetching: false,
       applications: [],
       isSaving: false,
+      confirmMode: 'approving',
+      selectedItem:null,
     };
   },
   methods: {
 
-    showApprovalForm(){
+    formatDate(date) {
+      return moment(date).format("MMM, D YYYY");
+    },
+    totalFiles(item) {
+    let total = 0;
+    item.forEach(item => {
+      total += item.files.length;
+    });
+    return total;
+  },
+
+    closeApprovalForm(){
+      this.selectedItem = null;
+      this.showDecisionForm = false;
+    },
+    showApprovalForm(item){
+
+      this.selectedItem = item;
         this.showDecisionForm  =true;
     },
+
+    showConfirmationForm(mode){
+      
+    
+      this.showConfirmation = true;
+    
+
+      
+
+    },  
 
     async getAllOfficersApplications() {
       this.isFetching = true;
