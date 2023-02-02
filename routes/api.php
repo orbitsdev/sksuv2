@@ -7,6 +7,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\GoogleController;
+use App\Http\Controllers\Api\RemarkController;
 use App\Http\Controllers\Api\MonitorController;
 use App\Http\Controllers\Api\OfficerController;
 use App\Http\Controllers\Api\ApprovalController;
@@ -149,6 +150,12 @@ Route::get('/role', function () {
     //get arppover 
     Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);
     Route::post('form/approve', [ApprovalController::class, 'approveForm']);
+    Route::post('form/return', [ApprovalController::class, 'returnForm']);
+    Route::post('form/remark/update', [RemarkController::class, 'updateSboRemarkInOfficerDocumentResponse']);
+    Route::post('form/remark/delete', [RemarkController::class, 'deleteSboRemarkInOfficerDocumentResponse']);
+
+
+ 
 
 
 

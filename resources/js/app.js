@@ -46,6 +46,8 @@ import ConfirmCard from './components/ConfirmCard.vue';
 import IndorseCard from './components/IndorseCard.vue';
 import StatusCard from './components/StatusCard.vue';
 import DateCard from './components/DateCard.vue';
+import RemarksForm from './shared/RemarksForm.vue';
+import RemarksCard from './shared/RemarksCard.vue';
 
 
 
@@ -115,6 +117,9 @@ app.component('ConfirmCard', ConfirmCard);
 app.component('IndorseCard', IndorseCard);
 app.component('StatusCard', StatusCard);
 app.component('DateCard', DateCard);
+app.component('StatusCard', StatusCard);
+app.component('RemarksForm', RemarksForm);
+app.component('RemarksCard', RemarksCard);
 
 
 

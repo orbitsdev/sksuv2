@@ -27,5 +27,6 @@ class Approval extends Model
     public function responses(){
         return $this->belongsToMany(Response::class , 'response_approvals', 'approval_id', 'response_id' );
     }
+    
 
 }

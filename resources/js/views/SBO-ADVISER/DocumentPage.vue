@@ -1,8 +1,8 @@
 <template>
   <BaseCard :subtitle="'Officers Documents'">
     <template #header>
-      <h1> {{confirmMode}}</h1>
-      <hr>
+      <!-- <h1> {{confirmMode}}</h1> -->
+      <!-- <hr> -->
 
       <p v-if="selectedItem != null">
 
@@ -117,9 +117,15 @@
                         {{ totalFiles(item.response_requirements) }}   Uploads
                          
                       </StatusCard>
+
+                   
+                   
                      
                     </div>
-                    <div v-if="item.remarks.length > 0 " class="flex items-center mt-2">
+                   
+                    <button 
+                      @click="showRemarksFormToEditRemarks(item)"
+                    v-if="item.remarks.length > 0 " class="flex items-center mt-2">
                       <div
                         class="w-6 h-6 rounded-full flex items-center justify-center mr-2"
                       >
@@ -132,9 +138,9 @@
                         tabindex="0"
                         class="focus:outline-none text-sm leading-none bg-red-100 text-red-900 px-3 py-1 rounded-full font-semibold"
                       >
-                        5  {{ item.remarks.length  }}
+                        {{ item.remarks.length  }} {{ item.remarks.length >1 ?  'Remarks' : 'Remark'  }}
                       </p>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -151,8 +157,9 @@
               <div class="" v-for="ap in item.response_approvals" :key="ap.id">
                 <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="ap.status == 'null'">Processing  </StatusCard>
                 <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="ap.status == 'processing'">{{ ap.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-cyan-100 text-cyan-900"  v-if="ap.status == 're-evaluating'">{{ ap.status }}  </StatusCard>
                 <StatusCard class="mt-2 capitalize bg-green-100 text-green-900"  v-if="ap.status == 'approved'"> {{ ap.status }}  </StatusCard>
-                <StatusCard class="mt-2 capitalize bg-red-100 text-red-900"  v-if="ap.status == 'denied'"> {{ ap.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-red-100 text-red-900"  v-if="ap.status == 'returned'"> {{ ap.status }}  </StatusCard>
               </div>
             </div>
             <div v-else></div>
@@ -367,26 +374,30 @@
             <div>
               
               <button
-              v-if="(confirmMode == 'null' || confirmMode == 'processing') "
+              v-if="( confirmMode != 'approved'   ) "
               @click="showConfirmationForm"
                 class="hover:shadow mr-2 rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
               >
                 Approve
               </button>
               <button
-              v-if="confirmMode == 'approved' "
+              v-if="confirmMode == 'approved'"
 
               @click="showConfirmationForm"
                 class="hover:shadow mr-2 rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
               >
-              Uapprove
+              Re Evaluate
               </button>
+
+
               <button
+              
               @click="showRemarksForm = true "
                 class="hover:shadow mr-2 rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
               >
-                Return
+               {{ confirmMode == 'returned' ? 'Add Remark' : 'Return' }}
               </button>
+
             </div>
           </div>
         </template>
@@ -396,60 +407,43 @@
     <teleport to="#app">
       <BaseDialog :show="showRemarksForm" :width="'620'" :preventClose="true">
         <template #c-content>
-          <div class="rounded-lg text-green-800 bg-blue-50 py-1 px-3">
-            <div class="flex items-center">
-              <div
-                role="img"
-                aria-label="monitor icon"
-                tabindex="0"
-                class="focus:outline-none bg-blue-100 rounded-full flex items-center justify-center"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-12 h-12"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-                  />
-                </svg>
-              </div>
-              <p
-                tabindex="0"
-                class="focus:outline-none text-sm leading-tight text-gray-500"
-              >
-                Please specify if there is a mistake or missing files in the information
-                This way, the applicant can correct and resubmit the application for your
-                review.
-              </p>
-            </div>
-          </div>
+          <div
+          tabindex="0"
+          class="focus:outline-none   text-sm bg-indigo-100 text-indigo-700 dark:text-indigo-600 rounded font-medium p-2  "
+        >
+        Please specify if there is a mistake or missing files in the information
+        This way, the applicant can correct and resubmit the application for your
+        review.
+        </div>
+          
+      
 
           <div class="mt-4">
             <p class="text-base font-bold leading-none text-gray-800">Remarks</p>
             <textarea
+            v-model.trim="remark"
+            
               class="mt-2 focus:ring-1 focus:ring-gray-200 py-3 pl-3 overflow-y-auto h-24 border placeholder-gray-600 rounded w-full resize-none focus:outline-none"
             ></textarea>
           </div>
           <div class="flex justify-end item-center pt-4">
-            <div>
-              <button
-                class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                @click="showRemarksForm = false"
-              >
-                Close
-              </button>
-              <button
-                class="hover:shadow mr-2 rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-              >
-                Return
-              </button>
-            </div>
+            <button
+            class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+            @click="showRemarksForm = false"
+          >
+            Close
+          </button>
+          <div class="p-2" v-if="isReturning">
+            <BaseSpinner  />
+          </div>
+          <button
+          :disabled="remark.length <=0"
+          v-else
+          @click="returnForm"
+            :class="[' mr-2 rounded-md  px-3.5 py-1.5 text-base font-semibold leading-7  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600', remark.length > 0 ? 'bg-rose-700 hover:bg-red-500 text-white hover:shadow' :'bg-gray-50 text-gray-400' ]"
+          >
+            Submit
+          </button>
           </div>
         </template>
       </BaseDialog>
@@ -460,7 +454,14 @@
           <template #c-content>
 
             
-            <ConfirmCard v-if="(confirmMode == 'null' || confirmMode == 'processing' )  " :title="'Are Your Sure?'" :message="'Do you want to approve this application'">
+            <ConfirmCard v-if="(confirmMode != 'approved' )  " :title="'Are Your Sure?'" :message=" 'Do you want to approve this application'">
+              <div class=" col-span-1  flex justify-center items-center" v-if="isSaving">
+                  <BaseSpinner/>
+              </div>
+              <button v-else @click="approveForm" class="col-span-1  transition duration-150 ease-in-out hover:bg-green-600 bg-green-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm">Yes</button>
+                <button class=" col-span-1  ml-3 bg-gray-100  transition duration-150 text-gray-600  ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm" @click="showConfirmation = false"> Close</button>
+            </ConfirmCard>
+            <ConfirmCard v-if="(confirmMode == 'approved')" :title="'Are Your Sure?'" :message=" 'Do you want to re-evaluate this application'">
               <div class=" col-span-1  flex justify-center items-center" v-if="isSaving">
                   <BaseSpinner/>
               </div>
@@ -468,9 +469,66 @@
                 <button class=" col-span-1  ml-3 bg-gray-100  transition duration-150 text-gray-600  ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm" @click="showConfirmation = false"> Close</button>
             </ConfirmCard>
 
-
+          </template>
+        </BaseDialog>
+        <BaseDialog :show="showRemarksFormToEdit" :width="'500'" :preventClose="true">
+          <template #c-content> 
+            
+            <div class="relative">
+              <h1 class="text-lg font-bold my-2 px-4">{{selectedItem.application_form.title}}</h1>
+              <ul class="max-h-80 overflow-y-auto border-t-2 rounded-t-lg px-4 ">
+      
+      
+                  <RemarksCard v-for="(i, index ) in adviser_remarks" :key="i.id" :message="i.message" :index="index+1" :date="formatDate(i.updated_at)" :active="selectedRemark == i.id" @click="selectRemark(i)">
+      
+                  </RemarksCard>
+                 
+              </ul>
+              <div class="py-2 ">
           
+                  <textarea
+                  v-model.trim="remarksForEdit"
+                  
+                    class="mt-2 focus:ring-1 focus:ring-gray-200 py-3 pl-3 overflow-y-auto h-24 border placeholder-gray-600 rounded w-full resize-none focus:outline-none"
+                  ></textarea>
+      
+                  
+               <div class="flex justify-end items-center mt-2">
+                  <button
+                  @click="closeRemarksFormToEditRemarks"
+                  class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                >
+                  Close
+                </button> 
+                  <div class="p-2" v-if="isUpdating" >
+                      <BaseSpinner  />
+                    </div>
+                    <div v-else>
+                      <button 
+                      @click="updateRemark"
+                      :disabled="(remarksForEdit.length <=0  || selectedRemark == null )"
+                      :class="[' mr-2 rounded-md  px-3.5 py-1.5 text-base font-semibold leading-7  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600', (remarksForEdit.length > 0  && selectedRemark != null )  ? 'bg-green-700 hover:bg-green-500 text-white hover:shadow' :'bg-gray-50 text-gray-400' ]"
+                      
+                      >
+                      Update
+                    </button>
+                     
+                  </div>
+                  <div class="p-2" v-if="isDeletingRemarks" >
+                    <BaseSpinner  />
+                  </div>
+              <button
+              v-else
+                  @click="deleteRemark"
+                :disabled="selectedRemark == null"
+                 :class="['hover:shadow mr-2 rounded-md  px-3.5 py-1.5 text-base font-semibold leading-7  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600' ,selectedRemark != null  ? 'hover:bg-red-500 text-white shadow-sm bg-red-600' : 'bg-gray-50 text-gray-400' ]"
+              >
+                    Delete
+              </button>
 
+               </div>
+              </div>
+          </div>
           </template>
         </BaseDialog>
       </teleport>
@@ -489,6 +547,8 @@ export default {
   data() {
     return {
       search: "",
+      remark:'',
+      remarksForEdit:'',
       showDecisionForm: false,
       showConfirmation:false,
       showRemarksForm: false,
@@ -498,10 +558,124 @@ export default {
       confirmMode: null,
       selectedItem:null,
       requestError :null,
+      isReturning: false,
+      showRemarksFormToEdit: false,
+      adviser_remarks: [],
+      selectedRemark: null,
+      isUpdating: false,
+      isDeletingRemarks: false,
     };
   },
   methods: {
-    
+
+    closeRemarksFormToEditRemarks(){
+      this.remarksForEdit= '';
+      this.selectedRemark= null;
+      this.selectedItem = null;
+      this.showRemarksFormToEdit = false;
+
+
+    },
+
+    selectRemark(item){
+
+
+      this.selectedRemark = item.id;
+      this.remarksForEdit = item.message;
+
+    },
+
+    async deleteRemark(){
+
+      this.isDeletingRemarks = true;
+      let remark_data = {
+          response_id: this.selectedItem.id,
+          remark_id: this.selectedRemark,
+      }
+
+      await axiosApi.post('api/form/remark/delete', remark_data).then(res=>{
+
+        this.remarksForEdit = '';
+        this.selectedRemark = null;
+        this.getAllOfficersApplications();
+        this.showRemarksFormToEdit = false;
+
+}).catch(err=>{ 
+
+console.log(err);
+}).finally(()=>{
+  this.isDeletingRemarks = false;
+});
+      
+    },
+
+    async updateRemark(){
+
+      this.isUpdating = true;
+      let remark_data = {
+          response_id: this.selectedItem.id,
+          remark_id: this.selectedRemark,
+          message: this.remarksForEdit
+      }
+
+
+      
+        await axiosApi.post('api/form/remark/update', remark_data).then(res=>{
+
+
+
+          this.getAllOfficersApplications();
+          this.remarksForEdit = '';
+          this.selectedRemark = null;
+          this.showRemarksFormToEdit = false;
+
+        }).catch(err=>{ 
+
+          console.log(err);
+        }).finally(()=>{
+            this.isUpdating = false;
+        });
+    },
+
+    showRemarksFormToEditRemarks(item){
+      
+      this.selectedItem = item;
+      this.adviser_remarks = this.selectedItem.remarks;
+
+      this.showRemarksFormToEdit = true;
+    },
+    async returnForm(){
+      // this.isReturning = true;
+      let current_approval = this.findApproval(this.selectedItem);
+
+      
+      let decision_data = {
+          response_id: this.selectedItem.id,
+          approval_id: current_approval.id,
+          status: 'returned',
+          remark: this.remark
+      };
+
+
+      console.log(decision_data);
+
+      await axiosApi.post('api/form/return', decision_data ).then(res=>{
+       
+              this.showRemarksForm = false;
+              this.showDecisionForm = false;
+              this.selectedItem = null;
+              this.confirmMode = null;
+              this.getAllOfficersApplications();
+              this.remark = '';
+          }).catch(err=>{
+              console.log(err);
+          }).finally(()=>{
+            this.isReturning = false;
+          });
+
+
+
+    },
    async approveForm(){
       
     this.isSaving = true;
@@ -513,12 +687,12 @@ export default {
 
       let current_status = '';
 
-      if(current_approval.status == 'null' || 'processing'){
-        current_status = 'approved';
+      if(current_approval.status != 'null' ||  current_approval.status != 'approved' ){
+          current_status = 'approved';
       }
       
       if(current_approval.status == 'approved'){
-        current_status = 'unapproved';
+        current_status = 're-evaluating';
       }
 
 
@@ -535,6 +709,7 @@ export default {
               this.showDecisionForm = false;
               this.selectedItem = null;
               this.confirmMode = null;
+              
 
               this.getAllOfficersApplications();
               

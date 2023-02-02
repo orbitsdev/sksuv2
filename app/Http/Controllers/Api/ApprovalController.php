@@ -14,12 +14,40 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ApprovalController extends Controller
 {
     
-    public function approveForm(Request $request){
+
+
+    public function returnForm(Request $request){
+
+
+
+        $response_approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->first();
+    
+        $response_approval->update([
+            'user_id'=> auth('sanctum')->user()->id,
+            'status'=> $request->input('status')
+        ]);
+
+    
+        $remark = $response_approval->response->remarks()->create([
+            'user_id'=> auth('sanctum')->user()->id,
+            'message'=> $request->input('remark')
+        ]);
         
-        // $approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->update([
-        //     'status'=> $request->input('status')
-        // ]);
+   
+
+
+
+
+        return response()->json([$remark ]);
+        
+
+    }
+    public function approveForm(Request $request){
+       
+
+        
         $approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->update([
+            'user_id'=> auth('sanctum')->user()->id,
             'status'=> $request->input('status')
         ]);
 
