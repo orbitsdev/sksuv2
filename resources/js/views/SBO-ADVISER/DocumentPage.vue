@@ -123,23 +123,47 @@
                      
                     </div>
                    
-                    <button 
+                    <!-- <button 
                       @click="showRemarksFormToEditRemarks(item)"
-                    v-if="item.remarks.length > 0 " class="flex items-center mt-2">
+                    v-if="item.remarks.length > 0 " class="flex items-center ">
                       <div
-                        class="w-6 h-6 rounded-full flex items-center justify-center mr-2"
+                        class="w-4 h-6 rounded-full flex items-center justify-center mr-2"
                       >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-700 ">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                       </svg>
                       
                       </div>
-                      <p
-                        tabindex="0"
-                        class="focus:outline-none text-sm leading-none bg-red-100 text-red-900 px-3 py-1 rounded-full font-semibold"
-                      >
+
+
+                      <StatusCard class="mt-2 first-letter:capitalize bg-rose-100 text-rose-900">
                         {{ item.remarks.length  }} {{ item.remarks.length >1 ?  'Remarks' : 'Remark'  }}
-                      </p>
+                         
+                      </StatusCard>
+
+                    </button> -->
+                    <button 
+                    v-if="item.remarks.length > 0 " 
+                    @click="showRemarksFormToEditRemarks(item)"
+                    class="flex items-center ">
+
+                      <div
+                        class="w-5 h-5 mt-2 rounded-full flex items-center justify-center mr-2 "
+                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-700 ">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                      </svg>
+                      
+                    </div>
+                      <StatusCard class="mt-2 first-letter:capitalize bg-red-700 text-white relative"> 
+                        {{ item.remarks.length  }} {{ item.remarks.length >1 ?  'Remarks' : 'Remark'  }}
+
+                         
+                      </StatusCard>
+
+                   
+                   
+                     
                     </button>
                   </div>
                 </div>
@@ -415,7 +439,7 @@
         This way, the applicant can correct and resubmit the application for your
         review.
         </div>
-          
+        {{isReturning  }}
       
 
           <div class="mt-4">
@@ -433,12 +457,13 @@
           >
             Close
           </button>
+     
           <div class="p-2" v-if="isReturning">
             <BaseSpinner  />
           </div>
           <button
-          :disabled="remark.length <=0"
           v-else
+          :disabled="remark.length <=0"
           @click="returnForm"
             :class="[' mr-2 rounded-md  px-3.5 py-1.5 text-base font-semibold leading-7  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600', remark.length > 0 ? 'bg-rose-700 hover:bg-red-500 text-white hover:shadow' :'bg-gray-50 text-gray-400' ]"
           >
@@ -475,7 +500,7 @@
           <template #c-content> 
             
             <div class="relative">
-              <h1 class="text-lg font-bold my-2 px-4">{{selectedItem.application_form.title}}</h1>
+              <h1 class="text-lg font-bold my-2 px-4">Remarks</h1>
               <ul class="max-h-80 overflow-y-auto border-t-2 rounded-t-lg px-4 ">
       
       
@@ -563,6 +588,7 @@ export default {
       adviser_remarks: [],
       selectedRemark: null,
       isUpdating: false,
+      isAddingRemark:false,
       isDeletingRemarks: false,
     };
   },
@@ -598,6 +624,7 @@ export default {
         this.remarksForEdit = '';
         this.selectedRemark = null;
         this.getAllOfficersApplications();
+        this.selectedItem =  null;
         this.showRemarksFormToEdit = false;
 
 }).catch(err=>{ 
@@ -628,6 +655,7 @@ console.log(err);
           this.remarksForEdit = '';
           this.selectedRemark = null;
           this.showRemarksFormToEdit = false;
+          this.selectedItem =  null;
 
         }).catch(err=>{ 
 
@@ -645,7 +673,7 @@ console.log(err);
       this.showRemarksFormToEdit = true;
     },
     async returnForm(){
-      // this.isReturning = true;
+      this.isReturning = true;
       let current_approval = this.findApproval(this.selectedItem);
 
       
@@ -657,7 +685,7 @@ console.log(err);
       };
 
 
-      console.log(decision_data);
+
 
       await axiosApi.post('api/form/return', decision_data ).then(res=>{
        
