@@ -42,10 +42,7 @@ class OfficerController extends Controller
 
         if(count($student->roles) > 0){
             foreach($student->roles  as $role){
-
-                if($role->name == "guest"){
-                    $student->roles()->sync([$guest_role_id->id]);
-                }
+                $student->roles()->sync([$guest_role_id->id]);
             }
         }
 
@@ -98,11 +95,14 @@ class OfficerController extends Controller
     {
 
         $school_id  = auth('sanctum')->user()->schools[0]->id;
-        $students = User::select('id', 'first_name', 'last_name','email')->whereHas('roles', function($query){
+
+
+        
+        $students = User::whereHas('roles', function($query){
             $query->whereIn('roles.name',['sbo-student','guest']);
         })->whereDoesntHave('officer')->whereHas('schools', function($query) use ($school_id){
             $query->where('schools.id', $school_id);
-        })->get();
+        })->select('id', 'first_name', 'last_name','email')->get();
 
      
     

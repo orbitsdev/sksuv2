@@ -34,9 +34,15 @@ class ApprovalController extends Controller
         ]);
         
    
+        $message = auth('sanctum')->user()->first_name .' '.auth('sanctum')->user()->last_name.' Added Remarks to  '. $response_approval->response->application_form->tile. ' Appplication ';
 
+      $notification =   $response_approval->response->user->notifications()->create([
+            'recipient_id'=>      $response_approval->response->user->id,
+            'type'=> 'Applications',
+            'content'=>  $message
+        ]);
 
-
+   
 
         return response()->json([$remark ]);
         
@@ -46,10 +52,22 @@ class ApprovalController extends Controller
        
 
         
-        $approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->update([
+        $approval = ResponseApproval::where('id', $request->input('approval_id'))->where('response_id', $request->input('response_id'))->first();
+        
+        $approval->update([
             'user_id'=> auth('sanctum')->user()->id,
             'status'=> $request->input('status')
         ]);
+        
+        $message = auth('sanctum')->user()->first_name .' '.auth('sanctum')->user()->last_name.' '.$request->input('status'). 'Your '. $approval->response->application_form->tile. ' Appplication ';
+        $approval->response->user->notifications()->create([
+            'recipient_id'=>      $approval->response->user->id,
+            'type'=> 'Applications',
+            'content'=>  $message
+        ]);
+
+
+        
 
         return response()->json([$approval]);
 
