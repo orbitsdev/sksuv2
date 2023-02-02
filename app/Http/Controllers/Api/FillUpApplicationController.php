@@ -113,7 +113,7 @@ class FillUpApplicationController extends Controller
         ]);
 
 
-        $adviser = auth('sanctum')->user()->officer->adviser;
+
 
 
         // create adviser aprrover
