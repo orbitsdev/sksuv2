@@ -14,6 +14,13 @@ class School extends Model
     use HasFactory;
     protected $guarded = [];
 
+
+
+    public function school_year(){
+        return $this->belongsTo(SchoolYear::class);
+    }
+
+
     public function files(){
         return $this->belongsToMany(File::class, 'school_files', 'school_id', 'file_id');
     }

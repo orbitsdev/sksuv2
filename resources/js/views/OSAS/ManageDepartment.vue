@@ -1,10 +1,10 @@
 <template>
-  <BaseCard :subtitle="'Manage Department'">
+  <BaseCard :subtitle="'Manage Organizations'">
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
           <TableButton  class="mr-2" @click="handleShowForm(null, 'add')"
-            ><i class="fa-solid fa-plus mr-1"> </i> Add Deparment
+            ><i class="fa-solid fa-plus mr-1"> </i> Add Organization
           </TableButton>
 
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
@@ -36,7 +36,7 @@
         </template>
       </BaseTableSetup>
     </template>
-    <BaseTable :thdata="['', 'Department',  '']" :isFetching="isFetching">
+    <BaseTable :thdata="['', 'Organizations',  '']" :isFetching="isFetching">
       <template #data>
         <tr v-for="department in departments" :key="department.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
@@ -79,7 +79,7 @@
         <template #c-content>
           <div class="">
             <BaseInput
-              :label="'Department Name'"
+              :label="'Organization Name'"
               v-model="name"
               :hasError="validationError.name"
             />
@@ -130,7 +130,7 @@
         <template #c-content>
           <div class="flex items-center">
             <BaseSpinner class="mx-2" />
-            <p class="text-base mr-2">Deleting Department</p>
+            <p class="text-base mr-2">Deleting Organization</p>
           </div>
         </template>
       </BaseDialog>

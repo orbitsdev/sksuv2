@@ -1,5 +1,5 @@
 <template>
-  <BaseCard class="relative" :subtitle="'Manage School'">
+  <BaseCard class="relative" :subtitle="'Manage University'">
     <template #header>
 
       <BaseTableSetup>
@@ -39,7 +39,7 @@
     </template>
 
     <BaseTable
-      :thdata="[' ', 'School Name', 'Organizations' ,'Featured Image', '']"
+      :thdata="[' ', 'University Name', 'Organizations' ,'Featured Image', '']"
       :isFetching="isFetching"
     >
       <template #data>

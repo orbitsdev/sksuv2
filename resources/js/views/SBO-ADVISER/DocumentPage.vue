@@ -5,9 +5,9 @@
       <!-- <hr> -->
 
       <p v-if="selectedItem != null">
-
         {{ selectedItem.response_approvals }}
       </p>
+      
 
       <BaseTableSetup>
         <template #searchs-area>

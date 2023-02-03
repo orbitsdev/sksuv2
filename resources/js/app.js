@@ -7,6 +7,9 @@ let app = createApp({});
 
 import router from './router/router';
 import store from './store/store';
+// import Datepicker from 'vue3-datepicker'
+//DATE PICKER
+
 
 // COMPONENT
 import App from "./App.vue";
@@ -117,9 +120,9 @@ app.component('ConfirmCard', ConfirmCard);
 app.component('IndorseCard', IndorseCard);
 app.component('StatusCard', StatusCard);
 app.component('DateCard', DateCard);
-app.component('StatusCard', StatusCard);
 app.component('RemarksForm', RemarksForm);
 app.component('RemarksCard', RemarksCard);
+// app.component('Datepicker', Datepicker);
 
 
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\OfficerController;
 use App\Http\Controllers\Api\ApprovalController;
 use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\SchoolYearController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\RequirementController;
 use App\Http\Controllers\Api\CloudStorageController;
@@ -67,6 +68,14 @@ Route::get('/role', function () {
 
     // FILE CONTROLLER 
     Route::post('files/delete-temporary-files', [FileController::class, 'deleteTemporaryFiles']);
+
+    //manage School Year
+
+
+    Route::get('school-year', [SchoolYearController::class, 'getAllSchoolYear']);
+    Route::post('school-year/create', [SchoolYearController::class, 'createSchoolYear']);
+    Route::post('school-year/update', [SchoolYearController::class, 'updateSchoolYear']);
+    Route::post('school-year/delete-selected-school-year', [SchoolYearController::class, 'deleteSelectedSchoolYear']);
 
     // MANAGE SCHOOL
     Route::post('schools/search', [ManageSchoolController::class, 'search']);
