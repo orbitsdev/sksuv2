@@ -7,7 +7,7 @@ let app = createApp({});
 
 import router from './router/router';
 import store from './store/store';
-// import Datepicker from 'vue3-datepicker'
+import Datepicker from "vue3-datepicker";
 //DATE PICKER
 
 
@@ -51,6 +51,9 @@ import StatusCard from './components/StatusCard.vue';
 import DateCard from './components/DateCard.vue';
 import RemarksForm from './shared/RemarksForm.vue';
 import RemarksCard from './shared/RemarksCard.vue';
+import GlobalErrorCard from './components/GlobalErrorCard.vue';
+import TitleCard from './components/TitleCard.vue';
+import NoDataCard from './components/NoDataCard.vue';
 
 
 
@@ -122,7 +125,10 @@ app.component('StatusCard', StatusCard);
 app.component('DateCard', DateCard);
 app.component('RemarksForm', RemarksForm);
 app.component('RemarksCard', RemarksCard);
-// app.component('Datepicker', Datepicker);
+app.component('GlobalErrorCard', GlobalErrorCard);
+app.component('Datepicker', Datepicker);
+app.component('TitleCard', TitleCard);
+app.component('NoDataCard', NoDataCard);
 
 
 

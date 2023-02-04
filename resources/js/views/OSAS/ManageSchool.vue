@@ -39,7 +39,7 @@
     </template>
 
     <BaseTable
-      :thdata="[' ', 'University Name', 'Organizations' ,'Featured Image', '']"
+      :thdata="[' ', 'School Year', 'University Name'  ,'Featured Image', '']"
       :isFetching="isFetching"
     >
       <template #data>
@@ -52,6 +52,15 @@
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
             />
           </td>
+          <td > 
+            <p
+            tabindex="0"
+            class="whitespace-normal pl-2 align-top font-semibold text-wrap focus:outline-none text-sm leading-none text-gray-800 "
+          >
+            SY.{{ school.school_year.from }} -{{ school.school_year.to }}
+          </p>
+          </td>
+        
           <td class="whitespace-nowrap py-4 text-sm">
             <div class="flex items-center">
               <div class="pl-1 ">
@@ -61,20 +70,7 @@
               </div>
             </div>
           </td>
-          <td class="py-2 text-sm text-gray-500">
-            <div class="text-gray-500 capitalize " v-if="school.departments.length > 0">
-              <span
-                class="inline-flex mb-1  bg-green-100 px-2 mr-0.5 text-xs font-semibold leading-5 text-green-800"  v-for="department in school.departments" :key="department.id"
-                >{{ department.name }}</span
-              >
-            </div>
-            <div v-else>
-              <span
-                class="inline-flex rounded-full bg-green-100  px-2 text-xs font-semibold leading-5 text-green-800"
-                >None</span
-              >
-            </div>
-          </td>
+         
           <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <div v-if="school.files.length > 0">
               <img
@@ -88,16 +84,21 @@
                   '/' +
                   schoolfile.file_name
                 "
-                class="h-12 w-12 mx-2"
+                class="h-24 w-24 rounded mx-2"
                 :alt="schoolfile.file_name"
               />
             </div>
-            <div v-else>
-              <i class="fa-regular fa-image mr-2 text-green-600"></i>
-              <span
-                class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-                >No Image</span
-              >
+            <div v-if="school.files.length > 0">
+             
+            </div>
+            <div v-else class="flex items-centerh-24 w-24">
+              <img
+
+              :src="'/assets/No-Image-Placeholder.svg.png'"
+               
+              class=" rounded mx-2 w-full h-full"
+              alt="No Imaghe"
+            />
             </div>
           </td>
           
@@ -336,15 +337,18 @@ export default {
     async selectSchool(school, action) {
       if (action === "update") {
         this.schoolData = {};
+
+        
         const schoolData = {
           id: school.id,
           name: school.name,
           files: school.files.length > 0 ? [...school.files] : [],
           organizations: school.departments.length > 0 ? [...school.departments] : [],
+          school_year: school.school_year.id,
           created_at: school.created_at,
           update_at: school.update_at,
         };
-
+        
         this.schoolData = schoolData;
         this.isUpdateMode = true;
         this.showForm = true;

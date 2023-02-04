@@ -8,7 +8,9 @@ use App\Models\School;
 use App\Models\Approval;
 use App\Models\Response;
 use App\Models\SboOfficer;
+use App\Models\Notification;
 use App\Models\SocialAccount;
+use App\Models\CampusSboAdviser;
 use App\Models\SboAdviserRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -105,6 +107,11 @@ class User extends Authenticatable
     }
 
 
+
+    public function campus_sbo_advisers(){
+        return $this->hasMany(CampusSboAdviser::class);
+    }
+    
 
 
 }

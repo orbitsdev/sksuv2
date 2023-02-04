@@ -6,7 +6,7 @@
         <h2 v-if="!!title" class="text-2xl text-gray-300   ">
             {{ title }}
         </h2>
-        <h3 v-if="!!subtitle" class="text-2xl font-bold uppercase ">
+        <h3 v-if="!!subtitle" class="font-rubik text-2xl font-semibold text-green-700 uppercase ">
             {{ subtitle }}
         </h3>
         <slot name="header">

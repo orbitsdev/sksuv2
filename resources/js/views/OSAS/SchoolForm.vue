@@ -1,6 +1,22 @@
 <template>
   <div>
-    <div class="">
+
+    <section class="mt-4">
+      <div>
+
+        <p class="text-base font-bold">School Year</p>
+        <select
+          v-model="selected_school_year"
+          class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+        >
+          <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
+            SY. {{ sy.from }} {{ sy.to }}
+          </option>
+        </select>
+      </div>
+    </section>
+
+    <div class="mt-4">
       <p class="text-base font-bold">School Name</p>
       <BaseInput
         v-model="form.name"
@@ -8,7 +24,7 @@
       />
     </div>
 
-    <div class="mt-2 pt-1 max-h-80 overflow-y-auto ">
+    <!-- <div class="mt-2 pt-1 max-h-80 overflow-y-auto ">
           <div>
             <div class="mt-1">
               <p class="text-base font-bold">Available Organizations </p>
@@ -24,12 +40,12 @@
         </div>
       </div>
     </div>
-    </div>
+    </div> -->
 
      
-    <w-divider class="my-2"></w-divider>
 
-    <div class="py-2" v-if="isUpdateMode && existingFile.length > 0">
+
+    <div class="py-2 mt-4" v-if="isUpdateMode && existingFile.length > 0">
       <p class="text-base font-bold">Attachment Type</p>
       <div class="py-2 flex flex-wrap">
         <FileChip
@@ -44,7 +60,7 @@
       <w-divider   v-if="noExisintData" class="my-2"></w-divider>
     </div>
 
-    <div class="" v-if="noExisintData">
+    <div class="mt-4" v-if="noExisintData">
       <p class="text-base font-bold">Featured Image</p>
       <FilePondBase
         :label="'Drag & Drop your image here or <u> Browse </u>'"
@@ -95,12 +111,15 @@ import axiosApi from "../../api/axiosApi";
 export default {
   created() {
 
+    this.getAllSchoolYears();
     if(this.isUpdateMode){
       this.form = {
         name: this.schoolData.name,
         files: [],
 
       }
+
+      this.selected_school_year = this.schoolData.school_year;
 
       const initial_organizations_id =  [];
       this.schoolData.organizations.forEach(element => {
@@ -157,12 +176,41 @@ export default {
       isOrganizationFetching: false,
       validationError: {},
       requestError: null,
+
+      requestHasError:null,
+      school_years:[],
+      isSchoolYearFetching:false,
+      selected_school_year:null,
+
+
     };
   },
 
   methods: {
 
+    async getAllSchoolYears() {
+      this.isSchoolYearFetching = true;
 
+      await axiosApi
+        .get("api/school-year")
+        .then((res) => {
+          this.school_years = res.data.data;
+
+          if(!this.isUpdateMode){
+            if(this.school_years.length > 0 ){
+              this.selected_school_year = this.school_years[0].id;
+          }
+          }
+         
+        })
+        .catch((err) => {
+          this.requestHasError = '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
+        })
+        .finally(() => {
+          this.isSchoolYearFetching = false;
+        });
+    },
    
 
     handleClose(){
@@ -210,6 +258,7 @@ export default {
           ...this.form,
           filetoberemove: this.fileToBeRemove,
           organizations: this.selectedOrganizations,
+          school_year: this.selected_school_year,
         })
         .then((res) => {
           console.log(res.data);
@@ -244,7 +293,8 @@ export default {
       await axiosApi
         .post("api/schools", {
           ...this.form,
-          organizations: this.selectedOrganizations,
+          school_year: this.selected_school_year,
+          // organizations: this.selectedOrganizations,
         })
         .then((res) => {
           console.log(res);

@@ -89,7 +89,13 @@ const routes = [
             },
           
           
-          
+            {
+                name: "manage-university",
+                path: "osas/manage-university",
+                component: () => import("../views/OSAS/ManageSchool.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
+                children: [],
+            },
             {
                 name: "manage-requirement",
                 path: "osas/manage-requirement",
@@ -140,6 +146,15 @@ const routes = [
                 component: () => import("../views/OSAS/ManageRole.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
             },
+
+            
+            {
+                name: "manage-organization",
+                path: "osas/manage-organization",
+                component: () => import("../views/OSAS/ManageDepartment.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
+                children: [],
+            },
            
 
             // SEND  SBO ADVISER ROLE REQUES
@@ -154,21 +169,8 @@ const routes = [
 
             // SBO ADVISER PAGE
 
-            {
-                name: "manage-university",
-                path: "sbo-adviser/manage-university",
-                component: () => import("../views/OSAS/ManageSchool.vue"),
-                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
-                children: [],
-            },
+         
 
-            {
-                name: "manage-organization",
-                path: "sbo-adviser/manage-organization",
-                component: () => import("../views/OSAS/ManageDepartment.vue"),
-                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
-                children: [],
-            },
             {
                 name: "manage-sbo-officers",
                 path: "sbo-adviser/manage-sbo-offers",

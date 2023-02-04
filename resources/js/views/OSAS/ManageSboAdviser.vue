@@ -2,7 +2,7 @@
 <main>
   <!-- <Path :path="this.$route.path"/> -->
   
- <div class="mb-3">
+ <!-- <div class="mb-3">
   <router-link
   :to="{ name: 'manage-sbo-adviser-user' }"
   class=" py-1 text-gray-400 text-sm mr-1  "
@@ -16,7 +16,7 @@
   class=" py-1 text-gray-400 text-sm mr-1 "
 > SBO Advisers </router-link>
 
- </div>
+ </div> -->
 
   <router-view></router-view>
   

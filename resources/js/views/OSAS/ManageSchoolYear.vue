@@ -21,15 +21,11 @@
         </template>
       </BaseTableSetup>
 
-      <BaseTable :thdata="[' ', 'School Year', 'School', '']" :isFetching="isFetching">
+      <BaseTable :thdata="[' ', 'School Year', 'Univerity', '']" :isFetching="isFetching">
         <template #data>
-          <tr v-if="schoolyears.length < 0">
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          
 
-          <tr v-else v-for="schoolyear in schoolyears" :key="schoolyear">
+          <tr v-for="schoolyear in schoolyears" :key="schoolyear">
             <td class="whitespace-normal align-top relative w-12 px-6 sm:w-16 sm:px-8">
               <input
                 v-model="selectedSchoolYears"
@@ -41,7 +37,7 @@
             <td class="whitespace-normal align-top py-4">
               <p
                 tabindex="0"
-                class="whitespace-normal pl-2 align-top font-semibold text-wrap focus:outline-none text-sm leading-none text-gray-800 text-lg"
+                class="whitespace-normal pl-2 align-top font-semibold text-wrap focus:outline-none text-sm leading-none text-gray-800 "
               >
                 SY. {{ schoolyear.from }}-{{ schoolyear.to }}
               </p>
@@ -49,9 +45,9 @@
             <td class="whitespace-normal align-top py-4">
               <p
                 tabindex="0"
-                class="whitespace-normal pl-2 align-top font-semibold text-wrap focus:outline-none text-sm leading-none text-gray-800 text-lg"
+                class="whitespace-normal pl-2 align-top font-semibold text-wrap focus:outline-none text-sm leading-none text-gray-800 "
               >
-                <StatusCard class="bg-green-100 text-green-700"> 5 </StatusCard>
+                <StatusCard class="bg-green-100 text-green-700"> {{ schoolyear.schools.length }} </StatusCard>
               </p>
             </td>
             <td>
@@ -154,16 +150,19 @@
         </template>
       </BaseDialog>
     </teleport>
+
+    <GlobalErrorCard  @close="requestError = null" :show="requestError != null">
+    </GlobalErrorCard>
   </BaseCard>
 </template>
 
 <script>
-import Datepicker from "vue3-datepicker";
+
 
 import axiosApi from "../../api/axiosApi";
 export default {
   components: {
-    Datepicker,
+  
   },
 
   created() {
@@ -176,7 +175,7 @@ export default {
       viewMode: "years",
       isSaving: false,
       search: "",
-      showForm: true,
+      showForm: false,
       isFetching: false,
       schoolyears: [],
       selectedSchoolYears: [],
@@ -216,6 +215,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+
+          this.requestError = '"Oops! It seems like there was an error when deleting, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
         })
         .finally(() => {
           this.isDeleting = false;
@@ -226,12 +227,13 @@ export default {
       this.isFetching = true;
 
       await axiosApi
-        .get("api/school-year")
+        .get("api/school-year-with-schools")
         .then((res) => {
           this.schoolyears = res.data.data;
         })
         .catch((err) => {
-          console.log(err);
+          this.requestError = '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
         })
         .finally(() => {
           this.isFetching = false;
@@ -268,7 +270,8 @@ export default {
           this.getAllSchoolYears();
         })
         .catch((err) => {
-          console.log(err);
+          this.requestError = '"Oops! It seems like there was an error when  updating school year , Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
         })
         .finally(() => {
           this.isSaving = false;
@@ -276,9 +279,7 @@ export default {
     },
     async saveYear() {
       this.isSaving = true;
-      console.log(this.fromYear.getFullYear());
-      console.log(this.toYear.getFullYear());
-
+ 
       let school_year = {
         fromYear: this.fromYear.getFullYear(),
         toYear: this.toYear.getFullYear(),

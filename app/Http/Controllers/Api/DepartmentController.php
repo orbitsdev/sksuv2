@@ -12,18 +12,10 @@ use App\Http\Resources\DepartmentResource;
 class DepartmentController extends Controller   
 {   
 
-    // public function filter(Request $request){
 
-    //     if($request->input('filter') == 'none'){
-    //         return $this->getDepartment();
-    //     }else{
-    //         $departments =  Department::whereHas('school', function($query) use ($request) {
-    //             $query->where('name', $request->input('filter'));
-    //     })->with('schools')->paginate(10);
-    //     return new DepartmentResource($departments);
-    //     }
-       
-    // }
+
+    
+    
 
     public function search(Request $request){
 
@@ -44,7 +36,8 @@ class DepartmentController extends Controller
     }
 
     public function getDepartment(){
-        return new DepartmentResource(Department::paginate(10));
+        $departments = Department::with(['school'])->get();
+        return new DepartmentResource($departments);
     }
 
     public function createDepartment(Request $request){

@@ -7,14 +7,15 @@ use App\Models\User;
 use App\Models\School;
 use App\Models\Department;
 use App\Models\SchoolUser;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Models\SchoolDepartment;
 use App\Models\TemporaryStorage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SchoolResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\FileController;
-use App\Models\SchoolDepartment;
 
 class ManageSchoolController extends Controller
 {
@@ -103,7 +104,7 @@ class ManageSchoolController extends Controller
     
     public function index()
     {
-        return new SchoolResource(School::with('files','departments')->paginate(20));
+        return new SchoolResource(School::with('school_year','files','departments')->paginate(20));
     }
 
     /**
@@ -131,27 +132,31 @@ class ManageSchoolController extends Controller
 
 
         $files = $request->input('files');
-        $organizations = $request->input("organizations");
+        // $organizations = $request->input("organizations");
 
-        $school = School::create([
+        $s_year =SchoolYear::where('id', $request->input('school_year'))->first();
+
+    
+
+        $school =$s_year->schools()->create([
             'name' => $request->input('name')
         ]);
 
-        if(count($organizations)> 0){
-            $departments = Department::whereIn('id', $organizations)->get()->pluck('id');
-            $school->departments()->sync($departments);
-        }else{
-            if(count($school->departments) > 0 ){
-                $school->departments()->detach();
-            }
-        }
+        // if(count($organizations)> 0){
+        //     $departments = Department::whereIn('id', $organizations)->get()->pluck('id');
+        //     $school->departments()->sync($departments);
+        // }else{
+        //     if(count($school->departments) > 0 ){
+        //         $school->departments()->detach();
+        //     }
+        // }
 
         if (count($files) > 0) {
 
             FileController::storeFiles($files, 'schools', 'public_uploads', $school);
         }
 
-        return response()->json(['success', $school->departments], 200);
+        return response()->json(['success',], 200);
     }
 
     /**
@@ -194,9 +199,10 @@ class ManageSchoolController extends Controller
         ],);
         $school->update([
             'name' => $request->input('name'),
+            'school_year_id' =>$request->input('school_year'),
         ]);
 
-    
+        
 
         $filetoberemove = $request->input('filetoberemove');
         $filestoadded = $request->input('files');

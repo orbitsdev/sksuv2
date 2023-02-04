@@ -11,6 +11,15 @@ class SchoolYearController extends Controller
 {
 
 
+    
+    public function getAllSchoolYearWithSchools()
+    {
+
+        $school_years = SchoolYear::with(['schools'])->get();
+
+        return new SchoolYearResource($school_years);
+    }
+
     public function updateSchoolYear(Request $request){
         $school_year = SchoolYear::where('id', $request->input('id'))->first();
         $school_year->update([

@@ -17,63 +17,60 @@ class ManageUserRoleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function changeUserRole(Request $request){
+    public function changeUserRole(Request $request)
+    {
         $user = User::where('id', $request->input('id'))->first();
         $roles = Role::whereIn('id', $request->input('usersid'))->pluck('id')->get();
         $user->roles()->sync($roles);
-         return response()->json(['success'], 200);
-    
-     }
-
-    public function changeSelectedUsersRoles(Request $request){
-
-    
-       $users = User::whereIn('id', $request->input('usersid'))->get();
-       $roles = Role::whereIn('id', $request->input('rolesid'))->get()->pluck('id');
-       foreach($users as $user){
-            $user->roles()->sync($roles);
-       }
-         return response()->json(['success'], 200);
-
+        return response()->json(['success'], 200);
     }
 
-     public function filter(Request $request){
+    public function changeSelectedUsersRoles(Request $request)
+    {
 
-        if($request->input('filter') == 'none'){
-            return $this->getUsers();   
-        }else{
-            $users = User::where('id', '!=', auth('sanctum')->user()->id)->whereHas('schools', function($query) use ($request){
+
+        $users = User::whereIn('id', $request->input('usersid'))->get();
+        $role = Role::where('id', $request->input('role'))->first();
+        foreach ($users as $user) {
+            $user->roles()->sync($role->id);
+        }
+        return response()->json(['success'], 200);
+    }
+
+    public function filter(Request $request)
+    {
+
+        if ($request->input('filter') == 'none') {
+            return $this->getUsers();
+        } else {
+            $users = User::where('id', '!=', auth('sanctum')->user()->id)->whereHas('schools', function ($query) use ($request) {
                 $query->where('name', $request->input('filter'));
-            })->with('schools','roles')->paginate(10);
+            })->with('schools', 'roles')->paginate(10);
             return new UserResource($users);
         }
-       
-
-
-     }
-     public function search(Request $request){
-        $users =  User::where('id','!=', auth('sanctum')->user()->id)->when($request->input('filter') != 'none', function($query) use ($request) {
-                $query->whereHas('schools',  function($query) use ($request){
-                    $query->where('name', $request->input('filter'));
-                });
-        })->where(function($query) use ($request){
-            $query->where('first_name', 'like', '%'.$request->input('search').'%')->orWhere('last_name', 'like', '%'.$request->input('search').'%')->orWhere('email', 'like', '%'.$request->input('search').'%');
-        })->with('schools','roles')->paginate(10);
-
-        return new UserResource($users);
-     }
-    
-    public function getUsers(){
-        $users = User::where(function($query){
-            $query->where('id', '!=' ,auth('sanctum')->user()->id);
-        })->with('schools','roles')->paginate(10);
-        
-        return new UserResource($users);
-
-        
     }
-     
-    
+    public function search(Request $request)
+    {
+       
+       $users = User::where('id', '!=' ,auth('sanctum')->user()->id)->when($request->input('search'), function($query) use ($request){
+        $query->where(function($query) use ($request){
+            $query->where('first_name', 'like', $request->input('search'))->orWhere('last_name', 'like', '%'.$request->input('search').'%');
+           });
+       })->with('roles','schools')->get();
+
+        return new UserResource($users);
+    }
+
+    public function getUsers()
+    {
+        $users = User::where(function ($query) {
+            $query->where('id', '!=', auth('sanctum')->user()->id);
+        })->with('schools', 'roles')->paginate(10);
+
+        return new UserResource($users);
+    }
+
+
     public function index()
     {
         return new RolesResources(Role::all());

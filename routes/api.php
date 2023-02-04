@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\RequirementController;
 use App\Http\Controllers\Api\CloudStorageController;
 use App\Http\Controllers\Api\ManageSchoolController;
+use App\Http\Controllers\Api\CampusAdviserController;
 use App\Http\Controllers\Api\ManageUserRoleController;
 use App\Http\Controllers\Api\ApplicationFormController;
 use App\Http\Controllers\Api\DynamicFetchingController;
@@ -73,6 +74,7 @@ Route::get('/role', function () {
 
 
     Route::get('school-year', [SchoolYearController::class, 'getAllSchoolYear']);
+    Route::get('school-year-with-schools', [SchoolYearController::class, 'getAllSchoolYearWithSchools']);
     Route::post('school-year/create', [SchoolYearController::class, 'createSchoolYear']);
     Route::post('school-year/update', [SchoolYearController::class, 'updateSchoolYear']);
     Route::post('school-year/delete-selected-school-year', [SchoolYearController::class, 'deleteSelectedSchoolYear']);
@@ -83,6 +85,16 @@ Route::get('/role', function () {
     Route::post('schools/delete-selected', [ManageSchoolController::class, 'deleteSelectedSchool']);
     Route::post('schools/attach-to-user', [ManageSchoolController::class, 'attachSchoolToUser']);
     Route::apiResource('schools', ManageSchoolController::class);
+    
+    //Manage Campus Adviser 
+    Route::get('campus-available-users', [CampusAdviserController::class, 'getAvailableUser']);
+
+    Route::get('campus/campus-advisers', [CampusAdviserController::class, 'getAllCampusAdvisers']);
+    Route::post('campus/delete-selected', [CampusAdviserController::class, 'deleteSelectedCampusAdviser']);
+    Route::post('campus/campus-adviser', [CampusAdviserController::class, 'addCampusAdviser']);
+    Route::post('campus/campus-adviser/update', [CampusAdviserController::class, 'updateCampusAdviser']);
+    Route::post('campus/campus-adviser/search', [CampusAdviserController::class, 'search']);
+    
 
     // MANAGE SBO ADVISERS
     Route::post('sbo-advisers/search', [ManageSboAdviserControlller::class, 'search']);

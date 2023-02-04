@@ -1,5 +1,6 @@
 <template>
   <BaseCard :subtitle="'Manage Organizations'">
+   
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
@@ -36,7 +37,7 @@
         </template>
       </BaseTableSetup>
     </template>
-    <BaseTable :thdata="['', 'Organizations',  '']" :isFetching="isFetching">
+    <BaseTable :thdata="['', 'Organizations', 'University', 'School Year', '']" :isFetching="isFetching">
       <template #data>
         <tr v-for="department in departments" :key="department.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
@@ -54,6 +55,18 @@
               </div>
             </div>
           </td>
+
+          
+          <td class="text-sm">
+            <StatusCard v-if="department.school != null" class="bg-green-700 text-white">
+              {{ department.school.name }}
+            </StatusCard>
+
+          </td>
+
+
+
+
          
           <td class="py-2 text-sm text-gray-500">
             <button
@@ -75,15 +88,48 @@
     </BaseTable>
 
     <teleport to="#app">
-      <BaseDialog :show="showForm" :width="'600'" :preventClose="true">
+      <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
         <template #c-content>
-          <div class="">
-            <BaseInput
-              :label="'Organization Name'"
-              v-model="name"
-              :hasError="validationError.name"
-            />
-          </div>
+        
+
+          <section class="mt-4">
+            <div>
+              <p class="text-base  font-rubik text-gray-800 ">School Year</p>
+              <select
+                v-model="selected_school_year"
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+              >
+                <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
+                  SY. {{ sy.from }} {{ sy.to }}
+                </option>
+              </select>
+            </div>
+          </section>
+          <section class="mt-4">
+            <div>
+              <p class="text-base  font-rubik text-gray-800 ">University</p>
+              <select
+
+                v-model="selected_school"
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+              >
+                <option v-for="school in schools" :key="school.id" :value="school.id">
+                  {{ school.name }}
+                </option>
+              </select>
+            </div>
+          </section>
+
+          <section class="mt-4">
+            <div class="">
+              <p class="text-base  font-rubik text-gray-800 ">Organization Name</p>
+              <BaseInput
+                
+                v-model="name"
+                :hasError="validationError.name"
+              />
+            </div>
+          </section>
          
           <div class="my-4"></div>
           <div class="my-2 flex justify-end">
@@ -135,6 +181,9 @@
         </template>
       </BaseDialog>
     </teleport>
+
+    <GlobalErrorCard  @close="requestHasError = null" :show="requestHasError != null">
+    </GlobalErrorCard>
   </BaseCard>
 </template>
 
@@ -144,6 +193,7 @@ import axiosApi from "../../api/axiosApi";
 export default {
   created() {
     this.loadDepartment();
+    this.getAllSchoolYears();
   },
 
   
@@ -163,6 +213,13 @@ export default {
       validationError: {},
       showForm: false,
       departmentSelected: null,
+
+      school_years: [],
+      schools:[],
+      selected_school_year: null,
+      selected_school:null,
+      isSchoolYearFetching:false,
+      requestHasError:null,
     };
   },
 
@@ -173,6 +230,27 @@ export default {
   },
   methods: {
 
+    
+
+    async getAllSchoolYears() {
+      this.isSchoolYearFetching = true;
+
+      await axiosApi
+        .get("api/school-year")
+        .then((res) => {
+          this.school_years = res.data.data;
+          if(this.school_years.length > 0 ){
+              this.selected_school_year = this.school_years[0].id;
+          }
+        })
+        .catch((err) => {
+          this.requestHasError = '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
+        })
+        .finally(() => {
+          this.isSchoolYearFetching = false;
+        });
+    },
     async searDepartment() {
 
 
@@ -219,7 +297,8 @@ export default {
               this.loadDepartment();
             })
             .catch((err) => {
-              this.requestError = err;
+              this.requestHasError = '"Oops! It seems like there was an error when  deleting department, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
             })
             .finally(() => {
               this.isDeleting = false;
@@ -270,7 +349,8 @@ export default {
               this.loadDepartment();
             })
             .catch((err) => {
-              this.requestError = err;
+              this.requestHasError = '"Oops! It seems like there was an error when  when deleting department, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
             })
             .finally(() => {
               this.isDeleting = false;
@@ -286,7 +366,10 @@ export default {
           this.departments = res.data.data;
         })
         .catch((err) => {
-          this.requestError = err;
+
+          this.requestHasError = '"Oops! It seems like there was an error when  fetchin departments, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
+
         })
         .finally(() => {
           this.isFetching = false;
@@ -309,7 +392,8 @@ export default {
           if (err.response.status === 422) {
             this.validationError = err.response.data.errors;
           } else {
-            this.requestError = err;
+            this.requestHasError = '"Oops! It seems like there was an error when creating department, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
           }
         })
         .finally(() => {
@@ -333,7 +417,8 @@ export default {
           if (err.response.status === 422) {
             this.validationError = err.response.data.errors;
           } else {
-            this.requestError = err;
+            this.requestHasError = '"Oops! It seems like there was an error when  updating  department school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+
           }
         })
         .finally(() => {

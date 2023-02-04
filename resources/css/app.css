@@ -6,3 +6,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.font-rubik{
+    font-family: 'Rubik';
+}

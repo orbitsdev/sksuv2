@@ -73,9 +73,7 @@
 
 
 
-.c-container{
-    background: red;
-}
+
 
 .dialogparent{
     z-index: 1000;
