@@ -6,7 +6,7 @@
             
             
             <img :src="url" class="mt-4">
-            <h1 class="text-lg font-bold mt-8"> {{m}} </h1>
+            <h1 class="text-lg font-bold mt-8 font-rubik text-green-700"> {{m}} </h1>
         
         </div>
     </div>
@@ -17,13 +17,15 @@
         
         props: {
             url:{
-                type:String
+                required:false,
+                type:String,
+                default: '/assets/undraw_no_data_re_kwbl.svg'
             },
         
             m:{
                 type:String,
-                default: 'Not Found',
-                required: true,
+                default: 'No Results Found',
+                required: false,
             },
         
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\School;
 use App\Models\Department;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -19,7 +20,7 @@ class DepartmentController extends Controller
 
     public function search(Request $request){
 
-        $departments = Department::where('name', 'like', '%'.$request->input('search').'%')->get();
+        $departments = Department::where('name', 'like', '%'.$request->input('search').'%')->with(['school.school_year'])->get();
 
         return new DepartmentResource($departments);
     }
@@ -36,7 +37,7 @@ class DepartmentController extends Controller
     }
 
     public function getDepartment(){
-        $departments = Department::with(['school'])->get();
+        $departments = Department::with(['school.school_year'])->get();
         return new DepartmentResource($departments);
     }
 
@@ -47,11 +48,16 @@ class DepartmentController extends Controller
         ],[
             'name' => 'Depertment name is required',
         ]);
+        
 
-        
-        Department::create($validated);
-        
-        return response()->json(['success'], 200);
+        $school_year  = SchoolYear::where('id', $request->input('school_year_id'))->first();
+        $school =  $school_year->schools()->where('id', $request->input('school_id'))->first(); 
+        $school->deparments()->create([
+            'name'=>  $request->input('name')
+        ]);  
+    
+
+        return response()->json(['success', ], 200);
     }
     
     public function updateDepartment(Request $request){
@@ -63,10 +69,17 @@ class DepartmentController extends Controller
         ]);
 
 
-       $department = Department::where('id', $request->input('id'))->first();
-       $department->update($validated);
+        
+     $school_year  = SchoolYear::where('id', $request->input('school_year_id'))->first();
+      $school =  $school_year->schools()->where('id', $request->input('school_id'))->first();
+      $school->deparments()->where('id' ,$request->input('id'))->update([
+        'name'=>  $request->input('name')
+      ]); 
+    
 
-        return response()->json(['success'], 200);
+    
+
+        return response()->json(['success' , $school], 200);
     }
 
 

@@ -27,10 +27,13 @@ class Department extends Model
     //     return $this->belongsTo(CampusSboAdviser::class);
     // }
 
-   
+    
+
     public function school(){
         return $this->belongsTo(School::class);
     }
+
+    
 
     
 

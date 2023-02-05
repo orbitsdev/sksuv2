@@ -172,12 +172,20 @@ const routes = [
          
 
             {
+                name: "select-school-year-for-manage-officers",
+                path: "sbo-adviser/school-years",
+                component: () => import("../views/SBO-ADVISER/SchoolYearPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
+                children: [],
+            },
+            {
                 name: "manage-sbo-officers",
-                path: "sbo-adviser/manage-sbo-offers",
+                path: "sbo-adviser/school-years/:id",
                 component: () => import("../views/SBO-ADVISER/ManageOfficersPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
+
             {
                 name: "officers-documents",
                 path: "sbo-adviser/officers/documents",

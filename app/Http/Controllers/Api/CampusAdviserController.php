@@ -64,16 +64,36 @@ class CampusAdviserController extends Controller
     }
 
     public function addCampusAdviser(Request $request)
-    {
+    {       
 
+        
+
+                
+
+        $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first(); 
+    
+        // check if is sbo-adviser withing this a year
+
+        if($school_year->campus_sbo_advisers()->where('user_id', $request->input('user_id'))->first()){
+            
+
+            return response()->json(['success', 'data'=> 1]);
+        }
+        
+
+
+     
+        
+
+        
         $campus_adviser =  CampusSboAdviser::create([
             'school_year_id' => $request->input('school_year_id'),
             'user_id' => $request->input('user_id'),
             'school_id' => $request->input('school_id'),
         ]);
+        
+        return response()->json(['success', 'data'=> 0]);
 
-
-        return response()->json(['success']);
     }
 
 

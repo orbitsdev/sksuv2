@@ -7,7 +7,13 @@
 
 
 
-
+  <div class="py-4">
+    {{ this.$route.params.id }}
+  
+    <TableButton @click="this.$router.push({name:'select-school-year-for-manage-officers'})">
+      
+      Go Back </TableButton>  
+  </div>
   <BaseCard :subtitle="'Manage Officer'">
     <template #header>
       <BaseTableSetup>
@@ -265,6 +271,12 @@ import { mapGetters } from "vuex";
 
 import axiosApi from "../../api/axiosApi";
 export default {
+
+  computed: {
+    schoolYearId() {
+      return this.$route.params.id;
+    },
+  },
   data() {
     return {
       search: "",

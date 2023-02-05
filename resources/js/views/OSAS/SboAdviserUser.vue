@@ -2,14 +2,8 @@ use App\Models\CampusSboAdviser;
 <template>
   <BaseCard class="relative" :subtitle="'Campus SBO advisers'">
     <template #header>
-
-
-
-
-    
       {{ selectedCampusAdviser }}
 
-      
       <BaseTableSetup>
         <template #searchs-area>
           <TableButton class="mr-2" @click="showMainForm = true">
@@ -37,44 +31,37 @@ use App\Models\CampusSboAdviser;
     </template>
 
     <BaseTable
-      :thdata="['', 'Year', 'Sbo Adviser Name',  'University', '']"
+      :thdata="['', 'Year', 'Sbo Adviser Name', 'University', '']"
       :isFetching="isFetching"
     >
       <template #data>
         <tr v-for="adviser in campus_advisers" :key="adviser.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
-
             <input
-            v-model="selectedAdvisers"
+              v-model="selectedAdvisers"
               :value="adviser.id"
-            type="checkbox"
-            class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
-          />
-           
+              type="checkbox"
+              class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
+            />
           </td>
           <td class="whitespace-nowrap px-3 py-4 text-sm text-green-700">
-            <p class="font-semibold font-rubik ">
-
+            <p class="font-semibold font-rubik">
               SY.{{ adviser.school_year.from }} - {{ adviser.school_year.to }}
             </p>
           </td>
           <td class="whitespace-nowrap py-4">
-
             <!-- <StatusCard class="bg-rose-700 text-rose-100 capitalize" >
             </StatusCard> -->
-            <p class="capitalize  ">
+            <p class="capitalize">
               {{ adviser.user.first_name + " " + adviser.user.last_name }}
-              
             </p>
-            
           </td>
 
-
-          <td class="whitespace-nowrap  py-4 text-sm text-gray-900">
-            
-            <StatusCard class="bg-green-700 text-white">
+          <td class="whitespace-nowrap py-4 text-sm text-gray-900">
+            <StatusCard v-if="adviser.school != null" class="bg-green-700 text-white">
               {{ adviser.school.name }}
             </StatusCard>
+            <StatusCard v-else class="bg-gray-700 text-white"> None </StatusCard>
           </td>
           <td
             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
@@ -111,23 +98,19 @@ use App\Models\CampusSboAdviser;
     <teleport to="#app">
       <BaseDialog :show="showMainForm" :width="'500'" :preventClose="true">
         <template #c-content>
+          {{ selecated_campuse_adviser }}
           <section class="mt-2">
             <div>
-
-              {{ selecated_campuse_adviser }}
-              {{ selecated_school }}
-              {{ selected_school_year }}
-              
               <p class="text-base font-bold">Select School Year</p>
               <NoDataCard v-if="school_years.length <= 0"> Empty </NoDataCard>
               <select
-              @change="changeHandler"
+                @change="changeHandler"
                 v-else
                 v-model="selected_school_year"
                 class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
               >
                 <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
-                  SY. {{ sy.from }} {{ sy.to }}
+                  SY. {{ sy.from }} - {{ sy.to }}
                 </option>
               </select>
             </div>
@@ -164,9 +147,7 @@ use App\Models\CampusSboAdviser;
           </section>
 
           <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" @click="handleCloseForm">
-              Close
-            </TableButton>
+            <TableButton mode class="mr-2" @click="handleCloseForm"> Close </TableButton>
             <div class="my-1 mx-2" v-if="isSaving">
               <BaseSpinner />
             </div>
@@ -179,9 +160,12 @@ use App\Models\CampusSboAdviser;
                 "
               ></div>
               <div v-else>
-                <TableButton v-if="isUpdatingMode" class="" @click="updateCampusAdviser"> Update </TableButton>
-                <TableButton v-else class="" @click="addCampusAdviser"> Save </TableButton>
-                
+                <TableButton v-if="isUpdatingMode" class="" @click="updateCampusAdviser">
+                  Update
+                </TableButton>
+                <TableButton v-else class="" @click="addCampusAdviser">
+                  Save
+                </TableButton>
               </div>
             </div>
           </div>
@@ -189,7 +173,6 @@ use App\Models\CampusSboAdviser;
       </BaseDialog>
     </teleport>
 
-   
     <teleport to="#app">
       <BaseDialog
         :show="showDeleteConfirmation"
@@ -224,7 +207,9 @@ use App\Models\CampusSboAdviser;
     </teleport>
     <GlobalErrorCard @close="hasRequestError = null" :show="hasRequestError != null">
     </GlobalErrorCard>
-
+    <GlobalWarning @close="hasWarning = null" :show="hasWarning != null">
+      {{ hasWarning }}
+    </GlobalWarning>
   </BaseCard>
 </template>
 
@@ -271,22 +256,18 @@ export default {
       showDeleteConfirmation: false,
       isDeleting: false,
       isUpdatingMode: false,
-
-      
+      hasWarning: null,
     };
   },
 
   watch: {
     search(oldeValue, newValue) {
       this.searchCampusAdviser();
-      
     },
   },
 
   methods: {
-
-    async updateCampusAdviser(){  
-
+    async updateCampusAdviser() {
       this.isSaving = true;
 
       let campus_sbo_data = {
@@ -298,13 +279,12 @@ export default {
 
       console.log(campus_sbo_data);
 
-
       await axiosApi
         .post("api/campus/campus-adviser/update", campus_sbo_data)
         .then((res) => {
           this.showMainForm = false;
           this.isUpdatingMode = false;
-          this.selectedCampusAdviser= null;
+          this.selectedCampusAdviser = null;
           this.selecated_campuse_adviser = null;
           this.school_id = null;
           this.getAllCampusAdvisers();
@@ -312,69 +292,53 @@ export default {
         })
         .catch((err) => {
           this.hasRequestError =
-            '"Oops! It seems like there was an error when updating campuse adviser Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+            '"Oops! It seems like there was an error when updating campuse adviser Please check your network connection. o and try again. if you think it it was the system please do contact the developer"';
         })
         .finally(() => {
           this.isSaving = false;
         });
-
     },
 
     changeHandler(event) {
-      // Do something with event.target.value
-
-      console.log(event.target.value);
-
-      let year_with_schools =  this.school_years.find(i=> i.id == event.target.value);
-
-      console.log(year_with_schools);
-
+      let year_with_schools = this.school_years.find((i) => i.id == event.target.value);
       this.schools = year_with_schools.schools;
-
       this.selecated_school = null;
       if (this.schools.length > 0) {
-            this.selecated_school = this.schools[0].id;
-       }
-
-
-
-      
+        this.selecated_school = this.schools[0].id;
+      }
     },
 
-    chnageSchoolData(){
-
-    },
-    handleCloseForm(){
-        this.selectedCampusAdviser = null;
-        this.isUpdatingMode = false;
-        this.showMainForm =false;
+    chnageSchoolData() {},
+    handleCloseForm() {
+      this.selectedCampusAdviser = null;
+      this.isUpdatingMode = false;
+      this.showMainForm = false;
     },
 
     selectCampusAdviser(item) {
-     
-      
       this.selectedCampusAdviser = item;
       this.isUpdatingMode = true;
       console.log(item);
 
       this.selected_school_year = item.school_year.id;
-      this.selecated_school = item.school.id;
+
+      if (item.school != null) {
+        this.selecated_school = item.school.id;
+      }
 
       this.showMainForm = true;
-   
     },
 
     async deleteSelectedCampusAdviser() {
       this.isDeleting = true;
 
-      
       await axiosApi
         .post("api/campus/delete-selected", {
-          campus_advisers_id:  this.selectedAdvisers,
+          campus_advisers_id: this.selectedAdvisers,
         })
         .then((res) => {
           console.log(res);
-          
+
           this.showDeleteConfirmation = false;
           this.selectedAdvisers = [];
           this.getAllCampusAdvisers();
@@ -418,11 +382,9 @@ export default {
 
             this.schools = this.school_years[0].schools;
 
-
             if (this.schools.length > 0) {
-            this.selecated_school = this.schools[0].id;
-          }
-
+              this.selecated_school = this.schools[0].id;
+            }
           }
         })
         .catch((err) => {
@@ -485,11 +447,23 @@ export default {
       await axiosApi
         .post("api/campus/campus-adviser", campus_sbo_data)
         .then((res) => {
-          this.showMainForm = false;
-          this.selecated_campuse_adviser = null;
-          this.school_id = null;
-          this.getAllCampusAdvisers();
-          this.getUserWhereIsNotCampusAdviser();
+          console.log(res.data.data ===1);
+          
+
+          if (res.data.data ===1) {
+
+            this.hasWarning = '" You can only set one user Per School in each school year "';
+          }
+          
+          else {
+            this.showMainForm = false;
+
+            
+            
+            this.getAllSchoolYears();
+            this.getAllCampusAdvisers();
+            this.getUserWhereIsNotCampusAdviser();
+          }
         })
         .catch((err) => {
           this.hasRequestError =
@@ -555,12 +529,9 @@ export default {
       });
     },
     async searchCampusAdviser() {
-
-      
       axiosApi
         .post("api/campus/campus-adviser/search", {
           search: this.search,
-
         })
         .then((res) => {
           this.campus_advisers = res.data.data;

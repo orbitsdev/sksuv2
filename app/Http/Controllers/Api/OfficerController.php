@@ -6,16 +6,33 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Department;
 use App\Models\SboOfficer;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\OfficerResource;
 use App\Http\Resources\DepartmentResource;
+use App\Http\Resources\SchoolYearResource;
 
 class OfficerController extends Controller
 
 {
 
+
+
+    public function getAllSchoolYear(){
+        $school_years =  SchoolYear::whereHas('campus_sbo_advisers', function($query){
+                $query->whereHas('user', function($query) {
+                    $query->where('id', auth('sanctum')->user()->id);
+                });
+        })->get();
+
+        return new SchoolYearResource($school_years);
+
+
+
+    }
+    
     public function deleteSelectedOfficer(Request $request){
 
     

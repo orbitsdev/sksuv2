@@ -54,6 +54,9 @@ import RemarksCard from './shared/RemarksCard.vue';
 import GlobalErrorCard from './components/GlobalErrorCard.vue';
 import TitleCard from './components/TitleCard.vue';
 import NoDataCard from './components/NoDataCard.vue';
+import YearCard from './components/YearCard.vue';
+import YearButton from './components/YearButton.vue';
+import GlobalWarning from './components/GlobalWarning.vue';
 
 
 
@@ -129,6 +132,9 @@ app.component('GlobalErrorCard', GlobalErrorCard);
 app.component('Datepicker', Datepicker);
 app.component('TitleCard', TitleCard);
 app.component('NoDataCard', NoDataCard);
+app.component('YearCard', YearCard);
+app.component('YearButton', YearButton);
+app.component('GlobalWarning', GlobalWarning);
 
 
 

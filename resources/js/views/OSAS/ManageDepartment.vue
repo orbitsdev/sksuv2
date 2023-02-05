@@ -66,7 +66,14 @@
 
 
 
-
+          <td class="text-sm">
+            <div class="flex items-center">
+              <div class="">
+                <div class="font-medium text-gray-900" v-if="department.school != null  && department.school.school_year !=null ">SY.{{ department.school.school_year.from }} - {{ department.school.school_year.to }}</div>
+                <div class="font-medium text-gray-900" v-else >None</div>
+              </div>
+            </div>
+          </td>
          
           <td class="py-2 text-sm text-gray-500">
             <button
@@ -90,33 +97,42 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
         <template #c-content>
-        
+          {{ selected_school_year   }}
+          {{ selected_school   }}
 
-          <section class="mt-4">
+          <hr>
+          {{ departmentSelected }}
+
+          <section class="mt-4"  v-if="this.departmentSelected == null" >
             <div>
               <p class="text-base  font-rubik text-gray-800 ">School Year</p>
+              <NoDataCard v-if="school_years.length <= 0"> Empty </NoDataCard>
               <select
+              @change="changeHandler"
+                v-else
                 v-model="selected_school_year"
-                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+                class="block  w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
               >
-                <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
-                  SY. {{ sy.from }} {{ sy.to }}
+                <option class=""  v-for="sy in school_years" :key="sy.id" :value="sy.id">
+                  SY. {{ sy.from }} - {{ sy.to }}
                 </option>
               </select>
             </div>
           </section>
-          <section class="mt-4">
+          <section class="mt-4"  v-if="this.departmentSelected == null" >
             <div>
               <p class="text-base  font-rubik text-gray-800 ">University</p>
+              
+              <NoDataCard v-if="schools.length <= 0">Empty </NoDataCard>
               <select
-
+                v-else
                 v-model="selected_school"
                 class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
               >
                 <option v-for="school in schools" :key="school.id" :value="school.id">
                   {{ school.name }}
                 </option>
-              </select>
+              </select> 
             </div>
           </section>
 
@@ -216,8 +232,9 @@ export default {
 
       school_years: [],
       schools:[],
+
+      selected_school: null,
       selected_school_year: null,
-      selected_school:null,
       isSchoolYearFetching:false,
       requestHasError:null,
     };
@@ -230,22 +247,39 @@ export default {
   },
   methods: {
 
+    changeHandler(event) {
+      
+      let year_with_schools = this.school_years.find((i) => i.id == event.target.value);
+      this.schools = year_with_schools.schools;
+      this.selected_school = null;
+      if (this.schools.length > 0) {
+        this.selected_school = this.schools[0].id;
+      }
+
+    },
     
 
+    
     async getAllSchoolYears() {
       this.isSchoolYearFetching = true;
 
       await axiosApi
-        .get("api/school-year")
+        .get("api/school-year-with-schools")
         .then((res) => {
           this.school_years = res.data.data;
-          if(this.school_years.length > 0 ){
-              this.selected_school_year = this.school_years[0].id;
+          if (this.school_years.length > 0) {
+            this.selected_school_year = this.school_years[0].id;
+
+            this.schools = this.school_years[0].schools;
+
+            if (this.schools.length > 0) {
+              this.selected_school = this.schools[0].id;
+            }
           }
         })
         .catch((err) => {
-          this.requestHasError = '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
-
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
         })
         .finally(() => {
           this.isSchoolYearFetching = false;
@@ -268,6 +302,8 @@ export default {
     
 
     handleShowForm(department, action) {
+
+    
       this.validationError = {};
 
       if (action == "add") {
@@ -279,6 +315,18 @@ export default {
 
         
         this.departmentSelected = department;
+
+        if(this.departmentSelected.school != null){
+            this.selected_school = this.departmentSelected.school.id;
+        }
+        if(this.departmentSelected.school.school_year != null){
+            this.selected_school_year = this.departmentSelected.school.school_year.id;
+        }
+
+
+
+        console.log(this.departmentSelected);
+
 
         this.name = department.name;
       }
@@ -377,15 +425,28 @@ export default {
     },
 
     async createDepartment() {
+
+
+
+      let deparment_data = {
+        school_id: this.selected_school,
+        school_year_id: this.selected_school_year,
+        name:this.name,
+      }
+
       this.isSaving = true;
       await axiosApi
-        .post("api/manage-department-create", {
-          name: this.name,
-        })
+        .post("api/manage-department-create", deparment_data)
         .then((res) => {
+
+
+          this.selected_school= null;
+          this.selected_school_year= null;
           this.showForm = false;
           this.name = "";
+          
           this.loadDepartment();
+          this.getAllSchoolYears();
         })
         .catch((err) => {
         
@@ -403,15 +464,26 @@ export default {
 
     async updateDepartment() {
       this.isSaving = true;
+
+      let deparment_data = {
+        school_id: this.selected_school,
+        school_year_id: this.selected_school_year,
+        name:this.name,
+        id: this.departmentSelected.id,
+      }
+
       await axiosApi
-        .post("api/manage-department-update", {
-          name: this.name,
-          id: this.departmentSelected.id,
-        })
+        .post("api/manage-department-update", deparment_data)
         .then((res) => {
+          this.departmentSelected = null;
+          this.selected_school= null;
+          this.selected_school_year= null;
+          this.name = "";
           this.showForm = false;
-          (this.name = ""), (this.departmentSelected = null);
+          
           this.loadDepartment();
+          this.getAllSchoolYears();
+
         })
         .catch((err) => {
           if (err.response.status === 422) {

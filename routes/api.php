@@ -157,6 +157,7 @@ Route::get('/role', function () {
     
     
     // Manage Sbo Officer 
+    Route::get('manage-officer/school-year', [OfficerController::class, 'getAllSchoolYear']);
     Route::get('manage-officer/get-students', [OfficerController::class, 'getStudents']);
     Route::get('manage-officer/get-school-department', [OfficerController::class, 'getSchoolDepartmentphp']);
     Route::get('manage-officer/get-officers', [OfficerController::class, 'getOfficers']);
