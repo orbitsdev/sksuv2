@@ -53,7 +53,7 @@ class School extends Model
 
 
 
-    public function campus_sbo_adviser(){
+    public function campus_sbo_advisers(){
         return $this->hasMany(CampusSboAdviser::class);
     }
 

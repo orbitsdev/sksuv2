@@ -179,8 +179,18 @@ const routes = [
                 children: [],
             },
             {
+                props:true,
+                name: "select-school-for-manage-officers",
+                path: "sbo-adviser/school-years/school/:id",
+                component: () => import("../views/SBO-ADVISER/SchoolPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
+                children: [],
+            },
+            {
+
+                props: true ,
                 name: "manage-sbo-officers",
-                path: "sbo-adviser/school-years/:id",
+                path: "sbo-adviser/school-years/school/manage-officer/:id",
                 component: () => import("../views/SBO-ADVISER/ManageOfficersPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],

@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\School;
-use App\Models\SchoolYear;
+use App\Models\SboOfficer;
 
+use App\Models\SchoolYear;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,6 +26,13 @@ class CampusSboAdviser extends Model
 
     public function school(){
         return $this->belongsTo(School::class);
+    }
+
+
+    public function sbo_officers(){
+        
+        return $this->hasMany(SboOfficer::class);
+
     }
 
     

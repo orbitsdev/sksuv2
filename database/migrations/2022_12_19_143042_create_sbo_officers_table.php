@@ -15,13 +15,10 @@ return new class extends Migration
     {
         Schema::create('sbo_officers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('adviser_id');
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('department_id');
+            $table->foreignId('campus_sbo_adviser_id')->constrained()->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->foreignId('department_id')->constrained()->onDelete('cascade');
             $table->text('position');
-            $table->foreign('adviser_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->timestamps();
         });
     }

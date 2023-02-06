@@ -75,12 +75,9 @@ class User extends Authenticatable
     }
 
 
-    public function officers(){
-        return $this->hasMany(SboOfficer::class, 'adviser_id');
-    }
 
-    public function officer(){
-        return $this->hasOne(SboOfficer::class, 'student_id');
+    public function sbo_officers(){
+        return $this->hasMany(SboOfficer::class, 'student_id');
     }
 
     public function responses(){

@@ -32,77 +32,70 @@ class CampusAdviserController extends Controller
     }
 
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
 
 
-        $campuse_sbo_advisers  = CampusSboAdviser::when($request->input('search'), function($query) use ($request){
-            $query->whereHas('user', function($query) use ($request){
-                $query->where('first_name', 'like', $request->input('search'))->orWhere('last_name', 'like', '%'.$request->input('search').'%');
+        $campuse_sbo_advisers  = CampusSboAdviser::when($request->input('search'), function ($query) use ($request) {
+            $query->whereHas('user', function ($query) use ($request) {
+                $query->where('first_name', 'like', $request->input('search'))->orWhere('last_name', 'like', '%' . $request->input('search') . '%');
             });
-        })->with(['user', 'school' ,'school_year'])->get();
+        })->with(['user', 'school', 'school_year'])->get();
         return new CampusSboAdviserResource($campuse_sbo_advisers);
-
-
     }
 
-    public function deleteSelectedCampusAdviser(Request $request){
-        
-                $campuse_sbo_advisers = CampusSboAdviser::whereIn('id', $request->input('campus_advisers_id'))->with('user')->delete();
-                
+    public function deleteSelectedCampusAdviser(Request $request)
+    {
 
-                return response()->json(['success',]);
-                
+        $campuse_sbo_advisers = CampusSboAdviser::whereIn('id', $request->input('campus_advisers_id'))->with('user')->delete();
 
-    }   
 
-    public function getAllCampusAdvisers(){
-     
-        $campuse_sbo_advisers  = CampusSboAdviser::with(['user', 'school' ,'school_year'])->get();
+        return response()->json(['success',]);
+    }
+
+    public function getAllCampusAdvisers()
+    {
+
+        $campuse_sbo_advisers  = CampusSboAdviser::with(['user', 'school', 'school_year'])->get();
         return new CampusSboAdviserResource($campuse_sbo_advisers);
-
-
     }
 
     public function addCampusAdviser(Request $request)
-    {       
+    {
 
-        
 
-                
 
-        $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first(); 
-    
+
+
+        $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first();
+        $existing_adviser = $school_year->campus_sbo_advisers()->where('user_id', $request->input('user_id'))->where('school_id', $request->input('school_id'))->first();
+
         // check if is sbo-adviser withing this a year
 
-        if($school_year->campus_sbo_advisers()->where('user_id', $request->input('user_id'))->first()){
-            
 
-            return response()->json(['success', 'data'=> 1]);
+        if ($existing_adviser) {
+
+
+
+            return response()->json(['success', 'data' => 1]);
+        } else {
+
+            $campus_adviser =  CampusSboAdviser::create([
+                'school_year_id' => $request->input('school_year_id'),
+                'user_id' => $request->input('user_id'),
+                'school_id' => $request->input('school_id'),
+            ]);
+
+            return response()->json(['success', 'data' => 0]);
         }
-        
-
-
-     
-        
-
-        
-        $campus_adviser =  CampusSboAdviser::create([
-            'school_year_id' => $request->input('school_year_id'),
-            'user_id' => $request->input('user_id'),
-            'school_id' => $request->input('school_id'),
-        ]);
-        
-        return response()->json(['success', 'data'=> 0]);
-
     }
 
 
     public function getAvailableUser()
     {
-        $users = User::whereHas('roles', function($query){
-                $query->where('name','!=', 'osas');
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'osas');
         })->get();
         return new UserResource($users);
-
     }
 }

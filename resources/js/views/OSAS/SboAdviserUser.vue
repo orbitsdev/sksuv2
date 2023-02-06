@@ -66,14 +66,14 @@ use App\Models\CampusSboAdviser;
           <td
             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
           >
-            <button
+            <!-- <button
               @click="selectCampusAdviser(adviser)"
               :disabled="selectedAdvisers.length > 0"
               type="button"
               class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
             >
               <i class="fa-regular fa-pen-to-square"></i>
-            </button>
+            </button> -->
           </td>
         </tr>
       </template>
@@ -98,7 +98,7 @@ use App\Models\CampusSboAdviser;
     <teleport to="#app">
       <BaseDialog :show="showMainForm" :width="'500'" :preventClose="true">
         <template #c-content>
-          {{ selecated_campuse_adviser }}
+          <!-- {{ selecated_campuse_adviser }} -->
           <section class="mt-2">
             <div>
               <p class="text-base font-bold">Select School Year</p>
@@ -447,7 +447,7 @@ export default {
       await axiosApi
         .post("api/campus/campus-adviser", campus_sbo_data)
         .then((res) => {
-          console.log(res.data.data ===1);
+          // console.log(res.data.data ===1);
           
 
           if (res.data.data ===1) {
@@ -464,6 +464,8 @@ export default {
             this.getAllCampusAdvisers();
             this.getUserWhereIsNotCampusAdviser();
           }
+
+          console.log(res.data.data);
         })
         .catch((err) => {
           this.hasRequestError =

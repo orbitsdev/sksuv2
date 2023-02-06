@@ -27,7 +27,7 @@
                     type="button"
                     class="font-rubik flex w-full items-center justify-center rounded-lg border border-green-600 bg-green-700 text-white text-lg  px-4 py-2 text-sm font-semibold hover:text-white hover:shadow-lg hover:bg-green-800 focus:outline-none "
                   >
-                    <slot>Got It</slot>
+                   Got It
                   </button>
 
                 </div>
