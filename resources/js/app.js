@@ -57,6 +57,7 @@ import NoDataCard from './components/NoDataCard.vue';
 import YearCard from './components/YearCard.vue';
 import YearButton from './components/YearButton.vue';
 import GlobalWarning from './components/GlobalWarning.vue';
+import BackCard from './components/BackCard.vue';
 
 
 
@@ -135,6 +136,7 @@ app.component('NoDataCard', NoDataCard);
 app.component('YearCard', YearCard);
 app.component('YearButton', YearButton);
 app.component('GlobalWarning', GlobalWarning);
+app.component('BackCard', BackCard);
 
 
 

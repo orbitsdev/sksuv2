@@ -1,13 +1,12 @@
 <template>
-  <div class="py-4">
-    {{ this.$route.params.id }}
-    <!-- <TableButton @click="this.$router.back()">
-      Go Back </TableButton>   -->
+  <div class="">
+    <!-- {{ this.$route.params.id }} -->
+      <BackCard class="mb-4"  @click="this.$router.back()"/>
   </div>
   <BaseCard :subtitle="'Manage Officer'">
     <template #header>
-      {{ studentoptions }}
-      {{selectedOfficer}}
+      <!-- {{ studentoptions }}
+      {{selectedOfficer}} -->
       <BaseTableSetup>
         <template #searchs-area>
           <TableButton class="mr-2" @click="handleShowForm(null, 'add')"

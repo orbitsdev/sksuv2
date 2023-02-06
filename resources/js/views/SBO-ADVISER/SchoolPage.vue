@@ -1,6 +1,7 @@
 <template>
   <div>
 
+    <BackCard class="mb-4"  @click="this.$router.back()"/>
 
 
     <div v-if="isFetching" class="flex items-center justify-center h-96">
