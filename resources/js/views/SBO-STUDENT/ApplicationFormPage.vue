@@ -1,8 +1,14 @@
 <template>
   <div>
+    <div class="flex mb-4 items-center justify-between">
+      <BackCard class=""  @click="this.$router.back()"/>
+        <p class="text-2xl font-rubik font-bold text-green-700 "> {{ page }}</p>
+    </div>
     <div v-if="isFetching">
       <div class="h-screen flex justify-center items-center">
         <Loader1 />
+
+        
       </div>
     </div>
     <div v-else>
@@ -85,6 +91,8 @@ import axiosApi from "../../api/axiosApi";
 import moment from "moment";
 
 export default {
+
+  props: ['page'],
   data() {
     return {
       isFetching: false,
@@ -114,9 +122,11 @@ export default {
 
     async getApplications() {
       this.isFetching = true;
-
+      let school_year_id = parseInt(this.$route.params.id);
       await axiosApi
-        .get("api/application-form/all-application")
+        .post("api/application-form/all-application",{
+          school_year_id:school_year_id ,
+        })
         .then((res) => {
           console.log(res.data.data);
           this.applications = res.data.data;

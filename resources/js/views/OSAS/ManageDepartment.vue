@@ -70,7 +70,7 @@
             <div class="flex items-center">
               <div class="">
                 <div class="font-medium text-gray-900" v-if="department.school != null  && department.school.school_year !=null ">SY.{{ department.school.school_year.from }} - {{ department.school.school_year.to }}</div>
-                <div class="font-medium text-gray-900" v-else >None</div>
+                <StatusCard class="font-medium bg-gray-700 text-white" v-else >None</StatusCard>
               </div>
             </div>
           </td>
@@ -97,11 +97,11 @@
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'500'" :preventClose="true">
         <template #c-content>
-          {{ selected_school_year   }}
+          <!-- {{ selected_school_year   }}
           {{ selected_school   }}
 
           <hr>
-          {{ departmentSelected }}
+          {{ departmentSelected }} -->
 
           <section class="mt-4"  v-if="this.departmentSelected == null" >
             <div>

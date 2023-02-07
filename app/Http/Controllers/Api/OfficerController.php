@@ -21,9 +21,19 @@ class OfficerController extends Controller
 
 {
 
-    public function getSchool(Request $request)
+
+
+
+
+    public function getSchoolDeparment(Request $request)
     {
+
+        $school_department = Department::where('school_id', $request->input('school_id'))->get();
+
+        return new DepartmentResource($school_department);
     }
+
+
 
     public function getSchoolYearSchool(Request $request)
     {
@@ -44,10 +54,10 @@ class OfficerController extends Controller
 
         // $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first();
 
-            
 
 
-     return new SchoolResource($schools);
+
+        return new SchoolResource($schools);
     }
 
 
@@ -55,13 +65,6 @@ class OfficerController extends Controller
     {
 
         $auth_id = auth('sanctum')->user()->id;
-        // $school_years =  SchoolYear::whereHas('campus_sbo_advisers', function ($query) use($auth_id) {
-        //     $query->whereHas('user', function ($query) use ($auth_id){
-        //         $query->where('id', $auth_id);
-        //     });
-        // })->with(['schools.campus_sbo_adviser'=> function($query) use($auth_id){
-        //     $query->where('user_id', $auth_id);    
-        // }])->get();
 
         $school_years = SchoolYear::whereHas('campus_sbo_advisers', function ($query) use ($auth_id) {
             $query->where('user_id', $auth_id);
@@ -119,13 +122,24 @@ class OfficerController extends Controller
             $student->roles()->sync($sbo->id);
         }
 
+        $officer_exist = SboOfficer::where('student_id', $request->input('student_id'))->where('school_id', $request->input('school_id'))->first();
+
+        if ($officer_exist) {
+            return response()->json(['success', 'data' => 1]);
+        } else {
 
 
-        $campus_adviser->sbo_officers()->create($validated);
+            $campus_adviser->sbo_officers()->create([
+                'student_id' => $request->input('student_id'),
+                'department_id' => $request->input('department_id'),
+                'school_id' => $request->input('school_id'),
+                'position' => $request->input('position'),
+            ]);
 
-
-        return response()->json(['success', $campus_adviser]);
+            return response()->json(['success', 'data' => 0]);
+        }
     }
+
 
     public function updateOfficer(Request $request)
     {

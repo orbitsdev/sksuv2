@@ -69,6 +69,20 @@ class CampusAdviserController extends Controller
 
         $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first();
         $existing_adviser = $school_year->campus_sbo_advisers()->where('user_id', $request->input('user_id'))->where('school_id', $request->input('school_id'))->first();
+        
+
+        $user = User::where('id', $request->input('user_id'))->first();
+
+        $guest =         Role::where('name', 'guest')->first();
+        $adviser =         Role::where('name', 'sbo-adviser')->first();
+
+
+
+
+        if ($user->roles()->find($guest->id)) {
+            $user->roles()->sync($adviser->id);
+        }
+
 
         // check if is sbo-adviser withing this a year
 

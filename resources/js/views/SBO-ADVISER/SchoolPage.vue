@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    
     <BackCard class="mb-4"  @click="this.$router.back()"/>
 
 
@@ -13,8 +13,7 @@
         <div  v-for="school in schools" :key="school.id" style="background-image: url('/assets/undraw_hiring_re_yk5n.svg');" class="bg-cover bg-center  flex items-center justify-center min-h-40 rounded hover:bg-gray-100 shadow bg-white hover:scale-95 transition ease-in-out cursor-pointer" @click="goToPage(school.id)">
             <div class="w-full h-full px-5 py-7 bg-white">
                 <p class="text-1xl font-rubik text-center uppercase leading-4 font-semibold  text-green-600">
-                    {{ school.name }} Sultan Kudarat State University (Isulan) 
-                    {{ school.id}}
+                    {{ school.name }} 
                 </p>
             </div>
 

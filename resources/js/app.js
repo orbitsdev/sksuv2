@@ -58,6 +58,8 @@ import YearCard from './components/YearCard.vue';
 import YearButton from './components/YearButton.vue';
 import GlobalWarning from './components/GlobalWarning.vue';
 import BackCard from './components/BackCard.vue';
+import FormParentCard from './components/FormParentCard.vue';
+import FormChildCard from './components/FormChildCard.vue';
 
 
 
@@ -137,6 +139,9 @@ app.component('YearCard', YearCard);
 app.component('YearButton', YearButton);
 app.component('GlobalWarning', GlobalWarning);
 app.component('BackCard', BackCard);
+app.component('FormParentCard', FormParentCard);
+app.component("FormChildCard", FormChildCard);
+
 
 
 

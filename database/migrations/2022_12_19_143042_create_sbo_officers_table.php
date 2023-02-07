@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('campus_sbo_adviser_id')->constrained()->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->foreignId('school_id')->constrained()->onDelete('cascade');
             $table->foreignId('department_id')->constrained()->onDelete('cascade');
             $table->text('position');
             $table->timestamps();

@@ -271,7 +271,7 @@ export default {
     async LoadRoles() {
       this.isRoleFetching = true;
       await axiosApi
-        .get("api/roles")
+        .get("api/manage-users-roles/get-roles")
         .then((res) => {
           let modified_roles = [];
 

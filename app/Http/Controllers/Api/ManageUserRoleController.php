@@ -17,6 +17,13 @@ class ManageUserRoleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+
+    public function getRoles(){
+            $roles = Role::whereNotIn('name', ['sbo-student'])->get();
+
+            return new RolesResources($roles);
+    }
+
     public function changeUserRole(Request $request)
     {
         $user = User::where('id', $request->input('id'))->first();

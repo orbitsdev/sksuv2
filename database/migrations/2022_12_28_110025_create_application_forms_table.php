@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('application_forms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_year_id')->constrained()->onDelete('cascade');
             $table->string('title');     
             $table->string('status')->nullable()->default('private');     
             $table->timestamps();

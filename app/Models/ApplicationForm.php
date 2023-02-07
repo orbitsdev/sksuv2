@@ -49,4 +49,14 @@ class ApplicationForm extends Model
 
 
 
+
+    
+
+
+    public function school_year(){
+        return $this->belongsTo(SchoolYear::class);
+    }
+
+
+
 }

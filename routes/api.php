@@ -122,6 +122,7 @@ Route::get('/role', function () {
 
     // MANAGE ROLES
     Route::get('manage-users-roles/get-users', [ManageUserRoleController::class, 'getUsers']);
+    Route::get('manage-users-roles/get-roles', [ManageUserRoleController::class, 'getRoles']);
     Route::post('manage-users-roles/change-role-selected-user', [ManageUserRoleController::class, 'changeSelectedUsersRoles']);
     Route::post('manage-users-roles/filter', [ManageUserRoleController::class, 'filter']);
     Route::post('manage-users-roles/search', [ManageUserRoleController::class, 'search']);
@@ -160,7 +161,7 @@ Route::get('/role', function () {
     Route::get('manage-officer/school-year', [OfficerController::class, 'getAllSchoolYear']);
     Route::post('manage-officer/school-year-school', [OfficerController::class, 'getSchoolYearSchool']);
     Route::post('manage-officer/get-students', [OfficerController::class, 'getStudents']);
-    Route::get('manage-officer/get-school-department', [OfficerController::class, 'getSchoolDepartmentphp']);
+    Route::post('manage-officer/get-school-department', [OfficerController::class, 'getSchoolDeparment']);
     Route::post('manage-officer/get-officers', [OfficerController::class, 'getOfficers']);
     Route::post('manage-officer/create-officer', [OfficerController::class, 'createOfficer']);
     Route::post('manage-officer/update-officer', [OfficerController::class, 'updateOfficer']);
@@ -186,14 +187,17 @@ Route::get('/role', function () {
     
     // SBO STUDENT 
     
-    Route::get('application-form/all-application', [FillUpApplicationController::class, 'getApplications']);
+    Route::get('application-form/get-school-year-application', [FillUpApplicationController::class, 'getAllSchoolYear']);
+    Route::get('application-form/get-school-of-officer', [FillUpApplicationController::class, 'getAuthenticatedSboSchool']);
+    Route::post('application-form/all-application', [FillUpApplicationController::class, 'getApplications']);
     Route::get('application-form/get-application', [FillUpApplicationController::class, 'getApplcation']);
     Route::post('application-form/response/create', [FillUpApplicationController::class, 'createResponse']);
     Route::post('application-form/response/update', [FillUpApplicationController::class, 'updateResponse']);
     
     //monitor response
-    Route::get('monitor/response', [MonitorController::class, 'getAllResponse']);
-    Route::post('monitor/response', [MonitorController::class, 'applicationWithResponse']);
+    Route::get('monitor/school-with-response', [MonitorController::class, 'getAuthenticatedSboSchool']);
+    Route::post('monitor/specific-response', [MonitorController::class, 'getSpecificResponse']);
+    Route::post('monitor/application-with-response', [MonitorController::class, 'applicationWithResponse']);
     Route::post('monitor/search', [MonitorController::class, 'search']);
     Route::post('monitor-form/searby/date', [MonitorController::class, 'searchByDate']);
     Route::post('monitor-form/searby/delete', [MonitorController::class, 'deleteSpicificResponse']);

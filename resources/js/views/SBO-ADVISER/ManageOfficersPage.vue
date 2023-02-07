@@ -28,7 +28,7 @@
       </BaseTableSetup>
 
       <BaseTable
-        :thdata="['', 'Name', 'Position', 'Department', '']"
+        :thdata="['', 'Name', 'Position', 'Organization', '']"
         :isFetching="isOfficerFetching"
       >
         <template #data>
@@ -131,7 +131,7 @@
                   class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-gray focus:border-gray-300 sm:text-sm sm:leading-5"
                 >
                   <option v-for="item in studentoptions" :key="item.id" :value="item.id">
-                    {{ item.email }}
+                    {{ item.first_name  }} {{ item.last_name  }}
                   </option>
                 </select>
               </div>
@@ -171,7 +171,7 @@
             <div class="mb-4">
               <div>
                 <label class="block font-bold mb-2 text-gray-700 capitalize"
-                  >Choose Department
+                  >Choose Organization
                 </label>
 
                 <NoDataCard v-if="departments.length <= 0">Empty </NoDataCard>
@@ -246,6 +246,10 @@
         </template>
       </BaseDialog>
     </teleport>
+
+    <GlobalWarning @close="hasWarning = null" :show="hasWarning != null">
+      {{ hasWarning }}
+    </GlobalWarning>
   </BaseCard>
 </template>
 
@@ -283,6 +287,7 @@ export default {
       isConfirming: false,
       isFetchingParent: false,
       isOfficerFetching:false,
+      hasWarning: null,
     };
   },
 
@@ -384,10 +389,19 @@ export default {
       await axiosApi
         .post("api/manage-officer/create-officer", newOfficer)
         .then((res) => {
-     
+            console.log(res.data);
+
+              if (res.data.data ===1) {
+                this.hasWarning = '" A user with this name already exists. Please try a different one"';
+
+              }else{
+                            
           this.showForm = false;
           this.getStudent();
           this.getOfficers();
+              }
+
+
         })
         .catch((err) => {
           if (err.response.status === 422) {
@@ -445,12 +459,13 @@ export default {
     },
 
     async loadDepartment() {
-      const alldeparment_api = "api/manage-department";
-      const school_department_api = "api/manage-officer/get-school-department";
 
       this.isFetching = true;
+      let school_id = parseInt(this.$route.params.id );
       await axiosApi
-        .get(alldeparment_api)
+        .post('api/manage-officer/get-school-department',{
+          school_id: school_id
+        })
         .then((res) => {
           this.departments = res.data.data;
 

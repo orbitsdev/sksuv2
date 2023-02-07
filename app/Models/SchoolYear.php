@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\School;
+use App\Models\ApplicationForm;
 use App\Models\CampusSboAdviser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,14 @@ class SchoolYear extends Model
 
 
 
+    
+
+    public function application_forms(){
+        return $this->hasMany(ApplicationForm::class);
+    }
+
+
+    
 
 
     

@@ -161,7 +161,7 @@ export default {
     maxSize: {
       type: String,
       required: false,
-      default: "40MB",
+      default: "60MB",
     },
     insertFile: {
       type: String,

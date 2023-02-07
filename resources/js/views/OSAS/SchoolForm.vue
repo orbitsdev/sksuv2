@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <section class="mt-4">
+    <section  v-if="!isUpdateMode" class="mt-4">
       <div>
 
         <p class="text-base font-bold">School Year</p>

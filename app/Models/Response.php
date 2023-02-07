@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Answer;
 
 use App\Models\Remark;
+use App\Models\School;
 use App\Models\Approval;
 use App\Models\ApplicationForm;
 use App\Models\ResponseApproval;
@@ -54,6 +55,9 @@ class Response extends Model
     }
 
 
+    public function school(){
+        return $this->belongsTo(School::class);
+    }
 
 
 

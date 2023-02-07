@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Models\Role;
 use App\Models\Field;
 use App\Models\Approval;
+use App\Models\SchoolYear;
 use App\Models\Requirement;
 use Illuminate\Http\Request;
 use App\Models\ApplicationForm;
 use App\Http\Controllers\Controller;
+use App\Models\ApplicationFormApproval;
+use App\Http\Resources\SchoolYearResource;
 use App\Models\ApplicationFormRequirement;
 use App\Http\Resources\ApplicationFormResource;
-use App\Models\ApplicationFormApproval;
 
 class ApplicationFormController extends Controller
 {
+
+
 
 
     public function search(Request $request){
@@ -98,9 +102,12 @@ class ApplicationFormController extends Controller
                     'name.required' => 'Title is required',
                     'fields.*.name' => 'Name is required '
                 ]
-            );
+            ); 
 
-            $new_application_form = ApplicationForm::create([
+            $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first();
+                    
+
+            $new_application_form = $school_year->application_forms()->create([
                 'title' => $request->title,
             ]);
             $new_application_form->fields()->createMany($request->fields);
@@ -111,7 +118,10 @@ class ApplicationFormController extends Controller
             ], [
                 'title.required' => 'Title is required'
             ]);
-            $new_application_form = ApplicationForm::create([
+
+            $school_year = SchoolYear::where('id', $request->input('school_year_id'))->first();
+
+            $new_application_form = $school_year->application_forms()->create([
                 'title' => $request->title,
             ]);
         }

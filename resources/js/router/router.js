@@ -152,7 +152,7 @@ const routes = [
                 name: "manage-organization",
                 path: "osas/manage-organization",
                 component: () => import("../views/OSAS/ManageDepartment.vue"),
-                meta: { requireAuth: true, allowedRoles: ["osas"] },
+                meta: { requireAuth: true, allowedRoles: ["sbo-adviser", "osas"] },
                 children: [],
             },
            
@@ -203,11 +203,21 @@ const routes = [
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
-           
+            
+
+            //SBO STUDENT
+            {
+                props:true,
+                name: "get-school-year-application",
+                path: "school-years/applications",
+                component: () => import("../views/SBO-STUDENT/SchoolYearApplicationPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
+                children: [],
+            },
 
             {
                 name: "application-from-osas",
-                path: "sbo-student/applications",
+                path: "school-years/applications/:id",
                 component: () =>
                     import("../views/SBO-STUDENT/ApplicationFormPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
@@ -216,7 +226,7 @@ const routes = [
 
             {
                 name: "take-application",
-                path: "sbo-student/applications/:applicationId/:title",
+                path: "school-years/applications/tak/:applicationId/:title",
                 component: () =>
                     import("../views/SBO-STUDENT/FillupFormPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
@@ -224,9 +234,18 @@ const routes = [
                
                 props: true,
             },
+
+            {
+                props:true,
+                name: "school-year-minitor-application",
+                path: "school-years/monitor",
+                component: () => import("../views/SBO-STUDENT/SchoolYearMonitorPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
+                children: [],
+            },
             {
                 name: "monitor-applications",
-                path: "sbo-student/monitor/applications",
+                path: "sbo-student/monitor/school/:id",
                 component: () => import("../views/SBO-STUDENT/MonitorPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
                

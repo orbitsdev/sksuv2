@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\File;
 use App\Models\User;
+use App\Models\Response;
 use App\Models\Department;
 use App\Models\SboOfficer;
 use App\Models\SchoolYear;
@@ -65,6 +66,14 @@ class School extends Model
         return $this->belongsTo(SchoolYear::class);
     }
 
+
+    public function sbo_offcers(){
+        return $this->hasMany(SboOfficer::class);
+    }
+
+    public function responses(){
+        return $this->hasMany(Response::class);
+    }
 
 }
 

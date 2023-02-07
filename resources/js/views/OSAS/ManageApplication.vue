@@ -1,6 +1,5 @@
+use App\Models\SchoolYear;
 <template>
-
-
   <BaseCard :subtitle="'Manage Form'">
     <template #header>
       <BaseTableSetup>
@@ -25,12 +24,12 @@
         </template>
       </BaseTableSetup>
       <BaseTable
-        :thdata="['', 'Title', 'Fields', 'Requiments', 'Authorize To Approve','Status','']"
+        :thdata="['', 'Title', 'Body', 'Approvers ', 'Status', '']"
         :isFetching="isFetching"
       >
         <template #data>
           <tr v-for="item in applicationforms" :key="item.id">
-            <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+            <td class="relative w-12 px-6 sm:w-16 sm:px-8 align-top py-4">
               <input
                 v-model="selectedApplicationForms"
                 :value="item.id"
@@ -41,41 +40,37 @@
             <td class="whitespace-nowrap py-4 text-sm">
               <div class="flex items-center">
                 <div class="pl-1">
-                  <div class="font-medium capitalize text-sm pr-2 text-gray-900">
+                  <div
+                    class="font-medium capitalize text-sm font-rubik pr-2 text-gray-900"
+                  >
                     {{ item.title }}
                   </div>
                 </div>
               </div>
             </td>
-            <td class="whitespace-nowrap py-4 text-sm pl-2">
+            <td class="whitespace-nowrap py-4 align-top">
+              <p class="mb-2 font-bold uppercase">Requestments</p>
+
               <div v-if="item.fields.length > 0">
-                <div class="flex">
-                  <div class="grid grid-cols-1 gap-1">
-                    <div v-for="field in item.fields" :key="field.id">
-                      <span
-                        class="inline-flex whitespace-normal rounded-full break-words bg-green-100 mx-1 px-2 text-xs font-semibold leading-5 text-green-800"
-                        >{{ field.name }}</span
-                      >
-                    </div>
-                  </div>
+                <div v-for="field in item.fields" :key="field.id">
+                  <StatusCard
+                    class="mb-1 bg-purple-700 text-white font-rubik uppercase"
+                    >{{ field.name }}</StatusCard
+                  >
                 </div>
               </div>
               <div v-else>
-                <span
-                  class="inline-flex rounded-full bg-green-100 mx-1 px-2 text-xs font-semibold leading-5 text-green-800"
-                  >None</span
-                >
+                <StatusCard class="bg-gray-700 tett-white">None</StatusCard>
               </div>
-            </td>
-            <td class="whitespace-normal py-4 text-sm pl-2">
+
               <div v-if="item.requirements.length > 0">
+                <w-divider class="my6 my-2"></w-divider>
+                <p class="mb-2 font-bold uppercase">Requestments</p>
                 <div class="grid grid-cols-1 gap-1 break-words">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
-                    <p
-                      class="inline-flex rounded-full whitespace-normal bg-green-100 px-2 text-xs break-words font-semibold leading-5 text-green-800 m-0.5"
-                    >
+                    <StatusCard class="bg-rose-700 text-white mb-1">
                       {{ requirement.name }}
-                    </p>
+                    </StatusCard>
                   </div>
                 </div>
               </div>
@@ -87,41 +82,45 @@
               </div>
             </td>
 
-            <td class="whitespace-normal ">
-              <div v-if="item.application_form_approvals.length > 0">
-                  
-                <span class="capitalize px-2 rounded  bg-green-100 text-green-800 m-1 inline-block " v-for="authorize in item.application_form_approvals " :key="authorize">
-                      {{ authorize.role_name }}
-                    
-                </span>
-
+            <td class="whitespace-nowrap py-4 align-top">
+              <div
+                class="grid grid-cols-1 gap-1 break-words"
+                v-if="item.application_form_approvals.length > 0"
+              >
+                <StatusCard
+                  class="bg-green-700 text-white"
+                  v-for="authorize in item.application_form_approvals"
+                  :key="authorize"
+                >
+                  {{ authorize.role_name }}
+                </StatusCard>
               </div>
-              <span class="capitalize" v-else>
-                    Not Restricted 
-              </span>
+              <StatusCard class="bg-gray-700 text-white capitalize" v-else>
+                None
+              </StatusCard>
             </td>
-            <td>
-              <span class="capitalize">
+            <td class="whitespace-nowrap py-4 align-top">
+              <StatusCard class="capitalize bg-sky-700 text-white">
                 {{ item.status }}
-              </span>
+              </StatusCard>
             </td>
 
             <td
-              class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+              class="align-top relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
             >
-                   <button
-
+            <div class="grid grid-cols-1">          
+              <button
                 :disabled="selectedApplicationForms.length > 0"
                 @click="makeApplicationPublic(item)"
                 type="button"
-                class="inline-flex z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+                class="mb-1 z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
                 Make {{ item.status == "private" ? "Public" : "Private" }}
               </button>
 
               <button
                 @click="showSampleForm(item.id)"
-                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+                class="mb-1 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
                 View Form
               </button>
@@ -129,10 +128,11 @@
                 :disabled="selectedApplicationForms.length > 0"
                 @click="showTheFormToUpdate(item)"
                 type="button"
-                class="inline-flex z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+                class="mb-1 z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
                 <i class="fa-regular fa-pen-to-square"></i>
               </button>
+            </div>
             </td>
           </tr>
         </template>
@@ -141,9 +141,56 @@
 
     <teleport to="#app">
       <BaseDialog :show="showForm" :width="'800'" :preventClose="true">
-        <template #c-content>         
-        
-          <p class="text-base font-bold">Application Title</p>
+        <template #c-content>
+          <section class="mt-2">
+            <div>
+              <p class="text-base font-bold">School Year</p>
+              <NoDataCard v-if="school_years.length <= 0"> Empty </NoDataCard>
+              <select
+                @change="changeHandler"
+                v-else
+                v-model="selected_school_year"
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+              >
+                <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
+                  SY. {{ sy.from }} - {{ sy.to }}
+                </option>
+              </select>
+            </div>
+          </section>
+
+         
+          <!-- <section class="mt-4">
+            <div>
+              <p class="text-base font-bold">Select University</p>
+              <NoDataCard v-if="schools.length <= 0">Empty </NoDataCard>
+              <div v-else class="overflow-y-auto  max-h-60  grid grid-cols-3 gap-x-4 gap-y-2">
+                  <label :for="school.id" v-for="school in schools" :key="school.id" class="px-2 py-2  border  flex items-center rounded cursor-pointer">
+                    <input
+                    :id="school.id"
+                    :value="school.id"
+                      type="checkbox"
+                      class="w-4 h-4 accent-green-600 text-white mr-2 border-blue-700 border-2 "
+                    />
+                    <p class="text-sm font-rubik capitalize leading-3">
+                        {{ school.name }}
+                        
+                      </p> 
+                  </label>
+              </div>
+              <select
+                v-else
+                v-model="selecated_school"
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+              >
+                <option v-for="school in schools" :key="school.id" :value="school.id">
+                  {{ school.name }}
+                </option>
+              </select>
+            </div>
+          </section> -->
+
+          <p class="text-base font-bold mt-4">Application Title</p>
           <BaseInput v-model="formtitle" />
           <p
             class="text-xs text-red-500 mt-1"
@@ -155,7 +202,7 @@
             <div
               v-for="(field, parentindex) in formfields"
               :key="field.id"
-              class="relative shadow mt-3 mb-4 border p-2 rounded bg-gray-100"
+              class="relative shadow mt-3 mb-4 border px-3 py-2 rounded bg-gray-100"
             >
               <div>
                 <button
@@ -165,7 +212,7 @@
                   <i class="fa-solid fa-xmark"></i>
                 </button>
                 <div class="">
-                  <label class="text-sm"> Field name </label>
+                  <label class="font-bold font-rubik"> Field name </label>
                   <input
                     v-model="formfields[parentindex].fieldname"
                     type="text"
@@ -174,7 +221,8 @@
                   <p
                     class="text-xs text-red-500 mt-1"
                     v-if="
-                      validationError != null &&  validationError['fields.' + parentindex + '.name']
+                      validationError != null &&
+                      validationError['fields.' + parentindex + '.name']
                     "
                   >
                     {{ validationError["fields." + parentindex + ".name"][0] }}
@@ -182,8 +230,8 @@
                 </div>
                 <div class="mt-2 flex justify-between">
                   <div>
-                    <label class="text-sm"> Field type </label>
-                    <div class="mt-1 grid grid-cols-5 gap-1">
+                    <label class="mb-1 font-bold font-rubik"> Field type </label>
+                    <div class="grid grid-cols-5 gap-1">
                       <label
                         v-for="(option, index) in field.fieldtypeOption"
                         :key="option.id"
@@ -195,7 +243,7 @@
                           type="checkbox"
                           class="mr-1 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
                         />
-                        <span class="text-sm"> {{ option.name }}</span>
+                        <span class="text-sm font-rubik"> {{ option.name }}</span>
                       </label>
                     </div>
                     <div class="mt-2">
@@ -203,7 +251,9 @@
                         class=""
                         v-if="formfields[parentindex].selectedtype == 'select'"
                       >
-                        <p>Choose data for select field</p>
+                        <p class="mt-1 font-rubik font-bold">
+                          Choose data for select field
+                        </p>
                         <w-divider class="my6 my-2"></w-divider>
                         <label
                           v-for="(collection, index) in formfields[parentindex].data"
@@ -233,10 +283,10 @@
               </Button>
             </div>
             <div v-if="isRequirementLoading" class="min-h-23 h-24 flex items-center">
-              <Loader1/>
+              <Loader1 />
             </div>
             <div class="mt-2" v-else>
-              <p class="text-base font-bold">Requirement Check List  </p>
+              <p class="text-base font-bold">Requirement Check List</p>
               <w-divider class="my6"></w-divider>
               <div class="">
                 <div v-for="requirement in requirements" :key="requirement.id">
@@ -256,27 +306,28 @@
               </div>
             </div>
           </div>
-            <div v-if="isRolesLoading" class="min-h-23 h-24 flex items-center">
-              <Loader1/>
-            </div>
+          <div v-if="isRolesLoading" class="min-h-23 h-24 flex items-center">
+            <Loader1 />
+          </div>
           <div class="mt-2" v-else>
             <p class="text-base font-bold">Authorize Roles for Approval</p>
-            <w-divider class="my6">
-            </w-divider>
+            <w-divider class="my6"> </w-divider>
 
-              
-              <div v-for="approver in approvers" :key="approver">
-                <div class="flex items-center p-1 my-1">
-                  <input
+            <div v-for="approver in approvers" :key="approver">
+              <div class="flex items-center p-1 my-1">
+                <input
                   v-model="selectedApprover"
                   :value="approver.id"
-                    type="checkbox"
-                    class="w-4 h-4 accent-green-600 text-white mr-1 border-blue-700 border-2 cursor-pointer"
-                  />
-                  <label :for="approver.id"  class="mr-1 capitalize cursor-pointer">
-                    {{approver.name}}
-                  </label>
-                </div>              
+                  type="checkbox"
+                  class="w-4 h-4 accent-green-600 text-white mr-1 border-blue-700 border-2 cursor-pointer"
+                />
+                <label
+                  :for="approver.id"
+                  class="mr-2 font-rubik capitalize cursor-pointer"
+                >
+                  {{ approver.name }}
+                </label>
+              </div>
             </div>
           </div>
 
@@ -313,23 +364,27 @@
       </BaseErrorDialog>
     </teleport>
 
-
-    
     <teleport to="#app">
-      <BaseDialog class="bg-gray-200" :show="selectedApplicationToView != null" :width="'600'" :preventClose="true">
-        <template #c-content>   
+      <BaseDialog
+        class="bg-gray-200"
+        :show="selectedApplicationToView != null"
+        :width="'600'"
+        :preventClose="true"
+      >
+        <template #c-content>
+          <h1 class="mb-4 text-lg font-bold">( View only )</h1>
 
-          <h1 class="mb-4 text-lg font-bold">( View only ) </h1>
-
-          <FormComponent  :id="selectedApplicationToView"/>
+          <FormComponent :id="selectedApplicationToView" />
           <div class="">
-            <TableButton mode class="mr-2" @click="selectedApplicationToView = null"> Close </TableButton>
-            
+            <TableButton mode class="mr-2" @click="selectedApplicationToView = null">
+              Close
+            </TableButton>
           </div>
         </template>
       </BaseDialog>
     </teleport>
-
+    <GlobalErrorCard @close="hasRequestError = null" :show="hasRequestError != null">
+    </GlobalErrorCard>
   </BaseCard>
 </template>
 
@@ -351,23 +406,29 @@ export default {
       selectedRequirements: [],
       selectedApplicationForms: [],
       requirements: [],
-      approvers: [1,2,3],
+      approvers: [1, 2, 3],
       applicationforms: [],
       selectedApplicationFormToUpdate: null,
       formfields: [],
       isLoading: false,
       selectedApplicationToView: null,
-      selectedApprover:[],
+      selectedApprover: [],
       isRolesLoading: false,
+
+      schools: [],
+      isSchoolYearFetching: false,
+      selected_school_year: null,
+      school_years: [],
+      hasRequestError: null,
+      selecated_school: null,
     };
   },
 
   created() {
-    
+    this.getAllSchoolYears();
     this.loadApplicationForms();
     this.loadRequirements();
     this.loadApprovers();
-
   },
 
   watch: {
@@ -376,22 +437,54 @@ export default {
     },
   },
 
-  
   methods: {
+    changeHandler(event) {
+      let year_with_schools = this.school_years.find((i) => i.id == event.target.value);
+      this.schools = year_with_schools.schools;
+      this.selecated_school = null;
+      if (this.schools.length > 0) {
+        this.selecated_school = this.schools[0].id;
+      }
+    },
 
-    showSampleForm(id){
+    async getAllSchoolYears() {
+      this.isSchoolYearFetching = true;
+
+      await axiosApi
+        .get("api/school-year-with-schools")
+        .then((res) => {
+          this.school_years = res.data.data;
+          if (this.school_years.length > 0) {
+            this.selected_school_year = this.school_years[0].id;
+
+            this.schools = this.school_years[0].schools;
+
+            if (this.schools.length > 0) {
+              this.selecated_school = this.schools[0].id;
+            }
+          }
+        })
+        .catch((err) => {
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+        })
+        .finally(() => {
+          this.isSchoolYearFetching = false;
+        });
+    },
+
+    showSampleForm(id) {
       this.selectedApplicationToView = id;
     },
     async searchApplication() {
-
-    await axiosApi
-      .post("api/manage-applications/search", {
-        search: this.search,
-      })
-      .then((res) => {
-        this.applicationforms = res.data.data;
-      });
-  },
+      await axiosApi
+        .post("api/manage-applications/search", {
+          search: this.search,
+        })
+        .then((res) => {
+          this.applicationforms = res.data.data;
+        });
+    },
 
     async showTheFormToUpdate(item) {
       this.isUpdatingMode = true;
@@ -400,7 +493,6 @@ export default {
 
       this.selectedRequirements = [];
       this.selectedApprover = [];
-   
 
       // display initial existing feilds
       if (item.fields.length > 0) {
@@ -462,19 +554,15 @@ export default {
 
       // console.log(item.application_form_approvals);
 
-      if(item.application_form_approvals.length > 0){
-       
+      if (item.application_form_approvals.length > 0) {
+        item.application_form_approvals.forEach((ap) => {
+          this.selectedApprover.push(ap.role_id);
+        });
 
-          item.application_form_approvals.forEach(ap => {
-              this.selectedApprover.push(ap.role_id);
-          });
-
-
-
-          console.log(this.selectedApprover);
+        console.log(this.selectedApprover);
       }
-      // if(item.application_form_approvals.length > 0){ 
-          
+      // if(item.application_form_approvals.length > 0){
+
       //       item.application_form_approvals.forEach(approver => {
       //         this.selectedApprover.push(approver.id);
       //       });
@@ -532,7 +620,7 @@ export default {
         title: this.formtitle,
         fields: newfields,
         requirements: this.selectedRequirements,
-        approvers: this.selectedApprover
+        approvers: this.selectedApprover,
       };
 
       await axiosApi
@@ -665,17 +753,17 @@ export default {
         });
     },
 
-    async loadApprovers(){  
+    async loadApprovers() {
+      this.isRolesLoading = true;
 
-        this.isRolesLoading = true;
-
-        await axiosApi.get('api/form/approvers').then(res=>{
-
+      await axiosApi
+        .get("api/form/approvers")
+        .then((res) => {
           this.approvers = res.data.data;
-            // console.log(res.data.data);
-        }).catch(err=>{
-
-        }).finally(()=>{
+          // console.log(res.data.data);
+        })
+        .catch((err) => {})
+        .finally(() => {
           this.isRolesLoading = false;
         });
     },
@@ -726,6 +814,7 @@ export default {
         fields: newfields,
         requirements: this.selectedRequirements,
         approvers: this.selectedApprover,
+        school_year_id: this.selected_school_year,
       };
 
       await axiosApi
