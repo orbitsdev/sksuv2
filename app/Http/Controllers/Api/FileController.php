@@ -85,6 +85,7 @@ class FileController extends Controller
             foreach($folders as $folder){
                 $temporaryFolder = 'tmp/'.$folder;
                 Storage::disk('public_uploads')->deleteDirectory($temporaryFolder);
+                // Storage::disk('oss')->deleteDirectory($temporaryFolder);
                 
             }
             

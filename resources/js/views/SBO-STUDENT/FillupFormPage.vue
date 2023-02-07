@@ -1,10 +1,10 @@
 <template>
   <div>
     <BackCard class="mb-4" @click="this.$router.back()" />
-
-    <div class="bg-gray-200 p-4 shadow rounded-lg">
-      <!-- {{ selected_school_year }}
-    {{ selected_school }} -->
+    <div v-if="isFetching" class="flex items-center justify-center h-96">
+      <Loader1 />
+    </div>
+    <div  v-else class="bg-gray-200 p-4 shadow rounded-lg">
     
       <div v-if="application != null">
         <div class="mb-2 border-b-4 pb-2 border-gray-900 uppercase">

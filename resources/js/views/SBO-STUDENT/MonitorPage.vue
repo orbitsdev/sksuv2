@@ -7,7 +7,11 @@
     </div>
     
  <div>
-      <div>
+  <div v-if="isFetching" class="flex items-center justify-center h-96">
+    <Loader1 />
+  </div>
+
+      <div v-else>
         <div class="flex justify-between items-center mb-4">
           <div class="relative inline-flex items-center justify-center shadow">
             <i class="absolute fa fa-search text-gray-400 top-5 left-4"></i>
@@ -227,6 +231,8 @@ export default {
     },
 
     async getAllApplication() {
+
+      this.isFetching = true;
       
       let school_id = parseInt(this.$route.params.id);
       await axiosApi.post('api/monitor/application-with-response', {
@@ -239,7 +245,8 @@ export default {
         this.hasWarning = '" Opps ther was an error when fethcing responses. Please try a different one"';
 
         
-      }).finally(()=>{
+        }).finally(()=>{
+          this.isFetching = false;
 
       });
     },

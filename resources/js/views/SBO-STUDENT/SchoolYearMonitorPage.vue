@@ -8,14 +8,14 @@
   
       <div>
         <EmptyCard v-if="schools.length <= 0 && !isFetching" />
-        <div v-else class="grid grid-cols-3 gap-y-10 gap-x-8">
+        <div v-else class="grid grid-cols-2 gap-y-10 gap-x-8">
           <div
             class="block rounded hover:bg-gray-100 shadow bg-white hover:scale-95 transition ease-in-out cursor-pointer"
             v-for="school in schools"
             :key="school"
             @click="goToPage(school.id)"
           >
-            <YearCard :title="`${school.name}`">
+            <YearCard :title="`${school.name}`" :image="'/assets/undraw_my_files_swob.svg'">
 
               <div class="border-l-2 pl-3 py-1 font-rubik border-green-600  mt-2">
                 <p tabindex="0" class="t1 focus:outline-none text-sm font-medium leading-none text-green-700 font-rubki mb-2 ">

@@ -53,7 +53,7 @@
             <!-- {{ response.response_requirements}} -->
               
               <div v-if="rf.files.length > 0" class=" bg-gray-400  rounded-lg p-4">
-                <div
+                <a :href="file.url"
                   class="bg-gray-700 inline-block mr-2 my-2 cursor-pointer hover:scale-105 hover:bg-gray-900 transition-all ease-in-out   p-2 rounded-lg"
                   v-for="file in rf.files"
                   :key="file.id"
@@ -79,7 +79,7 @@
                     </div>
                   
                 </div>
-              </div>
+              </a>
                
              
             </div>
