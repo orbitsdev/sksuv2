@@ -10,6 +10,7 @@ use App\Models\Remark;
 use App\Models\School;
 use App\Models\Approval;
 use App\Models\SboOfficer;
+use App\Models\Endorsement;
 use App\Models\ApplicationForm;
 use App\Models\ResponseApproval;
 use App\Models\ResponseRequirement;
@@ -68,6 +69,14 @@ class Response extends Model
         return $this->belongsTo(SboOfficer::class,'user_id');
     }
 
+
+    public function endorsements(){
+        return $this->hasMany(Endorsement::class);
+    }
+
+    public function endorsement(){
+        return $this->hasOne(Endorsement::class);
+    }
 
     
 

@@ -171,7 +171,6 @@ Route::get('/role', function () {
     
     
     //Manage Campus Directors
-
     Route::get('manage-campus-director/get-all-campus-director', [CampusDirectorController::class, 'getAllCampusDirectors']);
     Route::post('manage-campus-director/create', [CampusDirectorController::class, 'create']);
     Route::post('manage-campus-director/delete-selected', [CampusDirectorController::class, 'deleteSelected']);
@@ -183,6 +182,7 @@ Route::get('/role', function () {
 
     //Sbo Endorsement 
     Route::get('get-school-year-with-campus-directors', [EndorseMentController::class, 'getSchoolYearWithCampusDirector']);
+    Route::post('endorse-to-campus_director', [EndorseMentController::class, 'endorseResponseToCampusDirector']);
 
 
     //get arppover 

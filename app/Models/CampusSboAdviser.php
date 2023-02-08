@@ -7,6 +7,7 @@ use App\Models\School;
 use App\Models\SboOfficer;
 
 use App\Models\SchoolYear;
+use App\Models\Endorsement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -34,6 +35,14 @@ class CampusSboAdviser extends Model
         return $this->hasMany(SboOfficer::class);
 
     }
+
+
+    public function endorsements(){
+        return $this->belongsToMany(Endorsement::class, 'campus_sbo_adviser_endorsements', 'campus_sbo_adviser_id' , 'endorsement_id');
+    }
+
+
+
 
     
 
