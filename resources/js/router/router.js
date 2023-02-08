@@ -197,8 +197,15 @@ const routes = [
             },
 
             {
+                name: "schools-officers-documents",
+                path: "sbo-adviser/schools/documents",
+                component: () => import("../views/SBO-ADVISER/SchoolsDocuementPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
+                children: [],
+            },
+            {
                 name: "officers-documents",
-                path: "sbo-adviser/officers/documents",
+                path: "sbo-adviser/schools/documents/:id",
                 component: () => import("../views/SBO-ADVISER/DocumentPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],

@@ -2,19 +2,34 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ResponseResource;
-use App\Http\Resources\RolesResources;
-use App\Models\Response;
-use App\Models\ResponseApproval;
-use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\School;
+use App\Models\Response;
+use Illuminate\Http\Request;
+use App\Models\ResponseApproval;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\RolesResources;
+use App\Http\Resources\ResponseResource;
+use App\Http\Resources\SchoolResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApprovalController extends Controller
 {
     
 
+
+    public function getSchools(){
+    
+
+        $auth_id = auth('sanctum')->user()->id;
+        // return response()->json(['success', $auth_id ]);
+        $schools  = School::whereHas('campus_sbo_advisers', function($query) use($auth_id){
+            $query->where('user_id', $auth_id );
+        })->whereHas('responses')->with('responses')->get();
+
+        return new SchoolResource($schools);
+        
+    }
 
     public function returnForm(Request $request){
 
@@ -73,40 +88,59 @@ class ApprovalController extends Controller
 
     }   
 
-    public function getAllOfficerApplications(){ 
+    public function getAllOfficerApplications(Request $request){ 
 
-            $current_adviser_id = auth('sanctum')->user()->id;    
-            $current_adviser_role = auth('sanctum')->user()->roles->where('name', 'sbo-adviser')->first();
-            $response = Response::whereHas('user', function($query) use($current_adviser_id) {
-               $query->whereHas('officer', function($query)use ($current_adviser_id) {
-                $query->where('adviser_id', $current_adviser_id);
-               }); 
-            })->with([
-                'user.officer',
-                'application_form',
-                'response_requirements', 
-                'response_requirements.requirement',
-                'response_requirements.files',
-                'application_form',
-                'answers.field',
-                'remarks',
-                'response_approvals'=> function($query) use ($current_adviser_role){
-                    $query->where([
-                        ['role_id', $current_adviser_role->id],
-                        ['role_name', $current_adviser_role->name]
-                    ]);
-                }
+        
+        $auth_id = auth('sanctum')->user()->id;    
+        $current_adviser_role = auth('sanctum')->user()->roles->where('name', 'sbo-adviser')->first();
+
+           $responses = Response::where('school_id', $request->input('school_id'))->with([
+            'user.sbo_officer'=> function($query) use($request) {
+                $query->where('school_id', $request->input('school_id'));
+            },
+            'user.sbo_officers',
+            'application_form',
+            'response_requirements',
+            'response_requirements.requirement',
+            'response_requirements.files',
+            'answers.field',
+            'remarks',
+            'response_approval' => function($query) use ($current_adviser_role){
+                $query->where([
+                    ['role_id', $current_adviser_role->id],
+                    ['role_name', $current_adviser_role->name]
+                ]);
+            },
+            'response_approvals'
+           ])->get();
+
+           return new ResponseResource($responses);
+
+        // return response()->json([$responses]);
+        
+        //     $current_adviser_role = auth('sanctum')->user()->roles->where('name', 'sbo-adviser')->first();
+        //     $response = Response::whereHas('user', function($query) use($current_adviser_id) {
+        //        $query->whereHas('officer', function($query)use ($current_adviser_id) {
+        //         $query->where('adviser_id', $current_adviser_id);
+        //        }); 
+        //     })->with([
+        //         'user.officer',
+        //         'application_form',
+        //         'response_requirements', 
+        //         'response_requirements.requirement',
+        //         'response_requirements.files',
+        //         'application_form',
+        //         'answers.field',
+        //         'remarks',
+        //         'response_approvals'=> function($query) use ($current_adviser_role){
+        //             $query->where([
+        //                 ['role_id', $current_adviser_role->id],
+        //                 ['role_name', $current_adviser_role->name]
+        //             ]);
+        //         }
                 
-            ])->get();
-            // with([
-            //     'application_form',
-            //     'answers',
-            //     'approvals.user.roles', 
-            //     'response_requirements', 
-            //     'response_requirements.requirement',
-            //     'response_requirements.files',
-
-            // ])->get();
+        //     ])->get();
+          
 
             return new ResponseResource($response);
 

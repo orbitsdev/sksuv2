@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('response_approvals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('response_id')->constrained()->onDelete('cascade');
-            $table->unsignedInteger('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->string('role_id');
             $table->string('role_name');
             $table->string('status');

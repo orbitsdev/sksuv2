@@ -1,4 +1,14 @@
 <template>
+
+  <div>
+
+    <div class="flex mb-4 items-center justify-between">
+      <BackCard class="" @click="this.$router.back()" />
+      <p class="text-2xl font-rubik font-bold text-green-700">{{ page }}</p>
+    </div>
+
+    {{ selectedResponse }}
+
   <BaseCard :subtitle="'Officers Documents'">
     <template #header>
       <!-- <h1> {{confirmMode}}</h1> -->
@@ -41,12 +51,17 @@
           <tr v-else class="" v-for="item in applications" :key="item.id">
 
             <td class="whitespace-normal  align-top relative w-12 px-6 sm:w-16 sm:px-8">
+         
               <input
+              
+              v-model="selectedResponse"
+              :value="item.id"
                 type="checkbox"
                 class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
               />
             </td>
             <td class="whitespace-normal  align-top py-4">
+              <!-- {{ item.user }} -->
               <div class="flex">
                 <div
                   role="img"
@@ -178,12 +193,13 @@
               >
                   Approval Satus
               </p>
-              <div class="" v-for="ap in item.response_approvals" :key="ap.id">
-                <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="ap.status == 'null'">Processing  </StatusCard>
-                <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="ap.status == 'processing'">{{ ap.status }}  </StatusCard>
-                <StatusCard class="mt-2 capitalize bg-cyan-100 text-cyan-900"  v-if="ap.status == 're-evaluating'">{{ ap.status }}  </StatusCard>
-                <StatusCard class="mt-2 capitalize bg-green-100 text-green-900"  v-if="ap.status == 'approved'"> {{ ap.status }}  </StatusCard>
-                <StatusCard class="mt-2 capitalize bg-red-100 text-red-900"  v-if="ap.status == 'returned'"> {{ ap.status }}  </StatusCard>
+              <div  v-if="item.response_approval != null" class="">
+                
+                <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="item.response_approval.status == 'null'">Processing  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-blue-100 text-blue-900"  v-if="item.response_approval.status == 'processing'">{{item.response_approval.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-cyan-100 text-cyan-900"  v-if="item.response_approval.status == 're-evaluating'">{{item.response_approval.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-green-100 text-green-900"  v-if="item.response_approval.status == 'approved'"> {{item.response_approval.status }}  </StatusCard>
+                <StatusCard class="mt-2 capitalize bg-red-100 text-red-900"  v-if="item.response_approval.status == 'returned'"> {{item.response_approval.status }}  </StatusCard>
               </div>
             </div>
             <div v-else></div>
@@ -226,7 +242,7 @@
 
               
               <StatusCard class="mt-2 first-letter:capitalize bg-gray-100 text-gray-700 font-semibold"> 
-                 {{ item.user.officer.position }} 
+                 {{ item.user.sbo_officer.position }} 
                  
               </StatusCard>
               
@@ -278,7 +294,7 @@
         <template #c-content>
           <div v-if="selectedItem !=  null" class="">
             <div class="">
-              <h1 class="text-2xl text-gray-800 font-bold leading-5 mb-4">
+              <h1 class="text-2xl font-rubik font-semibold  uppercase leading-5 mb-4">
                 {{selectedItem.application_form.title}} 
               </h1>
 
@@ -297,7 +313,7 @@
                   <div class="flex flex-col justify-center pl-3 py-2 sm:py-0">
                     <p class="text-lg font-bold text-white  capitalize">{{selectedItem.user.first_name}} {{selectedItem.user.last_name}} </p>
                     <div class="flex flex-col sm:flex-row items-start sm:items-center">
-                      <p class="text-sm text-white leading-5">{{selectedItem.user.officer.position}}</p>
+                      <p class="text-sm text-white leading-5">{{selectedItem.user.sbo_officer.position}}</p>
                     </div>
                   </div>
                 </div>
@@ -308,7 +324,7 @@
               <div class="mt-6">
                
                   <div v-if="selectedItem.answers.length > 0">
-                    <p class="text-base font-bold leading-none text-gray-800 uppercase">
+                    <p class="text-base font-rubik font-semibold leading-none text-gray-800 uppercase">
                       GENERAL INFORMATION
                     </p>
                     <w-divider class="my6 mb-6"></w-divider>
@@ -316,9 +332,9 @@
                     <div class="mb-4" v-for="af in selectedItem.answers" :key="af.id">
                       
                       <div>
-                        <p class="text-base font-bold leading-none text-gray-800 capitalize"  >{{ af.field.name }}</p>
+                        <p class="text-sm font-rubik  leading-none text-gray-800 capitalize"  >{{ af.field.name }}</p>
                         <div class="flex flex-wrap mt-2">
-                          <p class="text-sm leading-none text-gray-600 capitalize" >
+                          <p class="text-sm  font-medium font-rubik leading-none  capitalize" >
                             {{ af.answer_value }}
                           </p>
                         </div>
@@ -329,7 +345,7 @@
              <div v-if="selectedItem.response_requirements.length > 0">
             
               <div class="mt-8">
-                <p class="text-base font-bold leading-none text-gray-800 uppercase">
+                <p class="text-base  font-rubik font-semibold leading-none text-gray-800 uppercase">
                   Requirements & Attachment
                 </p>
                 <w-divider class="my6 mb-6"></w-divider>
@@ -337,11 +353,11 @@
 
                 <div class="mb-4"  v-for="rq in selectedItem.response_requirements " :key="rq.id">
                   <div>
-                    <p class="text-base font-bold leading-none text-gray-800">
+                    <p class=" text-sm font-rubik leading-none ">
                       {{ rq.requirement.name }}
                     </p>
                     <div class="flex flex-wrap mt-4" v-if="rq.files.length > 0" >
-                      <a href="#" class="hover:shadow-lg py-1 px-2  border rounded-full flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
+                      <a :href="file.url" class="hover:shadow-lg py-1 px-2  border rounded-full flex items-center mr-2 mt-1"   v-for="file in  rq.files" :key="file.id">
                         <div class="focus:outline-none">
                           <img
                             src="https://tuk-cdn.s3.amazonaws.com/can-uploader/grid_card_2-svg3.svg"
@@ -361,7 +377,7 @@
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-6 h-6"
+                            class="w-6 h-6  text-gray-500"
                           >
                             <path
                               stroke-linecap="round"
@@ -370,7 +386,7 @@
                             />
                           </svg>
                         </div>
-                        <p class="text-sm leading-none text-gray-600 ml-2">No File</p>
+                        <p class="text-xs leading-none text-gray-500 ml-2">No File</p>
                       </div>
                     </div>
 
@@ -558,6 +574,7 @@
         </BaseDialog>
       </teleport>
   </BaseCard>
+</div>
 </template>
 
 <script>
@@ -590,6 +607,7 @@ export default {
       isUpdating: false,
       isAddingRemark:false,
       isDeletingRemarks: false,
+      selectedResponse: [],
     };
   },
   methods: {
@@ -791,10 +809,13 @@ console.log(err);
     async getAllOfficersApplications() {
       this.isFetching = true;
 
+      let school_id =  parseInt(this.$route.params.id);
       await axiosApi
-        .get("api/officers/documents")
+        .post("api/officers/documents",{
+          school_id: school_id,
+        })
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data);
           this.applications = res.data.data;
         })
         .finally(() => {

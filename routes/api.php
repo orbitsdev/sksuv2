@@ -169,7 +169,8 @@ Route::get('/role', function () {
     
     
     // officers documents 
-    Route::get('officers/documents', [ApprovalController::class, 'getAllOfficerApplications']);
+    Route::get('officers/schools', [ApprovalController::class, 'getSchools']);
+    Route::post('officers/documents', [ApprovalController::class, 'getAllOfficerApplications']);
     
     //get arppover 
     Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);

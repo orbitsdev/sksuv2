@@ -12,6 +12,22 @@ class FileController extends Controller
 {
 
 
+
+    // public function getFeaturedImageUrlAttribute()
+    // {
+    //   if($this->featured_image)
+    //   {
+    //     if(file_exists( public_path( 'images/featured/'. $this->featured_image) ))
+    //     {
+    //       return asset('images/featured/' . $this->featured_image) ;
+    //     }else{
+    //       $protocol = request()->secure() ? 'https://' : 'http://';
+    //       $aliyun = config('filesystems.disks.aliyun');
+    //       return  $protocol.$aliyun['bucket'].'.'. $aliyun['endpoint'].'/'.$this->featured_image;
+    //     }
+    //   }
+    // }
+
     static function storeFiles($files, $owner, $disk, $model)
     {
 

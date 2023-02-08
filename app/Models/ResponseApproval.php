@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Response;
 use App\Models\ApplicationForm;
 use Illuminate\Database\Eloquent\Model;
@@ -17,4 +18,9 @@ class ResponseApproval extends Model
     public function response(){
         return $this->belongsTo(Response::class);
     }
+    
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

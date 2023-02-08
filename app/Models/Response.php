@@ -9,6 +9,7 @@ use App\Models\Answer;
 use App\Models\Remark;
 use App\Models\School;
 use App\Models\Approval;
+use App\Models\SboOfficer;
 use App\Models\ApplicationForm;
 use App\Models\ResponseApproval;
 use App\Models\ResponseRequirement;
@@ -49,6 +50,9 @@ class Response extends Model
     public function response_approvals(){
         return $this->hasMany(ResponseApproval::class);
     }
+    public function response_approval(){
+        return $this->hasOne(ResponseApproval::class);
+    }
 
     public function remarks(){
         return $this->hasMany(Remark::class);
@@ -59,6 +63,10 @@ class Response extends Model
         return $this->belongsTo(School::class);
     }
 
+
+    public function sbo_officer(){
+        return $this->belongsTo(SboOfficer::class,'user_id');
+    }
 
 
     
