@@ -7,23 +7,26 @@
       <p class="text-2xl font-rubik font-bold text-green-700">{{ page }}</p>
     </div>
 
-    {{ selectedResponse }}
 
   <BaseCard :subtitle="'Officers Documents'">
     <template #header>
       <!-- <h1> {{confirmMode}}</h1> -->
       <!-- <hr> -->
 
-      <p v-if="selectedItem != null">
+      <!-- <p v-if="selectedItem != null">
         {{ selectedItem.response_approvals }}
       </p>
-      
+       -->
+
+       {{ selectedResponse }}
 
       <BaseTableSetup>
         <template #searchs-area>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
         </template>
-        <template #actions-area> </template>
+        <template #actions-area>
+        <TableButton v-if="selectedResponse.length > 0" @click="showEndorsenmentForm =true"> <i class="fa-solid fa-share mr-2 "></i> Endorsed </TableButton>  
+        </template>
       </BaseTableSetup>
 
       <BaseTable
@@ -51,9 +54,9 @@
           <tr v-else class="" v-for="item in applications" :key="item.id">
 
             <td class="whitespace-normal  align-top relative w-12 px-6 sm:w-16 sm:px-8">
-         
+              <!-- {{ item.response_approval }} -->
               <input
-              
+              :disabled="item.response_approval.status != 'approved'"
               v-model="selectedResponse"
               :value="item.id"
                 type="checkbox"
@@ -249,30 +252,18 @@
 
 
             </td>
-            <td class="whitespace-normal  align-top py-3">
+            <td class="whitespace-normal align-top py-1">
               
 
               <DateCard class="mt-2">
                 <template #label> 
-                  Officer Submitted
+                  Submitted
                 </template>
                 {{ formatDate(item.created_at) }}
   
               </DateCard>
-              <DateCard class="mt-2" >
-                <template #label> 
-                  Aprroved Date
-                </template>
-                {{ formatDate(item.update_at) }}
-  
-              </DateCard>
-              <DateCard class="mt-2" >
-                <template #label> 
-                  Indorsed Date
-                </template>
-                {{ formatDate(item.created_at) }}
-  
-              </DateCard>
+
+
               
             </td>
             <td class="whitespace-normal  align-top py-4">
@@ -573,7 +564,101 @@
           </template>
         </BaseDialog>
       </teleport>
+
+      <teleport to="#app">
+        <BaseDialog :show=" showEndorsenmentForm " :width="'620'" :preventClose="true">
+          <template #c-content>
+            {{selected_school_year}}
+            {{selecated_school}}
+            {{selected_campus_director}}
+            <section class="mt-2">
+              <div>
+                <p class="text-base font-bold">Select School Year</p>
+                <NoDataCard v-if="school_years.length <= 0"> Empty </NoDataCard>
+                <select
+                  @change="changeHandler"
+                  v-else
+                  v-model="selected_school_year"
+                  class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+                >
+                  <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
+                    SY. {{ sy.from }} - {{ sy.to }}
+                  </option>
+                </select>
+              </div>
+            </section>
+            <section class="mt-2">
+              <div>
+                <p class="text-base font-bold">Select University</p>
+                <NoDataCard v-if="schools.length <= 0">Empty </NoDataCard>
+                <select
+                  v-else
+                  v-model="selecated_school"
+                  class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+                >
+                  <option v-for="school in schools" :key="school.id" :value="school.id">
+                    {{ school.name }}
+                  </option>
+                </select>
+              </div>
+            </section>
+            <section class="mt-2">
+              <div>
+                <p class="text-base font-bold mt-4">Select User</p>
+                <NoDataCard v-if="users.length <= 0">Empty </NoDataCard>
+                <select
+                  v-else
+                  v-model="selected_campus_director"
+                  class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+                >
+                  <option v-for="user in users" :key="user.id" :value="user.id">
+                    {{ user.user.first_name }} -  {{ user.user.last_name }}
+                  </option>
+                </select>
+              </div>
+            </section>
+            
+            <div class="flex justify-end item-center pt-4">
+              <button
+              class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              @click="showEndorsenmentForm = false"
+            >
+              Close
+            </button>
+
+            <div class="p-2" v-if="isReturning">
+              <BaseSpinner  />
+            </div>
+            <div
+            v-else
+            >
+            <div
+            v-if="
+            selected_campus_director == null ||
+              selecated_school == null ||
+              selected_school_year == null
+            "
+          ></div>
+          <div  v-else>
+
+            
+            <TableButton
+            @click="returnForm"
+              >
+              Submit
+            </TableButton>
+          </div>
+            </div>
+            </div>
+          </template>
+        </BaseDialog>
+      </teleport>
+
+      
   </BaseCard>
+
+  <GlobalErrorCard @close="hasRequestError = null" :show="hasRequestError != null">
+  </GlobalErrorCard>
 </div>
 </template>
 
@@ -582,7 +667,9 @@ import axiosApi from "../../api/axiosApi";
 import moment from "moment";
 export default {
   created() {
+    this.getAllSchoolYears();
     this.getAllOfficersApplications();
+
   },
 
   
@@ -608,9 +695,81 @@ export default {
       isAddingRemark:false,
       isDeletingRemarks: false,
       selectedResponse: [],
+
+
+      selected_school_year: null,
+      school_years: [],
+
+      selecated_school: null,
+      schools: [],
+      showEndorsenmentForm:true,
+      selected_campus_director:null,
+      users: [],
+
+      hasRequestError:null,
+
+      isSchoolYearFetching:false,
     };
   },
   methods: {
+
+    async getAllSchoolYears() {
+      this.isSchoolYearFetching = true;
+
+      await axiosApi
+        .get("api/get-school-year-with-campus-directors")
+        .then((res) => {
+
+          console.log(res.data);
+
+
+          this.school_years = res.data.data;
+          if (this.school_years.length > 0) {
+            this.selected_school_year = this.school_years[0].id;
+
+            this.schools = this.school_years[0].schools;
+            this.users = this.school_years[0].campus_directors;
+       
+            if (this.schools.length > 0) {
+              this.selecated_school = this.schools[0].id;
+            }
+            
+            if (this.users.length > 0) {
+              this.selected_campus_director = this.users[0].id;
+            }
+
+
+          }
+        })
+        .catch((err) => {
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+        })
+        .finally(() => {
+          this.isSchoolYearFetching = false;
+        });
+    },
+    changeHandler(event) {
+      let year_with_schools = this.school_years.find((i) => i.id == event.target.value);
+      this.schools = year_with_schools.schools;
+      this.users = year_with_schools.campus_directors;
+      this.selecated_school = null;
+      this.selected_campus_director = null;
+      
+
+
+      
+      if (this.schools.length > 0) {
+              this.selecated_school = this.schools[0].id;
+            }
+            
+      if (this.users.length > 0) {
+              this.selected_campus_director = this.users[0].id;
+            }
+      
+            
+
+    },
 
     closeRemarksFormToEditRemarks(){
       this.remarksForEdit= '';
@@ -647,7 +806,8 @@ export default {
 
 }).catch(err=>{ 
 
-console.log(err);
+  this.hasRequestError =
+            "Oops! It seems like there was an error when  deleting remarks c if you think it it was the system please do contact the developer";
 }).finally(()=>{
   this.isDeletingRemarks = false;
 });
@@ -677,7 +837,8 @@ console.log(err);
 
         }).catch(err=>{ 
 
-          console.log(err);
+          this.hasRequestError =
+            "Oops! It seems like there was an error when update remark. if you think it it was the system please do contact the developer";
         }).finally(()=>{
             this.isUpdating = false;
         });
@@ -714,7 +875,8 @@ console.log(err);
               this.getAllOfficersApplications();
               this.remark = '';
           }).catch(err=>{
-              console.log(err);
+            this.hasRequestError =
+            "Oops! It seems like there was an error when  return deoccuments  if you think it it was the system please do contact the developer";
           }).finally(()=>{
             this.isReturning = false;
           });
@@ -760,7 +922,8 @@ console.log(err);
               this.getAllOfficersApplications();
               
           }).catch(err=>{
-              console.log(err);
+            this.hasRequestError =
+            "Oops! It seems like there was an error when  when approving documents. if you think it it was the system please do contact the developer";
           }).finally(()=>{
             this.isSaving = false;
           });
@@ -782,7 +945,7 @@ console.log(err);
       this.showDecisionForm = false;
     },
     showApprovalForm(item){
-      
+      this.selectedResponse = [];
       this.selectedItem = item;
 
       let current_approval = this.findApproval(item);
@@ -817,6 +980,9 @@ console.log(err);
         .then((res) => {
           // console.log(res.data);
           this.applications = res.data.data;
+        }).catch(err=>{
+          this.hasRequestError =
+            "Oops! It seems like there was an error when retrieving offciers documents. if you think it it was the system please do contact the developer";
         })
         .finally(() => {
           this.isFetching = false;

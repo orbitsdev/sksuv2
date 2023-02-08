@@ -10,10 +10,12 @@ use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\RemarkController;
 use App\Http\Controllers\Api\MonitorController;
 use App\Http\Controllers\Api\OfficerController;
+use App\Http\Controllers\EndorseMentController;
 use App\Http\Controllers\Api\ApprovalController;
 use App\Http\Controllers\Api\FilePondController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\SchoolYearController;
+use App\Http\Controllers\CampusDirectorController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\RequirementController;
 use App\Http\Controllers\Api\CloudStorageController;
@@ -168,19 +170,31 @@ Route::get('/role', function () {
     Route::post('manage-officer/delete-selected-officer', [OfficerController::class, 'deleteSelectedOfficer']);
     
     
+    //Manage Campus Directors
+
+    Route::get('manage-campus-director/get-all-campus-director', [CampusDirectorController::class, 'getAllCampusDirectors']);
+    Route::post('manage-campus-director/create', [CampusDirectorController::class, 'create']);
+    Route::post('manage-campus-director/delete-selected', [CampusDirectorController::class, 'deleteSelected']);
+    
     // officers documents 
     Route::get('officers/schools', [ApprovalController::class, 'getSchools']);
     Route::post('officers/documents', [ApprovalController::class, 'getAllOfficerApplications']);
     
+
+    //Sbo Endorsement 
+    Route::get('get-school-year-with-campus-directors', [EndorseMentController::class, 'getSchoolYearWithCampusDirector']);
+
+
     //get arppover 
     Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);
     Route::post('form/approve', [ApprovalController::class, 'approveForm']);
     Route::post('form/return', [ApprovalController::class, 'returnForm']);
     Route::post('form/remark/update', [RemarkController::class, 'updateSboRemarkInOfficerDocumentResponse']);
     Route::post('form/remark/delete', [RemarkController::class, 'deleteSboRemarkInOfficerDocumentResponse']);
+    
+    
+    
 
-
- 
 
 
 

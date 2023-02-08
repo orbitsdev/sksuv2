@@ -12,6 +12,7 @@
   </div>
 
       <div v-else>
+        
         <div class="flex justify-between items-center mb-4">
           <div class="relative inline-flex items-center justify-center shadow">
             <i class="absolute fa fa-search text-gray-400 top-5 left-4"></i>
@@ -59,6 +60,9 @@
                 <h3 class="leading-4 text-md font-bold tracking-wide uppercase">
                   {{ item.application_form.title }}
                 </h3>
+                <p class="font-rubik text-sm">
+                  {{ item.school.name }}
+                </p>
                 <div class="mt-2">
                   <p class="text-xs text-gray-400 font-light">
                     Applied -
@@ -67,6 +71,23 @@
                     </span>
                   </p>
                 </div>
+              </div>
+              <!-- {{ item.response_approvals }} -->
+              <div class="mt-2 " v-if="item.response_approvals.length > 0">
+                <p class="font-rubik text-green-700 font-bold uppercase">  Status</p>
+                <div class="">
+
+                  <div class="mb-2" v-for="ap in item.response_approvals " :key="ap">
+                    <!-- {{ ap }} -->
+                    <p class="uppercase font-rubik"> {{ap.role_name}}</p>
+                    <p class="capitalize mt-1 text-xs font-rubik  bg-gray-50  text-gray-400 rounded inline-block py-1 px-2 "  v-if="ap.status == 'null'"> Waiting  </p>
+                    <p class="capitalize mt-1 text-xs font-rubik  bg-cyan-700  text-white rounded inline-block py-1 px-2 "  v-if="ap.status == 'processing'"> {{ap.status }}  </p>
+                    <p class="capitalize mt-1 text-xs font-rubik  bg-cyan-700  text-white rounded inline-block py-1 px-2 "  v-if="ap.status == 're-evaluating'"> {{ap.status }}  </p>
+                    <p class="capitalize mt-1 text-xs font-rubik  bg-green-600  text-white rounded inline-block py-1 px-2 "  v-if="ap.status == 'approved'"> {{ap.status }}  </p>
+                    <p class="capitalize mt-1 text-xs font-rubik  bg-red-700  text-white rounded inline-block py-1 px-2 "  v-if="ap.status == 'returned'"> {{ap.status }}  </p>
+                  </div>
+                </div>
+
               </div>
             </div>
           </li>

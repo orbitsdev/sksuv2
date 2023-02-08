@@ -10,6 +10,7 @@ use App\Models\Response;
 use App\Models\SboOfficer;
 use App\Models\Notification;
 use App\Models\SocialAccount;
+use App\Models\CampusDirector;
 use App\Models\CampusSboAdviser;
 use App\Models\SboAdviserRequest;
 use Laravel\Sanctum\HasApiTokens;
@@ -76,12 +77,7 @@ class User extends Authenticatable
 
 
 
-    public function sbo_officers(){
-        return $this->hasMany(SboOfficer::class, 'student_id');
-    }
-    public function sbo_officer(){
-        return $this->hasOne(SboOfficer::class, 'student_id');
-    }
+   
 
     public function responses(){
         return $this->hasMany(Response::class);
@@ -112,6 +108,19 @@ class User extends Authenticatable
         return $this->hasMany(CampusSboAdviser::class);
     }
     
+    public function sbo_officers(){
+        return $this->hasMany(SboOfficer::class, 'student_id');
+    }
+    public function sbo_officer(){
+        return $this->hasOne(SboOfficer::class, 'student_id');
+    }
 
+    public function campus_directors(){
+        return $this->hasMany(CampusDirector::class);
+    }
+    
+    public function campus_director(){
+        return $this->hasOne(CampusDirector::class);
+    }
 
 }

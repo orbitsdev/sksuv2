@@ -158,7 +158,7 @@ class MonitorController extends Controller
         
         $auth_id = auth('sanctum')->user()->id;
 
-        $application_responses = Response::where('user_id', $auth_id)->with(['application_form'])->get();
+        $application_responses = Response::where('user_id', $auth_id)->with(['application_form','response_approvals.user','school'])->get();
 
         return new ResponseResource($application_responses);
         return response()->json(['success',$application_responses , $auth_id,  $request->input('school_id')],200);

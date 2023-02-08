@@ -1,6 +1,6 @@
 use App\Models\CampusSboAdviser;
 <template>
-  <BaseCard class="relative" :subtitle="'Campus SBO advisers'">
+  <BaseCard class="relative" :subtitle="'CAMPUS DIRECTORS'">
     <template #header>
     
 
@@ -20,7 +20,7 @@ use App\Models\CampusSboAdviser;
         <template #actions-area>
           <TableButton
             @click="showDeleteConfirmation = true"
-            v-if="selectedAdvisers.length > 0"
+            v-if="selectedDirectors.length > 0"
             mode
           >
             <i class="fa-regular fa-trash-can mr-1"></i>
@@ -31,49 +31,42 @@ use App\Models\CampusSboAdviser;
     </template>
 
     <BaseTable
-      :thdata="['', 'Year', 'Sbo Adviser Name', 'University', '']"
+      :thdata="['', 'Year', 'Campus Director Name', 'University', '']"
       :isFetching="isFetching"
     >
       <template #data>
-        <tr v-for="adviser in campus_advisers" :key="adviser.id">
+        <tr v-for="item in campus_directors" :key="item.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
             <input
-              v-model="selectedAdvisers"
-              :value="adviser.id"
+              v-model="selectedDirectors"
+              :value="item.id"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
             />
           </td>
           <td class="whitespace-nowrap px-3 py-4 text-sm text-green-700">
             <p class="font-semibold font-rubik">
-              SY.{{ adviser.school_year.from }} - {{ adviser.school_year.to }}
+              SY.{{ item.school_year.from }} - {{ item.school_year.to }}
             </p>
           </td>
           <td class="whitespace-nowrap py-4">
             <!-- <StatusCard class="bg-rose-700 text-rose-100 capitalize" >
             </StatusCard> -->
             <p class="capitalize">
-              {{ adviser.user.first_name + " " + adviser.user.last_name }}
+              {{ item.user.first_name + " " + item.user.last_name }}
             </p>
           </td>
 
           <td class="whitespace-nowrap py-4 text-sm text-gray-900">
-            <StatusCard v-if="adviser.school != null" class="bg-green-700 text-white">
-              {{ adviser.school.name }}
+            <StatusCard v-if="item.school != null" class="bg-green-700 text-white">
+              {{ item.school.name }}
             </StatusCard>
             <StatusCard v-else class="bg-gray-700 text-white"> None </StatusCard>
           </td>
           <td
             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
           >
-            <!-- <button
-              @click="selectCampusAdviser(adviser)"
-              :disabled="selectedAdvisers.length > 0"
-              type="button"
-              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-            >
-              <i class="fa-regular fa-pen-to-square"></i>
-            </button> -->
+            
           </td>
         </tr>
       </template>
@@ -163,7 +156,7 @@ use App\Models\CampusSboAdviser;
                 <TableButton v-if="isUpdatingMode" class="" @click="updateCampusAdviser">
                   Update
                 </TableButton>
-                <TableButton v-else class="" @click="addCampusAdviser">
+                <TableButton v-else class="" @click="addCampusDirector">
                   Save
                 </TableButton>
               </div>
@@ -217,7 +210,7 @@ use App\Models\CampusSboAdviser;
 import axiosApi from "../../api/axiosApi";
 export default {
   created() {
-    this.getAllCampusAdvisers();
+    this.getCampusDirectors();
     this.getAllSchoolYears();
     // this.loadSchool();
     this.getUserWhereIsNotCampusAdviser();
@@ -238,7 +231,7 @@ export default {
       showMainForm: false,
       hasRequestError: null,
 
-      campus_advisers: [],
+      campus_directors: [],
       users: [],
       schools: [],
       school_years: [],
@@ -251,7 +244,7 @@ export default {
       isAvailabeUserFetching: false,
       isSchoolFetching: false,
 
-      selectedAdvisers: [],
+      selectedDirectors: [],
       selectedCampusAdviser: null,
       showDeleteConfirmation: false,
       isDeleting: false,
@@ -267,37 +260,7 @@ export default {
   },
 
   methods: {
-    async updateCampusAdviser() {
-      this.isSaving = true;
-
-      let campus_sbo_data = {
-        id: this.selectedCampusAdviser.id,
-        user_id: this.selecated_campuse_adviser,
-        school_id: this.selecated_school,
-        school_year_id: this.selected_school_year,
-      };
-
-      console.log(campus_sbo_data);
-
-      await axiosApi
-        .post("api/campus/campus-adviser/update", campus_sbo_data)
-        .then((res) => {
-          this.showMainForm = false;
-          this.isUpdatingMode = false;
-          this.selectedCampusAdviser = null;
-          this.selecated_campuse_adviser = null;
-          this.school_id = null;
-          this.getAllCampusAdvisers();
-          this.getUserWhereIsNotCampusAdviser();
-        })
-        .catch((err) => {
-          this.hasRequestError =
-            '"Oops! It seems like there was an error when updating campuse adviser Please check your network connection. o and try again. if you think it it was the system please do contact the developer"';
-        })
-        .finally(() => {
-          this.isSaving = false;
-        });
-    },
+  
 
     changeHandler(event) {
       let year_with_schools = this.school_years.find((i) => i.id == event.target.value);
@@ -333,15 +296,15 @@ export default {
       this.isDeleting = true;
 
       await axiosApi
-        .post("api/campus/delete-selected", {
-          campus_advisers_id: this.selectedAdvisers,
+        .post("api/manage-campus-director/delete-selected", {
+          campus_directors_id: this.selectedDirectors,
         })
         .then((res) => {
           console.log(res);
 
           this.showDeleteConfirmation = false;
-          this.selectedAdvisers = [];
-          this.getAllCampusAdvisers();
+          this.selectedDirectors = [];
+          this.getCampusDirectors();
           this.getUserWhereIsNotCampusAdviser();
         })
         .catch((err) => {
@@ -353,13 +316,13 @@ export default {
         });
     },
 
-    async getAllCampusAdvisers() {
+    async getCampusDirectors() {
       this.isFetching = true;
 
       await axiosApi
-        .get("api/campus/campus-advisers")
+        .get("api/manage-campus-director/get-all-campus-director")
         .then((res) => {
-          this.campus_advisers = res.data.data;
+          this.campus_directors = res.data.data;
         })
         .catch((err) => {
           this.hasRequestError =
@@ -435,17 +398,17 @@ export default {
         });
     },
 
-    async addCampusAdviser() {
+    async addCampusDirector() {
       this.isSaving = true;
 
-      let campus_sbo_data = {
+      let campus_director_data = {
         user_id: this.selecated_campuse_adviser,
         school_id: this.selecated_school,
         school_year_id: this.selected_school_year,
       };
-      console.log(campus_sbo_data);
+      console.log(campus_director_data);
       await axiosApi
-        .post("api/campus/campus-adviser", campus_sbo_data)
+        .post("api/manage-campus-director/create", campus_director_data)
         .then((res) => {
           // console.log(res.data.data ===1);
           
@@ -461,7 +424,7 @@ export default {
             
             
             this.getAllSchoolYears();
-            this.getAllCampusAdvisers();
+            this.getCampusDirectors();
             this.getUserWhereIsNotCampusAdviser();
           }
 
@@ -536,7 +499,7 @@ export default {
           search: this.search,
         })
         .then((res) => {
-          this.campus_advisers = res.data.data;
+          this.campus_directors = res.data.data;
         });
     },
 

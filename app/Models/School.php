@@ -75,5 +75,9 @@ class School extends Model
         return $this->hasMany(Response::class);
     }
 
+    public function campus_directors(){
+        return $this->hasMany(CampusDirector::class);
+    }
+
 }
 

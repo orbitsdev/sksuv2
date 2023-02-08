@@ -103,7 +103,7 @@ class CampusAdviserController extends Controller
             return response()->json(['success', 'data' => 0]);
         }
     }
-
+    
 
     public function getAvailableUser()
     {

@@ -133,6 +133,14 @@ const routes = [
                     },
                 ],
             },
+
+            {
+                name: "manage-campus-director",
+                path: "manage/campus-director",
+                component: () =>
+                    import("../views/OSAS/ManageCampusDirector.vue"),
+                meta: { allowedRoles: ["osas"] },
+            },
             {
                 name: "manage-application",
                 path: "osas/manage-application",

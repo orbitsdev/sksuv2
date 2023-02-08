@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\School;
+use App\Models\CampusDirector;
 use App\Models\ApplicationForm;
 use App\Models\CampusSboAdviser;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +34,15 @@ class SchoolYear extends Model
     }
 
 
+    public function campus_directors(){
+        return $this->hasMany(CampusDirector::class);
+    }
+
+
+
     
+
+
 
 
     
