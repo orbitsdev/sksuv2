@@ -2,6 +2,7 @@
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Models\CampusDirector;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\Api\AuthController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Api\FillUpApplicationController;
 use App\Http\Controllers\Api\ManageSboAdviserControlller;
 use App\Http\Controllers\Api\SboAdviserRequestController;
 use App\Http\Controllers\Api\GoogleDriveStorageController;
+use App\Http\Controllers\CampusDirectorEndorsementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -183,23 +185,24 @@ Route::get('/role', function () {
     //Sbo Endorsement 
     Route::get('get-school-year-with-campus-directors', [EndorseMentController::class, 'getSchoolYearWithCampusDirector']);
     Route::post('endorse-to-campus_director', [EndorseMentController::class, 'endorseResponseToCampusDirector']);
-
+    Route::get('get-endorsed-documents', [EndorseMentController::class, 'getCampusAdviserEdorsement']);
+    Route::post('delete-selected-endorsement', [EndorseMentController::class, 'deleteSelectedEndorsement']);
+    
+    
+    // approver sbo endorsement
+    Route::post('delete-selected-endorsement', [EndorseMentController::class, 'deleteSelectedEndorsement']);
+    Route::get('get-endorsementt-from-campus-adviser', [CampusDirectorEndorsementController::class, 'getendorsementtFromCampusAdviser']);
+    Route::post('approve-sbo-adviser-endorsement', [CampusDirectorEndorsementController::class, 'approveform']);
+    Route::post('return-sbo-adviser-endorsement', [CampusDirectorEndorsementController::class, 'returnform']);
 
     //get arppover 
     Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);
     Route::post('form/approve', [ApprovalController::class, 'approveForm']);
     Route::post('form/return', [ApprovalController::class, 'returnForm']);
-    Route::post('form/remark/update', [RemarkController::class, 'updateSboRemarkInOfficerDocumentResponse']);
+    Route::post('form/remark/update', [RemarkController::class, 'getCampusAdviserEdorsement']);
     Route::post('form/remark/delete', [RemarkController::class, 'deleteSboRemarkInOfficerDocumentResponse']);
     
-    
-    
-
-
-
-
-    
-    
+        
     // SBO STUDENT 
     
     Route::get('application-form/get-school-year-application', [FillUpApplicationController::class, 'getAllSchoolYear']);

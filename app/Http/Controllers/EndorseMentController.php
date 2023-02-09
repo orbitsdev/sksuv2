@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EndorsementResource;
 use App\Models\Response;
 use App\Models\SchoolYear;
 use App\Models\Endorsement;
@@ -33,29 +34,51 @@ class EndorseMentController extends Controller
         
         foreach($responses as $r){
             $new_endorsement = Endorsement::create([
-                'endorser_id'=> $auth_id,
+                'endorser_id'=> $campus_adviser->id,
                 'response_id'=> $r['id'],
                 'reciever_id'=> $request->input('reciever'),
                 'status'=> 'pending'
             ]);
+
+            // $campus_adviser->endorsements()->attach($new_endorsement->id);
             
         }
         
         return response()->json([$responses,$auth_id, $request->all()]);
         $data = [];
         
-         
+        
 
-            // $endorsement = Endorsement::create([
-            //     'endorser_id'=> auth('sanctum')->user()->id,
-            //     'response_id'=> $request->input('response_id'),
-            //     'reciver_id'=> $request->input('reciever-id'),
-            // ]);
+    }
 
 
 
 
 
+    public function getCampusAdviserEdorsement(){   
+
+        $auth_id = auth('sanctum')->user()->id;
+
+        $campus_adviser = CampusSboAdviser::where('user_id', $auth_id)->first();
+
+        
+
+        $endorsements = Endorsement::where('endorser_id', $campus_adviser->id)->with(['response.application_form', 'campus_director.user', 'campus_director.school_year', 'campus_director.school'])->get();
+    
+        
+        return new EndorsementResource($endorsements);
+        return response()->json([$endorsements]);
+        
+        
+        
+        
+    }
+    
+    public function deleteSelectedEndorsement(Request $request){
+        
+        Endorsement::whereIn('id', $request->input('indorsed_id'))->delete();
+        return response()->json(['success']);
+        return response()->json([$request->all()]);
 
     }
 

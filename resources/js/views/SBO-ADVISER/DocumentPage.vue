@@ -431,7 +431,7 @@
               <div>
                 <button
                   class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                  @click="closeApprovalForm()"
+                  @click="closeApprovalForm"
                 >
                   Close
                 </button>
@@ -789,6 +789,8 @@ export default {
       };
 
       await axiosApi.post('api/endorse-to-campus_director',endorsement_data ).then(res=>{
+       
+     
         this.selectedResponse = [];
         this.selected_campus_director= null;
         this.showEndorsenmentForm = false;

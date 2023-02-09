@@ -60,6 +60,7 @@ import GlobalWarning from './components/GlobalWarning.vue';
 import BackCard from './components/BackCard.vue';
 import FormParentCard from './components/FormParentCard.vue';
 import FormChildCard from './components/FormChildCard.vue';
+import WhiteButton from './components/WhiteButton.vue';
 
 
 
@@ -141,6 +142,7 @@ app.component('GlobalWarning', GlobalWarning);
 app.component('BackCard', BackCard);
 app.component('FormParentCard', FormParentCard);
 app.component("FormChildCard", FormChildCard);
+app.component("WhiteButton", WhiteButton);
 
 
 

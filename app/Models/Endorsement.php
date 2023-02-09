@@ -26,8 +26,15 @@ class Endorsement extends Model
         return $this->belongsTo(Response::class);
     }
 
-    
 
+    public function campus_director(){
+        return $this->belongsTo(CampusDirector::class, 'reciever_id');
+    }
+
+
+
+    
+        
 
 
     

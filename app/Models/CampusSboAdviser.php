@@ -37,9 +37,13 @@ class CampusSboAdviser extends Model
     }
 
 
+
     public function endorsements(){
-        return $this->belongsToMany(Endorsement::class, 'campus_sbo_adviser_endorsements', 'campus_sbo_adviser_id' , 'endorsement_id');
+
+        return $this->belongsToMany(Endorsement::class, 'campus_sbo_adviser_endorsements' , 'campus_sbo_adviser_id', 'endorsement_id');
+
     }
+    
 
 
 

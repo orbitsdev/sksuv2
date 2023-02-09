@@ -77,11 +77,7 @@ class CampusAdviserController extends Controller
         $adviser =         Role::where('name', 'sbo-adviser')->first();
 
 
-
-
-        if ($user->roles()->find($guest->id)) {
-            $user->roles()->sync($adviser->id);
-        }
+        $user->roles()->sync($adviser->id);
 
 
         // check if is sbo-adviser withing this a year

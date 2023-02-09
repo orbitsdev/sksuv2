@@ -23,11 +23,8 @@ class CampusDirectorController extends Controller
         $guest =         Role::where('name', 'guest')->first();
         $adviser =         Role::where('name', 'campus-director')->first();
 
-
-        if ($user->roles()->find($guest->id)) {
-            $user->roles()->sync($adviser->id);
-        }
-
+        $user->roles()->sync($adviser->id);
+       
         if ($is_user_exist) {
             return response()->json(['success', 'data' => 1]);
         } else {
@@ -59,21 +56,6 @@ class CampusDirectorController extends Controller
         return new CampusDirectorResource($campus_directors);
     }
 
-
-
-
-    // public function update(Request $request)
-    // {
-
-    //     $campus_adviser =  CampusDirector::where('id', $request->input('id'))->update([
-    //         'school_year_id' => $request->input('school_year_id'),
-    //         'user_id' => $request->input('user_id'),
-    //         'school_id' => $request->input('school_id'),
-    //     ]);
-
-
-    //     return response()->json(['success']);
-    // }
 
 
 }

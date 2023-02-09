@@ -176,7 +176,6 @@ const routes = [
             },
 
             // SBO ADVISER PAGE
-
          
 
             {
@@ -208,6 +207,14 @@ const routes = [
                 name: "schools-officers-documents",
                 path: "sbo-adviser/schools/documents",
                 component: () => import("../views/SBO-ADVISER/SchoolsDocuementPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
+                children: [],
+            },
+
+            {
+                name: "schools-contain-endorsed-documents",
+                path: "sbo-adviser/schools/endorsed",
+                component: () => import("../views/SBO-ADVISER/SchoolContainEndorsedDocumentPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
@@ -274,7 +281,17 @@ const routes = [
                     component: () => import("../views/SBO-STUDENT/ApplicationPage.vue"),
                     props: true,
                 
-            }
+            },
+
+            //CAMPUS DIRECTOR
+
+            {
+                name: "campus-director-endorsed-application",
+                path: "campus-director-endorsed-application-from-sbo-adviser",
+                component: () => import("../views/CAMPUS-DIRECTOR/CampusDirectorSchoolsEndorsmentDocuementPage.vue"),
+                meta: { requireAuth: true, allowedRoles: ["campus-director"] },
+                children: [],
+            },
 
 
         ],
