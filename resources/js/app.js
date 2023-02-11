@@ -61,6 +61,7 @@ import BackCard from './components/BackCard.vue';
 import FormParentCard from './components/FormParentCard.vue';
 import FormChildCard from './components/FormChildCard.vue';
 import WhiteButton from './components/WhiteButton.vue';
+import TabCard from './components/TabCard.vue';
 
 
 
@@ -143,6 +144,7 @@ app.component('BackCard', BackCard);
 app.component('FormParentCard', FormParentCard);
 app.component("FormChildCard", FormChildCard);
 app.component("WhiteButton", WhiteButton);
+app.component("TabCard", TabCard);
 
 
 

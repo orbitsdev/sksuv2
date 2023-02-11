@@ -1,19 +1,9 @@
 <template>
 <LoadingScreen v-if="isScreenLoading" />
 <section v-else>
-    <div class="">
-        <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
+    <div class="flex">
         <div class="relative z-40 hidden" role="dialog" aria-modal="true">
-            <!--
-    Off-canvas menu backdrop, show/hide based on off-canvas menu state.
-
-      Entering: "transition-opacity ease-linear duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "transition-opacity ease-linear duration-300"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
+       
             <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
 
             <div class="fixed inset-0 z-40 flex">
@@ -44,13 +34,11 @@
         </div>
 
         <!-- Static sidebar for desktop -->
-        <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col ">
-
-            <!-- bg set -->
-
-            <div class="flex flex-grow flex-col overflow-y-auto  bg-green-900 pt-5">
+        <div class="bg-green-900 py-5 w-80 ">
+            <div class="">
                 <div class="flex flex-shrink-0 items-center px-4">
-                    <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=300" alt="Your Company" />
+                    <img class="h-14 w-auto" :src="'/assets/sksu1.png'" alt="Your Company" />
+                    <p class="ml-2 text-white text-2xl font-bold font-rubik"> WBRSA</p>
                 </div>
                 <div class="mt-5 flex flex-1 flex-col">
                     <nav class="flex-1 space-y-1 px-2 pb-4">
@@ -78,73 +66,44 @@
               </a> -->
 
                         <div v-if="User.hasRoleOf(['osas'])">
-                            <router-link :to="{ name: 'manage-school-year' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'manage-school-year' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
+                               
+                                <i class="fa-solid fa-calendar text-xl mr-4 "></i>
+                                  
+                              
                                 Manage Year
                             </router-link>
-                            <router-link :to="{ name: 'manage-university' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'manage-university-tabs' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
+                                <i class="fa-solid fa-school-flag text-xl mr-4"></i>
                                Manage University
                             </router-link>
 
-
-                            <router-link :to="{ name: 'manage-organization' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                                Manage Organization
-                            </router-link>
+                                
                           
-                            <router-link :to="{ name: 'manage-roles' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                                Manage Users Account
-                            </router-link>
+                          
+                            
+                                <router-link :to="{ name: 'manage-account-tabs' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
+                                    <i class="fa-solid fa-users text-xl mr-4"></i>
+                                Manage Users 
+                            </router-link> 
+                       
 
-                            <router-link :to="{ name: 'manage-sbo-adviser-user' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                                Manage Campus SBO Adviser
-                            </router-link>
-                            <router-link :to="{ name: 'manage-campus-director' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                                Manage Campus Director
-                            </router-link>
-                        
+                          
+
                          
-                            <router-link :to="{ name: 'manage-application' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'manage-application-tabs' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
+                                <i class="fa-solid fa-list-check text-xl mr-4"></i>
                                 Manage Applications Form
                             </router-link>
-                            <router-link :to="{ name: 'manage-requirement' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                                Manage Requirements
-                            </router-link>
+
                         </div>
 
                         <div v-if="User.hasRoleOf(['sbo-adviser'])">
 
-                            <router-link :to="{ name: 'manage-organization' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'manage-organization' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
@@ -153,14 +112,14 @@
                             </router-link>
                          
 
-                            <router-link :to="{ name: 'select-school-year-for-manage-officers' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'select-school-year-for-manage-officers' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                                 </svg>
                                 Manage Officers
                             </router-link>
-                            <router-link :to="{ name: 'schools-officers-documents' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'schools-officers-documents' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
@@ -168,7 +127,7 @@
 
                                 Officers Documents
                             </router-link>
-                            <router-link :to="{ name: 'schools-contain-endorsed-documents'}" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'schools-contain-endorsed-documents'}" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
@@ -178,14 +137,14 @@
                             </router-link>
                         </div>
                         <div v-if="User.hasRoleOf(['sbo-student'])">
-                            <router-link :to="{ name: 'get-school-year-application' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'get-school-year-application' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                                 </svg>
                                 Applications
                             </router-link>
-                            <router-link :to="{ name: 'school-year-minitor-application'}" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'school-year-minitor-application'}" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
@@ -195,26 +154,20 @@
                         </div>
 
                         <div v-if="User.hasRoleOf(['campus-director'])">
-                            <router-link :to="{ name: 'campus-director-endorsed-application' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <router-link :to="{ name: 'campus-director-endorsed-application' }" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base  font-medium rounded-md font-rubik ">
                                 <!-- Heroicon name: outline/folder -->
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                                 </svg>
                                 Applications
                             </router-link>
-                            <router-link :to="{ name: 'school-year-minitor-application'}" href="#" class=" text-white hover:bg-green-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                                <!-- Heroicon name: outline/folder -->
-                                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                                Monitor Application
-                            </router-link>
+                          
                         </div>
                     </nav>
                 </div>
             </div>
         </div>
-        <div class="flex flex-1 flex-col md:pl-64 ">
+        <div class="flex-1">
             <div class="sticky top-0 z-10 flex h-16 flex-shrink-0  shadow">
                 <button type="button" class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden">
                     <span class="sr-only">Open sidebar</span>
@@ -405,5 +358,9 @@ export default {
 <style scoped>
 .bg-my-image {
     background: no-repeat left top, linear-gradient(#124a2a, #0c672a30), url('/assets/sksu.jpg');
+}
+
+.router-link-active {
+    background: #189144 !important;
 }
 </style>

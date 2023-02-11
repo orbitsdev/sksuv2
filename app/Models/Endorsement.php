@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Response;
+use App\Models\CampusDean;
 use App\Models\SboOfficer;
 use App\Models\CampusDirector;
 use App\Models\CampusSboAdviser;
@@ -29,6 +30,9 @@ class Endorsement extends Model
 
     public function campus_director(){
         return $this->belongsTo(CampusDirector::class, 'reciever_id');
+    }
+    public function campus_dean(){
+        return $this->belongsTo(CampusDean::class, 'reciever_id');
     }
 
 

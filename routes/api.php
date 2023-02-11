@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\RemarkController;
+use App\Http\Controllers\CampusDeanController;
 use App\Http\Controllers\Api\MonitorController;
 use App\Http\Controllers\Api\OfficerController;
 use App\Http\Controllers\EndorseMentController;
@@ -177,6 +178,11 @@ Route::get('/role', function () {
     Route::post('manage-campus-director/create', [CampusDirectorController::class, 'create']);
     Route::post('manage-campus-director/delete-selected', [CampusDirectorController::class, 'deleteSelected']);
     
+    //Manage Campus Deans
+    Route::get('manage-campus-dean/get-all-campus-dean', [CampusDeanController::class, 'getAllCampusDirectors']);
+    Route::post('manage-campus-dean/create', [CampusDeanController::class, 'create']);
+    Route::post('manage-campus-dean/delete-selected', [CampusDeanController::class, 'deleteSelected']);
+    
     // officers documents 
     Route::get('officers/schools', [ApprovalController::class, 'getSchools']);
     Route::post('officers/documents', [ApprovalController::class, 'getAllOfficerApplications']);
@@ -199,7 +205,7 @@ Route::get('/role', function () {
     Route::get('form/approvers', [ApprovalController::class, 'getApproverRoles']);
     Route::post('form/approve', [ApprovalController::class, 'approveForm']);
     Route::post('form/return', [ApprovalController::class, 'returnForm']);
-    Route::post('form/remark/update', [RemarkController::class, 'getCampusAdviserEdorsement']);
+    Route::post('form/remark/update', [RemarkController::class, 'updateSboRemarkInOfficerDocumentResponse']);
     Route::post('form/remark/delete', [RemarkController::class, 'deleteSboRemarkInOfficerDocumentResponse']);
     
         

@@ -104,7 +104,7 @@ class CampusAdviserController extends Controller
     public function getAvailableUser()
     {
         $users = User::whereHas('roles', function ($query) {
-            $query->where('name', '!=', 'osas');
+            $query->where('name',  'guest');
         })->get();
         return new UserResource($users);
     }

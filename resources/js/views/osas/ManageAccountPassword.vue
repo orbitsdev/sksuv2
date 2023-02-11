@@ -17,20 +17,26 @@
         </template>
         <template #actions-area></template>
       </BaseTableSetup>
-      <BaseTable :thdata="['', 'Name',  'Role']" :isFetching="isFetching">
+      <BaseTable :thdata="['', 'Name', 'Email',  '']" :isFetching="isFetching">
         <template #data>
           <tr v-for="user in users" :key="user.id">
-            <td class=" whitespace-nowrap px-3 py-4 text-s relative w-12  sm:w-16 sm:px-8">
+            <!-- <td class=" whitespace-nowrap  py-4 text-s relative w-12  sm:w-16 sm:px-8">
               <input
                 v-model="selectedUsers"
                 :value="user"
                 type="checkbox"
                 class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
               />
-            </td>
-            <td class=" whitespace-nowrap px-3 py-4 text-s text-sm">
+            </td> -->
+            <td class=" whitespace-nowrap pl-6  py-4 text-s text-sm">
               <p class="font-rubik capitalize">
                 {{ user.first_name }} {{ user.last_name}}
+              </p>
+            </td>
+            
+            <td class=" whitespace-nowrap  py-4 text-s text-sm">
+              <p class="font-rubik capitalize">
+                {{ user.email}}
               </p>
 
 
@@ -38,20 +44,15 @@
             
 
             <td class=" whitespace-nowrap  py-4 text-s text-sm ">
-              <div v-if="user.roles.length > 0" class="inline-flex">
-                <StatusCard class="bg-green-700 text-white" v-for="role in user.roles" :key="role.id">
-                  
-                  {{ role.name }}
-              </StatusCard> 
-              </div>
-              <div v-else>
-                <span
-                  class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-                  >None</span
-                >
-              </div>
-            </td>
-            <td></td>
+              <button
+              @click="selecSchoolYear(user)"
+
+              type="button"
+              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+            >
+              <i class="fa-regular fa-pen-to-square"></i>
+            </button>  
+              </td>
           </tr>
         </template>
       </BaseTable>

@@ -3,17 +3,17 @@
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
-          <TableButton
-            v-if="selectedEndorsed.length > 0"
-            @click="showForm = true"
-            :mode="true"
-            class="mr-2"
-          >
-            <i class="fa-regular fa-trash-can mr-2"></i> Delete Selected
-          </TableButton>
+          
         </template>
         <template #filters-area> </template>
-        <template #actions-area> </template>
+        <template #actions-area>
+          <!-- <TableButton
+          v-if="selectedEndorsed.length > 0"
+          @click="showEndorsenmentForm = true"
+        >
+          <i class="fa-solid fa-share mr-2"></i> Endorsed
+        </TableButton> -->
+      </template>
       </BaseTableSetup>
     </template>
     <BaseTable
@@ -24,12 +24,12 @@
         <tr v-for="item in endorsed_applications" :key="item">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
             <!-- {{ item }} -->
-            <input
+            <!-- <input
               v-model="selectedEndorsed"
               :value="item.id"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
-            />
+            /> -->
           </td>
           <td class="text-sm py-4">
             <div class="flex items-center">
@@ -363,7 +363,7 @@
             </button>
             <button
               class="col-span-1 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
-              @click="showConfirmation = false"
+              @click="showReturnedConfirmationForm = false"
             >
               Close
             </button>
@@ -372,6 +372,67 @@
       </BaseDialog>
     </teleport>
 
+
+
+    
+    <teleport to="#app">
+      <BaseDialog :show="showEndorsenmentForm" :width="'620'" :preventClose="true">
+        <template #c-content>
+          <section class="mt-2">
+            <div>
+              <p class="text-base font-bold">Select School Year</p>
+              <NoDataCard v-if="school_years.length <= 0"> Empty </NoDataCard>
+              <select
+                @change="changeHandler"
+                v-else
+                v-model="selected_school_year"
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+              >
+                <option v-for="sy in school_years" :key="sy.id" :value="sy.id">
+                  SY. {{ sy.from }} - {{ sy.to }}
+                </option>
+              </select>
+            </div>
+          </section>
+         
+          <section class="mt-2">
+            <div>
+              <p class="text-base font-bold mt-4">Select User</p>
+              <NoDataCard v-if="users.length <= 0">Empty </NoDataCard>
+              <select
+                v-else
+                v-model="selected_"
+                class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
+              >
+                <option v-for="user in users" :key="user.id" :value="user.id">
+                {{ user.user.first_name }} - {{ user.user.last_name }} - {{ user.school.name }}
+                </option>
+              </select>
+            </div>
+          </section>
+
+          <div class="flex justify-end item-center pt-4">
+            <button
+              class="hover:shadow mr-2 rounded-md bg-white-600 px-3.5 py-1.5 text-base font-semibold leading-7 border shadow-sm hover:bg-white-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              @click="showEndorsenmentForm = false"
+            >
+              Close
+            </button>
+
+              <div
+                v-if="
+                  selected_ == null ||
+                  selected_school_year == null
+                "
+              ></div>
+              <div v-else>
+                <TableButton @click="showEndorseConfirmation = true"> <i class="fa-solid fa-share mr-2"></i>   Endorse </TableButton>
+              </div>
+          </div>
+        </template>
+      </BaseDialog>
+
+    </teleport>
     <GlobalErrorCard @close="requestHasError = null" :show="requestHasError != null">
       {{ requestHasError }}
     </GlobalErrorCard>
@@ -403,6 +464,8 @@ export default {
 
       showReturnedConfirmationForm: false,
       isReturning: false,
+
+      showEndorsenmentForm: false,
     };
   },
 

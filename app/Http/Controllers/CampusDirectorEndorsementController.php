@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\Endorsement;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -44,33 +45,59 @@ class CampusDirectorEndorsementController extends Controller
             
             $endorsement = Endorsement::where('id', $request->input('id'))->first();
 
+            $campus_director_role = Role::where('name', 'campus-director')->first();
+         
             if($endorsement->status == 'approved'){
                 $endorsement->update([
                     'status'=> 're-evaluating'
                 ]);
+
                 
+                if( $approval= $endorsement->response->response_approval()->where('role_id', $campus_director_role->id)->first()
+                ){
+                        $approval->update(['status'=> 're-evaluating']);
+                }
+
+
+                
+               
             }else{
                 $endorsement->update([
                     'status'=> 'approved'
                 ]);
+                
 
+                if( $approval= $endorsement->response->response_approval()->where('role_id', $campus_director_role->id)->first()
+                ){
+                        $approval->update(['status'=> 'approved']);
+                }
+
+                
             }
+            // $approval = $endorsement->response()->response_approval()->where('role_id', $campus_director_role)->first();
+            
 
             // $notification = Notification::create([
 
             // ]);
-            
+                
 
-            return response()->json(['scuuess']);
+            return response()->json(['scuuess',  $campus_director_role, $approval]);
         
 
         }
         public function returnform(Request $request){
             
             $endorsement = Endorsement::where('id', $request->input('id'))->first();
+            $campus_director_role = Role::where('name', 'campus-director')->first();
             $endorsement->update([
                 'status'=> 'returned'
             ]);
+
+            if( $approval= $endorsement->response->response_approval()->where('role_id', $campus_director_role->id)->first()
+            ){
+                    $approval->update(['status'=> 'returned']);
+            }
 
 
             return response()->json(['scuuess']);

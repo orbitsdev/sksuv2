@@ -133,11 +133,11 @@ export default {
   data() {
     return {
       form: {
-        first_name: "brian",
-        last_name: "orbino",
-        email: "osas@gmail.com",
-        password: "@admin123",
-        password_confirmation: "@admin123",
+        first_name: "",
+        last_name: "",
+        email: "@gmail.com",
+        password: "@password2!!",
+        password_confirmation: "@password2!!",
         role: null,
       },
       showPassword: false,

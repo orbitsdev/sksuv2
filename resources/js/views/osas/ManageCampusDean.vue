@@ -1,13 +1,11 @@
 use App\Models\CampusSboAdviser;
 <template>
-  <BaseCard class="relative" :subtitle="'CAMPUS DIRECTORS'">
+  <BaseCard class="relative" :subtitle="'Campus Deans'">
     <template #header>
-    
-
       <BaseTableSetup>
         <template #searchs-area>
           <TableButton class="mr-2" @click="showMainForm = true">
-            <i class="fa-solid fa-plus mr-1"></i> ADD CAMPUS DIRECTOR
+            <i class="fa-solid fa-plus mr-1"></i> ADD CAMPUS DEANS
           </TableButton>
           <BaseSearchInput :placeholder="'Search name ..'" v-model="search" />
         </template>
@@ -20,7 +18,7 @@ use App\Models\CampusSboAdviser;
         <template #actions-area>
           <TableButton
             @click="showDeleteConfirmation = true"
-            v-if="selectedDirectors.length > 0"
+            v-if="selctedDeans.length > 0"
             mode
           >
             <i class="fa-regular fa-trash-can mr-1"></i>
@@ -31,14 +29,14 @@ use App\Models\CampusSboAdviser;
     </template>
 
     <BaseTable
-      :thdata="['', 'Year', 'Campus Director Name', 'University', '']"
+      :thdata="['', 'Year', 'Campus Dean', 'University', '']"
       :isFetching="isFetching"
     >
       <template #data>
-        <tr v-for="item in campus_directors" :key="item.id">
+        <tr v-for="item in campus_deans" :key="item.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
             <input
-              v-model="selectedDirectors"
+              v-model="selctedDeans"
               :value="item.id"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
@@ -210,7 +208,7 @@ use App\Models\CampusSboAdviser;
 import axiosApi from "../../api/axiosApi";
 export default {
   created() {
-    this.getCampusDirectors();
+    this.getCampusDeans();
     this.getAllSchoolYears();
     // this.loadSchool();
     this.getUserWhereIsNotCampusAdviser();
@@ -231,7 +229,7 @@ export default {
       showMainForm: false,
       hasRequestError: null,
 
-      campus_directors: [],
+      campus_deans: [],
       users: [],
       schools: [],
       school_years: [],
@@ -244,7 +242,7 @@ export default {
       isAvailabeUserFetching: false,
       isSchoolFetching: false,
 
-      selectedDirectors: [],
+      selctedDeans: [],
       selectedCampusAdviser: null,
       showDeleteConfirmation: false,
       isDeleting: false,
@@ -296,15 +294,15 @@ export default {
       this.isDeleting = true;
 
       await axiosApi
-        .post("api/manage-campus-director/delete-selected", {
-          campus_directors_id: this.selectedDirectors,
+        .post("api/manage-campus-dean/delete-selected", {
+          campus_deans_id: this.selctedDeans,
         })
         .then((res) => {
           console.log(res);
 
           this.showDeleteConfirmation = false;
-          this.selectedDirectors = [];
-          this.getCampusDirectors();
+          this.selctedDeans = [];
+          this.getCampusDeans();
           this.getUserWhereIsNotCampusAdviser();
         })
         .catch((err) => {
@@ -316,13 +314,13 @@ export default {
         });
     },
 
-    async getCampusDirectors() {
+    async getCampusDeans() {
       this.isFetching = true;
 
       await axiosApi
-        .get("api/manage-campus-director/get-all-campus-director")
+        .get("api/manage-campus-dean/get-all-campus-dean")
         .then((res) => {
-          this.campus_directors = res.data.data;
+          this.campus_deans = res.data.data;
         })
         .catch((err) => {
           this.hasRequestError =
@@ -408,7 +406,7 @@ export default {
       };
       console.log(campus_director_data);
       await axiosApi
-        .post("api/manage-campus-director/create", campus_director_data)
+        .post("api/manage-campus-dean/create", campus_director_data)
         .then((res) => {
           // console.log(res.data.data ===1);
           
@@ -424,7 +422,7 @@ export default {
             
             
             this.getAllSchoolYears();
-            this.getCampusDirectors();
+            this.getCampusDeans();
             this.getUserWhereIsNotCampusAdviser();
           }
 
@@ -499,7 +497,7 @@ export default {
           search: this.search,
         })
         .then((res) => {
-          this.campus_directors = res.data.data;
+          this.campus_deans = res.data.data;
         });
     },
 

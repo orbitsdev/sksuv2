@@ -1,7 +1,7 @@
 <template>
   <BaseCard :subtitle="'Manage School Year'">
     <template #header>
-      {{ selectedSchoolYear }}  
+
       <BaseTableSetup>
         <template #searchs-area>
           <TableButton class="mr-2" @click="showForm = true">

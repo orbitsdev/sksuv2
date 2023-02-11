@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Response;
+use App\Models\CampusDean;
 use App\Models\Department;
 use App\Models\SboOfficer;
 use App\Models\SchoolYear;
@@ -77,6 +78,9 @@ class School extends Model
 
     public function campus_directors(){
         return $this->hasMany(CampusDirector::class);
+    }
+    public function campus_deans(){
+        return $this->hasMany(CampusDean::class);
     }
 
 }

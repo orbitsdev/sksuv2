@@ -475,7 +475,7 @@
               This way, the applicant can correct and resubmit the application for your
               review.
             </div>
-            {{ isReturning }}
+            {{remark_id}}
 
             <div class="mt-4">
               <p class="text-base font-bold leading-none text-gray-800">Remarks</p>
@@ -565,6 +565,7 @@
         <BaseDialog :show="showRemarksFormToEdit" :width="'500'" :preventClose="true">
           <template #c-content>
             <div class="relative">
+              {{ selectedRemark }}
               <h1 class="text-lg font-bold my-2 px-4">Remarks</h1>
               <ul class="max-h-80 overflow-y-auto border-t-2 rounded-t-lg px-4">
                 <RemarksCard
@@ -689,6 +690,7 @@
           </template>
         </BaseDialog>
       </teleport>
+
       <teleport to="#app">
         <BaseDialog :show="showEndorseConfirmation" :width="'400'" :preventClose="true">
           <template #c-content>
@@ -897,21 +899,22 @@ export default {
     },
 
     async updateRemark() {
-      this.isUpdating = true;
+      // this.isUpdating = true;
       let remark_data = {
         response_id: this.selectedItem.id,
         remark_id: this.selectedRemark,
         message: this.remarksForEdit,
-      };
+     };   
+     console.log(remark_data);
 
       await axiosApi
         .post("api/form/remark/update", remark_data)
         .then((res) => {
-          this.getAllOfficersApplications();
           this.remarksForEdit = "";
           this.selectedRemark = null;
           this.showRemarksFormToEdit = false;
           this.selectedItem = null;
+          this.getAllOfficersApplications();
         })
         .catch((err) => {
           this.hasRequestError =

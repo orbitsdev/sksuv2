@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\School;
 use App\Models\Approval;
 use App\Models\Response;
+use App\Models\CampusDean;
 use App\Models\SboOfficer;
 use App\Models\Notification;
 use App\Models\SocialAccount;
@@ -121,6 +122,13 @@ class User extends Authenticatable
     
     public function campus_director(){
         return $this->hasOne(CampusDirector::class);
+    }
+    public function campus_deans(){
+        return $this->hasMany(CampusDean::class);
+    }
+    
+    public function campus_dean(){
+        return $this->hasOne(CampusDean::class);
     }
 
 }

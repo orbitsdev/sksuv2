@@ -2,8 +2,6 @@ import { createRouter } from "vue-router";
 import { createWebHistory } from "vue-router";
 import store from "../store/store.js";
 
-
-
 const routes = [
     {
         name: "googledriveupload",
@@ -71,9 +69,6 @@ const routes = [
         component: () => import("../views/FormPage.vue"),
     },
 
-
-   
-
     {
         name: "dashboard",
         path: "/dashboard",
@@ -83,122 +78,175 @@ const routes = [
             {
                 name: "manage-school-year",
                 path: "osas/manage-school-year",
-                component: () => import("../views/OSAS/ManageSchoolYear.vue"),
+                component: () => import("../views/osas/ManageSchoolYear.vue"),
                 meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [],
             },
-          
-          
-            {
-                name: "manage-university",
-                path: "osas/manage-university",
-                component: () => import("../views/OSAS/ManageSchool.vue"),
-                meta: { requireAuth: true, allowedRoles: ["osas"] },
-                children: [],
-            },
-            {
-                name: "manage-requirement",
-                path: "osas/manage-requirement",
-                component: () => import("../views/OSAS/ManageRequirement.vue"),
-                meta: { requireAuth: true, allowedRoles: ["osas"] },
-                children: [],
-            },
-            {
-                name: "manage-sbo-adviser",
-                path: "osas/manage-sbo-adviser",
-                component: () => import("../views/OSAS/ManageSboAdviser.vue"),
-                meta: { requireAuth: true, allowedRoles: ["osas"] },
 
+            {
+                name: "manage-university-tabs",
+                path: "osas/manage-university/pages",
+                component: () => import("../views/osas/UniversityPageTab.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
                 children: [
-                    
                     {
-                        name: "manage-sbo-adviser-adviser",
-                        path: "advisers",
-                        component: () => import("../views/OSAS/SboAdviser.vue"),
-                        meta: { allowedRoles: ["osas"] },
+                        name: "manage-univeristy",
+                        path: "university",
+                        component: () =>
+                            import("../views/osas/ManageSchool.vue"),
+                        meta: { requireAuth: true, allowedRoles: ["osas"] },
+                        children: [],
+                    },
+                    {
+                        name: "manage-organizations",
+                        path: "university",
+                        component: () =>
+                            import("../views/osas/ManageDepartment.vue"),
+                        meta: {
+                            requireAuth: true,
+                            allowedRoles: ["sbo-adviser", "osas"],
+                        },
+                        children: [],
+                    },
+                ],
+
+                redirect: { name: "manage-univeristy" },
+            },
+            {
+                name: "manage-account-tabs",
+                path: "osas/manage-account/pages",
+                component: () => import("../views/osas/ManageAccountTab.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
+                children: [
+                    {
+                        name: "manage-account-password",
+                        path: "manageaccount",
+                        component: () =>
+                            import("../views/osas/ManageAccountPassword.vue"),
+                        meta: { requireAuth: true, allowedRoles: ["osas"] },
+                        children: [],
                     },
                     {
                         name: "manage-sbo-adviser-user",
                         path: "users",
                         component: () =>
-                            import("../views/OSAS/SboAdviserUser.vue"),
+                            import("../views/osas/SboAdviserUser.vue"),
                         meta: { allowedRoles: ["osas"] },
                     },
+                    {
+                        name: "manage-campus-director",
+                        path: "manage/campus-director",
+                        component: () =>
+                            import("../views/osas/ManageCampusDirector.vue"),
+                        meta: { allowedRoles: ["osas"] },
+                    },
+                    {
+                        name: "manage-campus-deans",
+                        path: "manage/campus-deans",
+                        component: () =>
+                            import("../views/osas/ManageCampusDean.vue"),
+                        meta: { allowedRoles: ["osas"] },
+                    },
+                ],
+
+                redirect: { name: "manage-account-password" },
+            },
+
+            {
+                name: "manage-application-tabs",
+                path: "osas/manage-application/page",
+                component: () =>
+                    import("../views/osas/ManageApplicationTab.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
+                children: [
+                    {
+                        name: "manage-requirement",
+                        path: "osas/manage-requirement",
+                        component: () =>
+                            import("../views/osas/ManageRequirement.vue"),
+                        meta: { requireAuth: true, allowedRoles: ["osas"] },
+                        children: [],
+                    },
+                    {
+                        name: "manage-application",
+                        path: "osas/manage-application",
+                        component: () =>
+                            import("../views/osas/ManageApplication.vue"),
+                        meta: { requireAuth: true, allowedRoles: ["osas"] },
+                    },
+                ],
+                redirect: { name: "manage-requirement" },
+            },
+
+            {
+                name: "manage-sbo-adviser",
+                path: "osas/manage-sbo-adviser",
+                component: () => import("../views/osas/ManageSboAdviser.vue"),
+                meta: { requireAuth: true, allowedRoles: ["osas"] },
+
+                children: [
+                    {
+                        name: "manage-sbo-adviser-adviser",
+                        path: "advisers",
+                        component: () => import("../views/osas/SboAdviser.vue"),
+                        meta: { allowedRoles: ["osas"] },
+                    },
+
                     {
                         name: "manage-sbo-adviser-request",
                         path: "requests",
                         component: () =>
-                            import("../views/OSAS/SboAdviserRequest.vue"),
+                            import("../views/osas/SboAdviserRequest.vue"),
                         meta: { allowedRoles: ["osas"] },
                     },
                 ],
             },
 
             {
-                name: "manage-campus-director",
-                path: "manage/campus-director",
-                component: () =>
-                    import("../views/OSAS/ManageCampusDirector.vue"),
-                meta: { allowedRoles: ["osas"] },
-            },
-            {
-                name: "manage-application",
-                path: "osas/manage-application",
-                component: () => import("../views/OSAS/ManageApplication.vue"),
-                meta: { requireAuth: true, allowedRoles: ["osas"] },
-            },
-           
-            {
-                name: "manage-roles",
-                path: "osas/manage-roles",
-                component: () => import("../views/OSAS/ManageRole.vue"),
-                meta: { requireAuth: true, allowedRoles: ["osas"] },
-            },
-
-            
-            {
                 name: "manage-organization",
                 path: "osas/manage-organization",
-                component: () => import("../views/OSAS/ManageDepartment.vue"),
-                meta: { requireAuth: true, allowedRoles: ["sbo-adviser", "osas"] },
+                component: () => import("../views/osas/ManageDepartment.vue"),
+                meta: {
+                    requireAuth: true,
+                    allowedRoles: ["sbo-adviser", "osas"],
+                },
                 children: [],
             },
-           
 
             // SEND  SBO ADVISER ROLE REQUES
             {
                 name: "sbo-adviser-makerequest",
                 path: "sbo-adviser/make-request",
                 component: () =>
-                    import("../views/SBO-ADVISER/MakeRequestPage.vue"),
+                    import("../views/sboadviser/MakeRequestPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["guest"] },
                 children: [],
             },
 
             // SBO ADVISER PAGE
-         
 
             {
                 name: "select-school-year-for-manage-officers",
                 path: "sbo-adviser/school-years",
-                component: () => import("../views/SBO-ADVISER/SchoolYearPage.vue"),
+                component: () =>
+                    import("../views/sboadviser/SchoolYearPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
             {
-                props:true,
+                props: true,
                 name: "select-school-for-manage-officers",
                 path: "sbo-adviser/school-years/school/:id",
-                component: () => import("../views/SBO-ADVISER/SchoolPage.vue"),
+                component: () => import("../views/sboadviser/SchoolPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
             {
-
-                props: true ,
+                props: true,
                 name: "manage-sbo-officers",
                 path: "sbo-adviser/school-years/school/manage-officer/:id",
-                component: () => import("../views/SBO-ADVISER/ManageOfficersPage.vue"),
+                component: () =>
+                    import("../views/sboadviser/ManageOfficersPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
@@ -206,7 +254,8 @@ const routes = [
             {
                 name: "schools-officers-documents",
                 path: "sbo-adviser/schools/documents",
-                component: () => import("../views/SBO-ADVISER/SchoolsDocuementPage.vue"),
+                component: () =>
+                    import("../views/sboadviser/SchoolsDocuementPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
@@ -214,25 +263,28 @@ const routes = [
             {
                 name: "schools-contain-endorsed-documents",
                 path: "sbo-adviser/schools/endorsed",
-                component: () => import("../views/SBO-ADVISER/SchoolContainEndorsedDocumentPage.vue"),
+                component: () =>
+                    import(
+                        "../views/sboadviser/SchoolContainEndorsedDocumentPage.vue"
+                    ),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
             {
                 name: "officers-documents",
                 path: "sbo-adviser/schools/documents/:id",
-                component: () => import("../views/SBO-ADVISER/DocumentPage.vue"),
+                component: () => import("../views/sboadviser/DocumentPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-adviser"] },
                 children: [],
             },
-            
 
             //SBO STUDENT
             {
-                props:true,
+                props: true,
                 name: "get-school-year-application",
                 path: "school-years/applications",
-                component: () => import("../views/SBO-STUDENT/SchoolYearApplicationPage.vue"),
+                component: () =>
+                    import("../views/sbostudent/SchoolYearApplicationPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
                 children: [],
             },
@@ -241,7 +293,7 @@ const routes = [
                 name: "application-from-osas",
                 path: "school-years/applications/:id",
                 component: () =>
-                    import("../views/SBO-STUDENT/ApplicationFormPage.vue"),
+                    import("../views/sbostudent/ApplicationFormPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
                 children: [],
             },
@@ -250,37 +302,35 @@ const routes = [
                 name: "take-application",
                 path: "school-years/applications/tak/:applicationId/:title",
                 component: () =>
-                    import("../views/SBO-STUDENT/FillupFormPage.vue"),
+                    import("../views/sbostudent/FillupFormPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
                 children: [],
-               
+
                 props: true,
             },
 
             {
-                props:true,
+                props: true,
                 name: "school-year-minitor-application",
                 path: "school-years/monitor",
-                component: () => import("../views/SBO-STUDENT/SchoolYearMonitorPage.vue"),
+                component: () =>
+                    import("../views/sbostudent/SchoolYearMonitorPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
                 children: [],
             },
             {
                 name: "monitor-applications",
                 path: "sbo-student/monitor/school/:id",
-                component: () => import("../views/SBO-STUDENT/MonitorPage.vue"),
+                component: () => import("../views/sbostudent/MonitorPage.vue"),
                 meta: { requireAuth: true, allowedRoles: ["sbo-student"] },
-               
-
             },
 
             {
-                
-                    name: "monitor-app",
-                    path: "sbo-student/monitor/applications/:id",
-                    component: () => import("../views/SBO-STUDENT/ApplicationPage.vue"),
-                    props: true,
-                
+                name: "monitor-app",
+                path: "sbo-student/monitor/applications/:id",
+                component: () =>
+                    import("../views/sbostudent/ApplicationPage.vue"),
+                props: true,
             },
 
             //CAMPUS DIRECTOR
@@ -288,12 +338,13 @@ const routes = [
             {
                 name: "campus-director-endorsed-application",
                 path: "campus-director-endorsed-application-from-sbo-adviser",
-                component: () => import("../views/CAMPUS-DIRECTOR/CampusDirectorSchoolsEndorsmentDocuementPage.vue"),
+                component: () =>
+                    import(
+                        "../views/campusdirector/CampusDirectorSchoolsEndorsmentDocuementPage.vue"
+                    ),
                 meta: { requireAuth: true, allowedRoles: ["campus-director"] },
                 children: [],
             },
-
-
         ],
     },
 

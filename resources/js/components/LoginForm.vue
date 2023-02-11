@@ -118,8 +118,8 @@ export default {
   data() {
     return {
       form: {
-        email: "osas@gmail.com",
-        password: "@admin123",
+        email: "@gmail.com",
+        password: "@password2!!",
         device_name: "chrome",
       },
       showPassword: false,
