@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Vpa;
 use App\Models\School;
 use App\Models\CampusDean;
 use App\Models\CampusDirector;
@@ -43,13 +44,10 @@ class SchoolYear extends Model
     }
 
 
+    public function vpas(){
+        return $this->hasMany(Vpa::class);
+    }
 
-    
-
-
-
-
-    
 
     
 }

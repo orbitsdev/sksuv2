@@ -59,6 +59,12 @@ const routes = [
         meta: { requireAuth: true },
     },
     {
+        name: "waiting-page",
+        path: "/guest",
+        component: () => import("../views/WaitingPage.vue"),
+        meta: { requireAuth: true },
+    },
+    {
         name: "notauhtorize",
         path: "/401",
         component: () => import("../views/NoAuthorizePage.vue"),
@@ -145,6 +151,13 @@ const routes = [
                         path: "manage/campus-deans",
                         component: () =>
                             import("../views/osas/ManageCampusDean.vue"),
+                        meta: { allowedRoles: ["osas"] },
+                    },
+                    {
+                        name: "manage-vpa",
+                        path: "manage/vpa",
+                        component: () =>
+                            import("../views/osas/ManageVpa.vue"),
                         meta: { allowedRoles: ["osas"] },
                     },
                 ],

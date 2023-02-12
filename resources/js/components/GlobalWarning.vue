@@ -8,7 +8,6 @@
           :show="show"
           :width="'360'"
           :preventClose="true"
-          class="h-96 bg-red-200"
         >
           <template #c-content>
             <div class="flex items-center jusity-center flex-col ">

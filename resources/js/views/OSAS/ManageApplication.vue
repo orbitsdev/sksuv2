@@ -1,4 +1,4 @@
-use App\Models\SchoolYear;
+
 <template>
   <BaseCard :subtitle="'Manage Form'">
     <template #header>
@@ -48,7 +48,7 @@ use App\Models\SchoolYear;
                 </div>
               </div>
             </td>
-            <td class="whitespace-nowrap py-4 align-top">
+            <td class="whitespace-nowrap py-4 align-top ">
               <p class="mb-2 font-bold uppercase">Requestments</p>
 
               <div v-if="item.fields.length > 0">
@@ -64,7 +64,7 @@ use App\Models\SchoolYear;
               </div>
 
               <div v-if="item.requirements.length > 0">
-                <w-divider class="my6 my-2"></w-divider>
+                <w-divider class="my6 my-2 mr-6"></w-divider>
                 <p class="mb-2 font-bold uppercase">Requestments</p>
                 <div class="grid grid-cols-1 gap-1 break-words">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
@@ -82,7 +82,7 @@ use App\Models\SchoolYear;
               </div>
             </td>
 
-            <td class="whitespace-nowrap py-4 align-top">
+            <td class="whitespace-nowrap py-4 align-top pr-2">
               <div
                 class="grid grid-cols-1 gap-1 break-words"
                 v-if="item.application_form_approvals.length > 0"
@@ -99,14 +99,14 @@ use App\Models\SchoolYear;
                 None
               </StatusCard>
             </td>
-            <td class="whitespace-nowrap py-4 align-top">
+            <td class="whitespace-nowrap py-4 align-top pr-2 ">
               <StatusCard class="capitalize bg-sky-700 text-white">
                 {{ item.status }}
               </StatusCard>
             </td>
 
             <td
-              class="align-top relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+              class="align-top relative whitespace-nowrap py-4 pl-3  text-right text-sm font-medium  px-2 "
             >
             <div class="grid grid-cols-1">          
               <button

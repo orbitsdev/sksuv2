@@ -43,7 +43,10 @@ class ManageSchoolController extends Controller
      
     public function search(Request $request)
     {
-        $schools  = School::where('name', 'like', '%' . $request->input('search') . '%')->with('files','departments')->get();
+        $schools  = School::when($request->input('search'), function($query) use($request){
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        })->with('school_year','files','departments')->get();
+
         return new SchoolResource($schools);
     }
 
@@ -104,7 +107,7 @@ class ManageSchoolController extends Controller
     
     public function index()
     {
-        return new SchoolResource(School::with('school_year','files','departments')->paginate(20));
+        return new SchoolResource(School::with('school_year','files','departments')->get());
     }
 
     /**

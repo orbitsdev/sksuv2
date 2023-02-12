@@ -4,7 +4,9 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\CampusDirector;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VpaController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\GoogleController;
@@ -66,6 +68,12 @@ Route::get('/role', function () {
     return redirect()->to('/authorize/google/callback?code=anna');
 });
 
+// Manage User Account 
+
+Route::get('/get-user-without-google', [AccountController::class, 'getUser']);
+Route::post('/search-user-account', [AccountController::class, 'search']);
+Route::post('/change-user-password', [AccountController::class, 'changePassword']);
+
 
 // Route::group(['middleware' => ['auth:sanctum']], function () {
     // FILEPOND
@@ -100,12 +108,20 @@ Route::get('/role', function () {
     Route::post('campus/campus-adviser/update', [CampusAdviserController::class, 'updateCampusAdviser']);
     Route::post('campus/campus-adviser/search', [CampusAdviserController::class, 'search']);
     
+    // Manage VPA
+    Route::get('available-users', [VpaController::class, 'getUsers']);
+    Route::get('vpa/create', [VpaController::class, 'create']);
+    Route::post('vpa/search', [VpaController::class, 'search']);
+    Route::post('vpa/create', [VpaController::class, 'create']);
+    Route::post('vpa/delete-selected', [VpaController::class, 'deleteSelected']);
 
     // MANAGE SBO ADVISERS
     Route::post('sbo-advisers/search', [ManageSboAdviserControlller::class, 'search']);
     Route::post('sbo-advisers/filter', [ManageSboAdviserControlller::class, 'filter']);
     Route::post('sbo-advisers/make-user-as-adviser', [ManageSboAdviserControlller::class, 'makeUsersAsAdviser']);
     Route::apiResource('sbo-advisers', ManageSboAdviserControlller::class);
+
+
 
     // SBO ROLE REQUEST
     Route::post('sbo-requests/confirm-selected-request', [SboAdviserRequestController::class, 'confirmSelectedSbo']);
@@ -149,6 +165,8 @@ Route::get('/role', function () {
     Route::post('manage-applications/search', [ApplicationFormController::class, 'search']);
     Route::post('manage-applications/make-application-public', [ApplicationFormController::class, 'makeApplicationPublic']);
     Route::post('manage-applications/delete-selected', [ApplicationFormController::class, 'deleteSelectedApplicationForm']);
+
+
 
 
     //Forms

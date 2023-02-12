@@ -20,7 +20,9 @@ class DepartmentController extends Controller
 
     public function search(Request $request){
 
-        $departments = Department::where('name', 'like', '%'.$request->input('search').'%')->with(['school.school_year'])->get();
+        $departments = Department::when($request->input('search'), function($query) use($request){
+            $query->where('name', 'like', '%'.$request->input('search').'%');
+        })->with(['school.school_year'])->get();
 
         return new DepartmentResource($departments);
     }

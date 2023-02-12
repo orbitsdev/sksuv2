@@ -62,6 +62,8 @@ import FormParentCard from './components/FormParentCard.vue';
 import FormChildCard from './components/FormChildCard.vue';
 import WhiteButton from './components/WhiteButton.vue';
 import TabCard from './components/TabCard.vue';
+import AuhtenticatedNav from './components/AuhtenticatedNav.vue';
+import InstructionCard from './components/InstructionCard.vue';
 
 
 
@@ -145,6 +147,8 @@ app.component('FormParentCard', FormParentCard);
 app.component("FormChildCard", FormChildCard);
 app.component("WhiteButton", WhiteButton);
 app.component("TabCard", TabCard);
+app.component("AuhtenticatedNav", AuhtenticatedNav);
+app.component("InstructionCard", InstructionCard);
 
 
 

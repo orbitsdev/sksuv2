@@ -154,16 +154,19 @@
               <BaseSpinner />
             </div>
             <div v-else>
-              <TableButton
-                v-if="this.departmentSelected == null"
+
+              <div v-if="selected_school != null">
+                <TableButton
+                v-if="this.departmentSelected == null "
                 class=""
                 @click="createDepartment"
-              >
+                >
                 Save
               </TableButton>
               <TableButton v-else class="" @click="updateDepartment">
                 Update
               </TableButton>
+            </div>
             </div>
           </div>
         </template>
@@ -285,9 +288,9 @@ export default {
           this.isSchoolYearFetching = false;
         });
     },
-    async searDepartment() {
 
 
+    searDepartment: _.debounce(async function () {
       await axiosApi
         .post("api/manage-department-search", {
           search: this.search,
@@ -295,7 +298,8 @@ export default {
         .then((res) => {
           this.departments = res.data.data;
         });
-    },
+    }, 300),
+   
 
     
 

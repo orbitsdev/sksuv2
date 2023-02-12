@@ -270,19 +270,19 @@ export default {
     clearSelectedSchool() {
       this.selectedSchool = [];
     },
-    async searchSchool() {
-      axiosApi
+
+
+    searchSchool: _.debounce(async function () {
+      await axiosApi
         .post("api/schools/search", {
           search: this.search,
         })
         .then((res) => {
-          // console.log(res.data.data);
-
           this.schools = res.data.data;
-          // this.schools = res.data;
-          // this.loadSchool();
         });
-    },
+    }, 300),
+
+   
     async deleteSelectedSchool() {
       this.customConfirmationDialog({
         passFunction: async () => {

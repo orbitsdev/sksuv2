@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Vpa;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\Approval;
@@ -46,7 +47,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        
         'remember_token',
     ];
 
@@ -129,6 +130,13 @@ class User extends Authenticatable
     
     public function campus_dean(){
         return $this->hasOne(CampusDean::class);
+    }
+
+    public function vpas(){
+        return $this->hasMany(Vpa::class);
+    }
+    public function vpa(){
+        return $this->hasOne(Vpa::class);
     }
 
 }

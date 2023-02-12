@@ -1,5 +1,5 @@
 <template>
-  <BaseCard :subtitle="'Mange Users Account'">
+  <BaseCard :subtitle="'Manage Users Account'">
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
@@ -12,12 +12,10 @@
           </TableButton>
           <BaseSearchInput :placeholder="'Search Name ...'" v-model="search" />
         </template>
-        <template #filters-area>
-         
-        </template>
+        <template #filters-area> </template>
         <template #actions-area></template>
       </BaseTableSetup>
-      <BaseTable :thdata="['', 'Name', 'Email',  '']" :isFetching="isFetching">
+      <BaseTable :thdata="['Name', 'Email', 'Password', '']" :isFetching="isFetching">
         <template #data>
           <tr v-for="user in users" :key="user.id">
             <!-- <td class=" whitespace-nowrap  py-4 text-s relative w-12  sm:w-16 sm:px-8">
@@ -28,31 +26,33 @@
                 class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
               />
             </td> -->
-            <td class=" whitespace-nowrap pl-6  py-4 text-s text-sm">
+            <td class="whitespace-nowrap pl-6 py-4 text-s text-sm">
               <p class="font-rubik capitalize">
-                {{ user.first_name }} {{ user.last_name}}
+                {{ user.first_name }} {{ user.last_name }}
               </p>
             </td>
-            
-            <td class=" whitespace-nowrap  py-4 text-s text-sm">
+
+            <td class="whitespace-nowrap py-4 text-s text-sm">
               <p class="font-rubik capitalize">
-                {{ user.email}}
+                {{ user.email }}
               </p>
-
-
             </td>
-            
 
-            <td class=" whitespace-nowrap  py-4 text-s text-sm ">
+            <td class="whitespace-nowrap py-4 text-s text-sm">
+              <p class="font-rubik capitalize">
+                {{ user.password }}
+              </p>
+            </td>
+
+            <td class="whitespace-nowrap py-4 text-s text-sm">
               <button
-              @click="selecSchoolYear(user)"
-
-              type="button"
-              class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
-            >
-              <i class="fa-regular fa-pen-to-square"></i>
-            </button>  
-              </td>
+                @click="handleAccountSelection(user)"
+                type="button"
+                class="inline-flex items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
+              >
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+            </td>
           </tr>
         </template>
       </BaseTable>
@@ -61,8 +61,6 @@
     <teleport to="#app">
       <BaseDialog :show="showRolesForm" :width="'500'" :preventClose="true">
         <template #c-content>
-
-          {{selectedRole}}
           <p class="text-base font-bold">Choose Roles</p>
           <w-divider class="my6"></w-divider>
           <div v-if="isRoleFetching" class="flex justify-center my-4">
@@ -74,7 +72,6 @@
                 <input
                   type="checkbox"
                   @change="handleRoleSelection(parentindex, role)"
-
                   class="w-4 h-4 accent-green-600 text-white mr-1 border-blue-700 border-2 cursor-pointer"
                   :id="role.id"
                   v-model="role.isSelected"
@@ -141,22 +138,61 @@
     </teleport>
 
     <teleport to="#app">
-      <BaseDialog :show="showConfirmationDialog" :width="'500'" :preventClose="true">
+      <BaseDialog :show="showUpdateAccountForm" :width="'500'" :preventClose="true">
         <template #c-content>
-          <h1 class="font-bold">
-            Are Your Sure? Do you want to update users account? 
-          </h1>
+          <aside class="rounded-lg flex item-center">
+            <div
+              class="rounded-l flex items-center justify-center w-36 bg-gradient-to-r from-blue-500 to-blue-600"
+            >
+              <i class="fa-solid fa-triangle-exclamation text-4xl text-white"></i>
+            </div>
+            <div
+              class="rounded-r bg-gradient-to-r from-blue-500 to-blue-600 to-green-700 px-4 py-4"
+            >
+              <p class="font-rubik text leading-5 text-white">
+                We recommend to change password only if user are unable to access account
+                or have forgotten password.
+              </p>
+            </div>
+          </aside>
+          <div class="mt-4">
+            <p class="text-base font-bold">Enter New Pasword</p>
+            <BaseInput v-model="form.password" :hasError="validationError.password" />
+          </div>
 
-          <w-divider class="my6 my-2"></w-divider>
           <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" @click="showRolesForm = false">
+            <TableButton mode class="mr-2" @click="handleCloseSelection">
               Close
             </TableButton>
             <div class="my-1 mx-2" v-if="isSaving">
               <BaseSpinner />
             </div>
             <div v-else>
-              <TableButton class=""> Yes </TableButton>
+              <TableButton class="" @click="showConfirmationDialog = true">
+                Update Account
+              </TableButton>
+            </div>
+          </div>
+        </template>
+      </BaseDialog>
+    </teleport>
+    <teleport to="#app">
+      <BaseDialog :show="showConfirmationDialog" :width="'500'" :preventClose="true">
+        <template #c-content>
+          <ConfirmCard
+            :title="'Are you sure do you want to update user account password?'"
+          >
+          </ConfirmCard>
+
+          <div class="my-2 flex justify-end">
+            <TableButton mode class="mr-2" @click="showConfirmationDialog = false">
+              No
+            </TableButton>
+            <div class="my-1 mx-2" v-if="isConfirming">
+              <BaseSpinner />
+            </div>
+            <div v-else>
+              <TableButton class="" @click="changePassword"> Yes </TableButton>
             </div>
           </div>
         </template>
@@ -171,6 +207,11 @@ import axiosApi from "../../api/axiosApi";
 export default {
   data() {
     return {
+      form: {
+        email: "",
+        password: "",
+      },
+      validationError: {},
       search: "",
       filterBy: "none",
       users: [],
@@ -186,13 +227,17 @@ export default {
       isSaving: false,
       showRolesForm: false,
       showConfirmationDialog: false,
+      showUpdateAccountForm: false,
+      selectedAccount: null,
+      requestHasError: null,
+      isConfirming: false,
     };
   },
 
   created() {
     this.loadUsers();
-    this.loadSchool();
-    this.LoadRoles();
+    // this.loadSchool();
+    // this.LoadRoles();
   },
 
   watch: {
@@ -202,17 +247,72 @@ export default {
   },
 
   methods: {
-    handleRoleSelection(parentindex, role){
+    async changePassword() {
+      this.isConfirming = true;
+      let password = this.form.password;
 
+      let account_data = {
+        id: this.selectedAccount.id,
+        password: password,
+      };
+
+      await axiosApi
+        .post("api/change-user-password", account_data)
+        .then((res) => {
+          this.showConfirmationDialog = false;
+          this.showUpdateAccountForm = false;
+          this.selectedAccount = null;
+          this.form.password = "";
+          this.showToast({ title: "Succesfully Update" });
+          this.loadUsers();
+        })
+        .catch((err) => {
+          this.showConfirmationDialog = false;
+          if (err.response.status === 422) {
+            this.validationError = err.response.data.errors;
+          } else {
+            this.requestHasError =
+              "Opp seems like there was an error when chnaging password, Try again or contact the developer if error keep occurig";
+          }
+        })
+        .finally(() => {
+          this.isConfirming = false;
+        });
+    },
+
+    showToast({ title = "Succesfully Saved" }) {
+      this.$swal({
+        position: "top-end",
+        icon: "success",
+        showConfirmButton: false,
+        title: title,
+        timer: 1700,
+        toast: true,
+        width: "300px",
+        customClass: {
+          title: "text-red",
+        },
+      });
+    },
+    handleAccountSelection(item) {
+      this.selectedAccount = item;
+      this.showUpdateAccountForm = true;
+    },
+
+    handleCloseSelection() {
+      this.selectedAccount = null;
+      this.showUpdateAccountForm = false;
+    },
+
+    handleRoleSelection(parentindex, role) {
       console.log(parentindex);
       console.log(role);
-      this.roles.forEach(item=> {
+      this.roles.forEach((item) => {
         item.isSelected = false;
       });
 
       this.selectedRole = role.id;
       role.isSelected = true;
-
     },
     handleShowRolesForm() {
       this.showRolesForm = true;
@@ -251,7 +351,6 @@ export default {
         usersid.push(user.id);
       });
 
-
       this.isSaving = true;
       await axiosApi
         .post("api/manage-users-roles/change-role-selected-user", {
@@ -260,7 +359,7 @@ export default {
         })
         .then((res) => {
           this.selectedUsers = [];
-          this.selectedRole =null;
+          this.selectedRole = null;
           this.showRolesForm = false;
           this.loadUsers();
         })
@@ -279,12 +378,10 @@ export default {
           res.data.data.forEach((item) => {
             let modified_role = {
               ...item,
-              isSelected:false,
+              isSelected: false,
             };
 
-
             modified_roles.push(modified_role);
-
           });
 
           this.roles = modified_roles;
@@ -318,21 +415,20 @@ export default {
           this.isSchoolFetching = false;
         });
     },
-    async searchUser() {
+    searchUser: _.debounce(async function () {
       await axiosApi
-        .post("api/manage-users-roles/search", {
+        .post("api/search-user-account", {
           search: this.search,
-          
         })
         .then((res) => {
           this.users = res.data.data;
         });
-    },
+    }, 300),
 
     async loadUsers() {
       this.isFetching = true;
       await axiosApi
-        .get("api/manage-users-roles/get-users")
+        .get("api/get-user-without-google")
         .then((res) => {
           this.users = res.data.data;
         })

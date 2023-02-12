@@ -1,4 +1,14 @@
 <template>
+
+  <div>
+    
+    <InstructionCard class="mb-4 shadow pulse" :title="'Note '">
+      
+      <p index="40px" class="text-white font-rubok text-base font-semibold">
+       - Be aware that deleting shool year will also delete all attached files.
+      </p>
+    </InstructionCard> 
+
   <BaseCard :subtitle="'Manage School Year'">
     <template #header>
 
@@ -10,12 +20,13 @@
         </template>
         <template #actions-area>
           <TableButton
-            class="mr-2"
+            class=""
             mode
             @click="showConfirmation = true"
             v-if="selectedSchoolYears.length > 0"
           >
-            Delete School Yeaer
+          <i class="fa-regular fa-trash-can mr-2"></i>
+            Delete selected
             {{ selectedSchoolYears.length }}
           </TableButton>
         </template>
@@ -154,6 +165,8 @@
     <GlobalErrorCard  @close="requestError = null" :show="requestError != null">
     </GlobalErrorCard>
   </BaseCard>
+</div>
+
 </template>
 
 <script>
@@ -164,6 +177,8 @@ export default {
   components: {
   
   },
+
+
 
   created() {
     this.getAllSchoolYears();

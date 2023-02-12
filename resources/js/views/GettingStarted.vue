@@ -91,19 +91,16 @@
         </div>
       </div>
     </div>
-   
+
     <div v-if="isFetching" class="flex justify-center items-center h-screen">
-      <BaseSpinner/>
+      <BaseSpinner />
     </div>
     <div v-else class="m-7">
-    
       <div v-if="schools.length > 0" class="my-3">
         <h1 class="text-4xl font-bold">What University Are You In?</h1>
       </div>
-       
-      
+
       <ul
-        
         role="list"
         class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
       >
@@ -117,7 +114,8 @@
             <div v-if="school.files.length > 0">
               <img
                 class="mx-auto h-30 w-30 flex-shrink-0 rounded-xs"
-                :src="'/uploads/files/' +
+                :src="
+                  '/uploads/files/' +
                   school.files[0].owned_by +
                   '/' +
                   school.files[0].folder +
@@ -128,11 +126,11 @@
               />
             </div>
             <div v-else>
-            <img
-              class="mx-auto h-30 w-30 flex-shrink-0 rounded-xs"
-              :src="'/assets/undraw_welcome_re_h3d9.svg'"
-              alt=""
-            />
+              <img
+                class="mx-auto h-30 w-30 flex-shrink-0 rounded-xs"
+                :src="'/assets/undraw_welcome_re_h3d9.svg'"
+                alt=""
+              />
             </div>
 
             <!-- <h3 class="mt-6 text-sm font-medium text-gray-900">{{ school.name }}</h3> -->
@@ -155,13 +153,14 @@
     </div>
 
     <teleport to="#app">
-      <BaseDialog :show="selectedSchool != null" :width="'500'" :preventClose="true" >
+      <BaseDialog :show="selectedSchool != null" :width="'500'" :preventClose="true">
         <template #c-content>
           <p class="text-lg font-extrabold mb-1">{{ selectedSchool.name }}</p>
 
           <w-divider class="mb-1"></w-divider>
           <span class="text-sm text-gray-600">
-            Make sure to select school that you belong. If you think you made mistake you can request to the admin
+            Make sure to select school that you belong. If you think you made mistake you
+            can request to the admin
           </span>
           <div class="flex">
             <TableButton @click="selectedSchool = null" mode class="mt-4 mr-2"
@@ -199,9 +198,8 @@ export default {
     this.loadSchool();
   },
 
-
   computed: {
-    ...mapGetters(['User']),
+    ...mapGetters(["User"]),
   },
   data() {
     return {
@@ -238,52 +236,39 @@ export default {
       this.selectedSchool = newSchool;
     },
 
-    checkUserAccount(){
-
-if(this.User.hasRoleOf(['sbo-student', 'sbo-adviser', 'guest'])){
-
-  if(this.User.schools.length > 0){
-      
-    
-    this.$router.push({ name: 'dashboard'});
-      
-  }
-}
-
-},  
+    checkUserAccount() {
+      if (this.User.hasRoleOf(["sbo-student", "sbo-adviser", "guest"])) {
+        if (this.User.schools.length > 0) {
+          this.$router.push({ name: "dashboard" });
+        }
+      }
+    },
     async getUserDetails() {
+      const token = localStorage.getItem("token");
 
-const token = localStorage.getItem('token');
+      if (token != null) {
+        if (this.$store.state.User == null) {
+          this.isScreenLoading = true;
 
-if(token !=  null){
-
-  if(this.$store.state.User == null){
-    this.isScreenLoading = true;
-
-    this.$store.dispatch('getUser').then(res=>{         
-     this.$store.commit('setUser', res);
-     console.log("from fetch");
-     this.checkUserAccount();
-
-
-   }).catch(err=>{
-
-    this.requestError = err;
-    this.$store.dispatch('logoutUser');
-   }).finally(()=>{
-
-    this.isScreenLoading = false;
-
-
-   });
-
-  }else{
-    this.checkUserAccount();
-    
-  }
-}
-
-},
+          this.$store
+            .dispatch("getUser")
+            .then((res) => {
+              this.$store.commit("setUser", res);
+              console.log("from fetch");
+              this.checkUserAccount();
+            })
+            .catch((err) => {
+              this.requestError = err;
+              this.$store.dispatch("logoutUser");
+            })
+            .finally(() => {
+              this.isScreenLoading = false;
+            });
+        } else {
+          this.checkUserAccount();
+        }
+      }
+    },
 
     async logoutUser() {
       this.isLogout = true;
@@ -331,9 +316,8 @@ if(token !=  null){
 </script>
 
 <style scoped>
-
-
-.sv-image{
+.sv-image {
   width: 360px;
   height: auto;
-}</style>
+}
+</style>
