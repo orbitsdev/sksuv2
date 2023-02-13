@@ -1,7 +1,13 @@
 
 <template>
     <div class="py-6">
-  
+
+      <InstructionCard v-if="(schools.length > 0 && !isFetching)" class="mb-4 shadow pulse" :title="'GUIDE '">
+      
+        <p index="40px" class="text-white font-rubok text-base font-semibold">
+          Here your applied  application based on the year .
+        </p>
+      </InstructionCard> 
       <div v-if="isFetching" class="flex items-center justify-center h-96">
         <Loader1 />
       </div>

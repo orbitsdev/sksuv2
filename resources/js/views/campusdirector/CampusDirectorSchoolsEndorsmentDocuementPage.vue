@@ -1,4 +1,10 @@
 <template>
+  <InstructionCard  class="mb-4 shadow pulse" :title="'Note '">
+      
+    <p index="40px" class="text-white font-rubok text-base font-semibold">
+      - Below Are the list of applcation  that endorsed by SBO ADVISER. Base on Year and univeristy
+    </p>
+  </InstructionCard> 
   <BaseCard :subtitle="'Endorsed Docuements From Sbo Adviser'">
     <template #header>
       <BaseTableSetup>
@@ -57,9 +63,14 @@
           <td class="text-sm py-4">
             <div class="flex items-center capitalize">
               <StatusCard
+                class="bg-blue-100 text-blue-700"
+                v-if="item.status == 'processing'"
+                >{{ item.status }}</StatusCard
+              >
+              <StatusCard
                 class="bg-green-100 text-green-700"
                 v-if="item.status == 'approved'"
-                >{{ item.status }}</StatusCard
+                > {{ item.status }} </StatusCard
               >
               <StatusCard
                 class="bg-cyan-100 text-cyan-700"

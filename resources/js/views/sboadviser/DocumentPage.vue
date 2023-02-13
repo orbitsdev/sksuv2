@@ -18,6 +18,11 @@
         - If you need to make any changes or add additional information to an application, you can easily return it and add remarks
 
       </p>
+      <p index="40px" class="text-white font-rubok text-base font-semibold">
+        
+        - To view all endorsed documents go to edorsed document tab in the right side
+
+      </p>
     </InstructionCard> 
 
     <BaseCard :subtitle="'Officers Documents '">
@@ -229,6 +234,7 @@
                       v-if="item.response_approval.status == 'null'"
                       >Processing
                     </StatusCard>
+                   
                     <StatusCard
                       class="mt-2 capitalize bg-blue-100 text-blue-900"
                       v-if="item.response_approval.status == 'processing'"

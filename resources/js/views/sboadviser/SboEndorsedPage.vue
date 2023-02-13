@@ -2,7 +2,7 @@
 
 <template>
     <div>
-            Endorseed Page
+         Endorseed Page
     </div>
 </template>
 

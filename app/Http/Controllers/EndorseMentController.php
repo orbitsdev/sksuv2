@@ -37,7 +37,7 @@ class EndorseMentController extends Controller
                 'endorser_id'=> $campus_adviser->id,
                 'response_id'=> $r['id'],
                 'reciever_id'=> $request->input('reciever'),
-                'status'=> 'pending'
+                'status'=> 'processing'
             ]);
 
             // $campus_adviser->endorsements()->attach($new_endorsement->id);

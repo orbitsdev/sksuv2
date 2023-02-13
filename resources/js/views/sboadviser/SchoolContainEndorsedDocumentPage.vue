@@ -46,6 +46,11 @@
             
             <div class="flex items-center capitalize">
               <StatusCard
+                class="bg-blue-100 text-blue-700"
+                v-if="item.status == 'processing'"
+                >{{ item.status }}</StatusCard
+              >
+              <StatusCard
                 class="bg-green-100 text-green-700"
                 v-if="item.status == 'approved'"
                 >{{ item.status }}</StatusCard

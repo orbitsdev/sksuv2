@@ -11,7 +11,7 @@
 
         <div v-else>
 
-          <InstructionCard class="mb-4 shadow pulse" :title="'GUIDE '">
+          <InstructionCard v-if="!isFetching" class="mb-4 shadow pulse" :title="'GUIDE '">
       
             <p index="40px" class="text-white font-rubok text-base font-semibold">
              - Each Univeristy contain officers application. Select the university that you want to access 
