@@ -9,14 +9,11 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
           </TableButton>
           <BaseSearchInput :placeholder="'Search name ..'" v-model="search" />
         </template>
-        <template #filters-area>
-      
-        
-        </template>
+        <template #filters-area> </template>
         <template #actions-area>
           <TableButton
-            @click="showDeleteConfirmation = true"
             v-if="selected_vpas.length > 0"
+            @click="showDeleteConfirmation = true"
             mode
           >
             <i class="fa-regular fa-trash-can mr-1"></i>
@@ -27,7 +24,7 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
     </template>
 
     <BaseTable
-      :thdata="['', 'Year', 'Campus Director Name', 'University', '']"
+      :thdata="['', 'Year', 'Campus Director Name', '']"
       :isFetching="isFetching"
     >
       <template #data>
@@ -53,20 +50,13 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
             </p>
           </td>
 
-          <td class="whitespace-nowrap py-4 text-sm text-gray-900">
-            <StatusCard v-if="item.school != null" class="bg-green-700 text-white">
-              {{ item.school.name }}
-            </StatusCard>
-            <StatusCard v-else class="bg-gray-700 text-white"> None </StatusCard>
-          </td>
+        
           <td
             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
           ></td>
         </tr>
       </template>
     </BaseTable>
-
-  
 
     <teleport to="#app">
       <BaseDialog :show="showVpaForm" :width="'500'" :preventClose="true">
@@ -106,7 +96,7 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
           </section>
 
           <div class="my-2 flex justify-end">
-            <TableButton mode class="mr-2" @click="showVpaForm"> Close </TableButton>
+            <TableButton mode class="mr-2" @click="showVpaForm = false"> Close </TableButton>
             <div class="my-1 mx-2" v-if="isSaving">
               <BaseSpinner />
             </div>
@@ -114,15 +104,12 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
               <div
                 v-if="
                   selected_vpa == null ||
-                  selecated_school == null ||
                   selected_school_year == null
                 "
               ></div>
-              <div v-else>
-                <TableButton v-if="isUpdatingMode" class="" @click="updateCampusAdviser">
-                  Update
-                </TableButton>
-                <TableButton v-else class="" @click="addCampusDirector">
+              <div >
+             
+                <TableButton  class="" @click="createVpa">
                   Save
                 </TableButton>
               </div>
@@ -141,7 +128,7 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
       >
         <template #c-content>
           <ConfirmCard
-            :title="'Are you sure? Do you want to delete these Campus Advisers?'"
+            :title="'Are you sure? Do you want to delete these Vpaa'"
             :message="'Be mindful that deleting this data will also remove all associated informations. This action cannot be undone. Do you still wish to proceed?'"
           >
             <div class="col-span-1 flex justify-center items-center" v-if="isDeleting">
@@ -149,7 +136,7 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
             </div>
             <button
               v-else
-              @click="deleteSelectedCampusAdviser"
+              @click="deleteSelectedVpa"
               class="col-span-1 transition duration-150 ease-in-out hover:bg-red-600 bg-red-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
             >
               Yes
@@ -176,19 +163,18 @@ use App\Models\CampusSboAdviser; use App\Http\Controllers\VpaController;
 import axiosApi from "../../api/axiosApi";
 export default {
   created() {
-
     this.getSchoolYear();
     this.getUser();
-
+    this.getVpa();
   },
 
   data() {
     return {
       search: "",
-      vpas:[],
+      vpas: [],
       users: [],
       selected_vpas: [],
-      selected_vpa:null,
+      selected_vpa: null,
 
       hasRequestError: null,
       hasWarning: null,
@@ -202,8 +188,7 @@ export default {
       isSaving: false,
       isFetching: false,
       isSchoolYearFetching: false,
-      isFetchingUser:false,
-
+      isFetchingUser: false,
     };
   },
 
@@ -215,62 +200,144 @@ export default {
 
   methods: {
 
-    async getUser(){
+    searchVpa: _.debounce(async function () {
+      await axiosApi
+        .post("api/vpa/search", {
+          search: this.search,
+        })
+        .then((res) => {
+          this.vpas = res.data.data;
+        });
+    }, 300),
+
+    async getUser() {
       this.isFetchingUser = true;
 
-      await axiosApi.get('api/available-users').then(res=>{
-        this.users = res.data.data;
+      await axiosApi
+        .get("api/available-users")
+        .then((res) => {
+          this.users = res.data.data;
 
-        if( this.users.length  > 0){
-          this.selected_vpa = this.users[0].id;
-        }
-
-      }).catch((err) => {
-    this.hasRequestError =
-      '"Oops! It seems like there was an error when  fetchin available users school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
-  })
-  .finally(() => {
-    this.isSchoolYearFetching = false;
-  });
-
+          if (this.users.length > 0) {
+            this.selected_vpa = this.users[0].id;
+          }
+        })
+        .catch((err) => {
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when  fetchin available users school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+        })
+        .finally(() => {
+          this.isSchoolYearFetching = false;
+        });
     },
     selectVpa(item) {
       this.selectedItem = item;
     },
     async getVpa() {
       this.isFetching = true;
+
+      await axiosApi
+        .get("api/vpa")
+        .then((res) => {
+        // console.log(res.data);          
+          this.vpas = res.data.data;
+
+        
+        })
+        .catch((err) => {
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when when fetchib vpaa Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+        })
+        .finally(() => {
+          this.isFetching = false;
+        });
+
+      
     },
 
-    async createVpa() {},
+    async createVpa() {
+      this.isSaving = true;
+
+      let vpa_data = {
+        user_id: this.selected_vpa,
+        school_year_id: this.selected_school_year,
+      };
+      console.log(vpa_data);
+      await axiosApi
+        .post("api/vpa/create", vpa_data)
+        .then((res) => {
+          // console.log(res.data.data ===1);
+
+          if (res.data.data === 1) {
+            this.hasWarning =
+              '" User is already exist "';
+          } else {
+              this.showVpaForm = false;
+              this.getSchoolYear();
+              this.getUser();
+               this.getVpa();
+
+          }
+
+          console.log(res.data.data);
+        })
+        .catch((err) => {
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when adding campuse adviser Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+        })
+        .finally(() => {
+          this.isSaving = false;
+        });
+    },
 
     async getSchoolYear() {
-
       this.isSchoolYearFetching = true;
 
+      await axiosApi
+        .get("api/school-year-with-schools")
+        .then((res) => {
+          this.school_years = res.data.data;
+          if (this.school_years.length > 0) {
+            this.selected_school_year = this.school_years[0].id;
+
+            this.schools = this.school_years[0].schools;
+
+            if (this.schools.length > 0) {
+              this.selecated_school = this.schools[0].id;
+            }
+          }
+        })
+        .catch((err) => {
+          this.hasRequestError =
+            '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+        })
+        .finally(() => {
+          this.isSchoolYearFetching = false;
+        });
+    },
+
+async deleteSelectedVpa() {
+      this.isDeleting = true;
+
 await axiosApi
-  .get("api/school-year-with-schools")
+  .post("api/vpa/delete-selected", {
+    vpas: this.selected_vpas,
+  })
   .then((res) => {
-    this.school_years = res.data.data;
-    if (this.school_years.length > 0) {
-      this.selected_school_year = this.school_years[0].id;
-
-      this.schools = this.school_years[0].schools;
-
-      if (this.schools.length > 0) {
-        this.selecated_school = this.schools[0].id;
-      }
-    }
+       this.showDeleteConfirmation = false;
+      this.selected_vpas = [];
+      this.getSchoolYear();
+      this.getUser();
+      this.getVpa();
   })
   .catch((err) => {
     this.hasRequestError =
       '"Oops! It seems like there was an error when  fetchin information school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
   })
   .finally(() => {
-    this.isSchoolYearFetching = false;
+    this.isDeleting = false;
   });
     },
-
-    async deleteSelectedVpa() {},
   },
 };
 </script>

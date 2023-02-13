@@ -1,5 +1,14 @@
+
+
 <template>
   <div>
+
+    <InstructionCard class="mb-4 shadow pulse" :title="'Guide'">
+      
+      <p index="40px" class="text-white font-rubok text-base font-semibold">
+        - Each University can have officers.  Select your desire Univerisity / Camous
+      </p>
+    </InstructionCard> 
     
     <BackCard class="mb-4"  @click="this.$router.back()"/>
 

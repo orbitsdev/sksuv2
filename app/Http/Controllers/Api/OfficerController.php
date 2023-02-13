@@ -81,10 +81,25 @@ class OfficerController extends Controller
     {
 
 
-        // $campus_adviser = CampusSboAdviser::where('user_id', auth('sanctum')->user()->id)->whereHas('school', function ($query) use ($request) {
-        //     $query->where('id', $request->input('school_id'));
-        // })->with('school')->first();
+      
 
+       $officers = SboOfficer::whereIn('id', $request->input('officers'))->get();
+
+       $guest =  Role::where('name', 'guest')->first();
+
+        // $officer = $officers[0];
+        // return response()->json([$officer->student->sbo_officers]);
+
+
+       foreach($officers as $user){
+           
+           if(count($user->student->sbo_officers) <= 1){
+               $user->student->roles()->sync($guest->id);
+               
+           }
+           
+       }
+       
         SboOfficer::whereIn('id', $request->input('officers'))->delete();
         return response()->json(['succes',  200]);
     }
@@ -115,12 +130,9 @@ class OfficerController extends Controller
         $guest =         Role::where('name', 'guest')->first();
         $sbo =         Role::where('name', 'sbo-student')->first();
 
+        $student->roles()->sync($sbo->id);
 
 
-
-        if ($student->roles()->find($guest->id)) {
-            $student->roles()->sync($sbo->id);
-        }
 
         $officer_exist = SboOfficer::where('student_id', $request->input('student_id'))->where('school_id', $request->input('school_id'))->first();
 

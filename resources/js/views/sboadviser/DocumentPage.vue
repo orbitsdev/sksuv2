@@ -5,6 +5,21 @@
       <p class="text-2xl font-rubik font-bold text-green-700">{{ page }}</p>
     </div>
 
+
+    <InstructionCard class="mb-4 shadow pulse" :title="'GUIDE '">
+      
+      <p index="40px" class="text-white font-rubok text-base font-semibold">
+        
+        - Only approved applicaiton can be endorse to campus director and Deans
+
+      </p>
+      <p index="40px" class="text-white font-rubok text-base font-semibold">
+        
+        - If you need to make any changes or add additional information to an application, you can easily return it and add remarks
+
+      </p>
+    </InstructionCard> 
+
     <BaseCard :subtitle="'Officers Documents '">
       <template #header>
         <!-- <h1> {{confirmMode}}</h1> -->

@@ -47,10 +47,27 @@ class CampusAdviserController extends Controller
     public function deleteSelectedCampusAdviser(Request $request)
     {
 
-        $campuse_sbo_advisers = CampusSboAdviser::whereIn('id', $request->input('campus_advisers_id'))->with('user')->delete();
+        $campuse_sbo_advisers = CampusSboAdviser::whereIn('id', $request->input('campus_advisers_id'))->with('user')->get();
+            
+        $guest =         Role::where('name', 'guest')->first();
 
+      
 
+        foreach($campuse_sbo_advisers as $adviser){
+            
+            if(count($adviser->user->campus_sbo_advisers) <= 1){
+                $adviser->user->roles()->sync($guest->id);
+                
+            }
+            
+        }
+        
+        
+        CampusSboAdviser::whereIn('id', $request->input('campus_advisers_id'))->with('user')->delete();
+        
+        
         return response()->json(['success',]);
+        // return response()->json(['success', count($user->user->campus_sbo_advisers)]);
     }
 
     public function getAllCampusAdvisers()
@@ -72,12 +89,11 @@ class CampusAdviserController extends Controller
         
 
         $user = User::where('id', $request->input('user_id'))->first();
-
         $guest =         Role::where('name', 'guest')->first();
         $adviser =         Role::where('name', 'sbo-adviser')->first();
 
-
         $user->roles()->sync($adviser->id);
+       
 
 
         // check if is sbo-adviser withing this a year

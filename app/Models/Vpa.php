@@ -15,11 +15,14 @@ class Vpa extends Model
 
 
     public function school_year(){
-        return $this->belongTo(SchoolYear::class);
+
+        return $this->belongsTo(SchoolYear::class);
     }
+
+
     public function user(){
-        return $this->belongTo(User::class);
-    }
+        return $this->belongsTo(User::class);
+    } 
 
 
 

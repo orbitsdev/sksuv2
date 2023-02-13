@@ -15,7 +15,7 @@
     <TabCard> 
   
       <router-link :to="{ name: 'manage-requirement' }" class="block  rounded-t-lg  text-gray-600  text-sm focus:z-10 py-4 leading-4 text-center px-6 items-center text-center  font-rubik text-lg  border-b-4 border-grey-100  ">
-        <span>Requirements</span>
+        <span>Checklist</span>
   
       </router-link>
   

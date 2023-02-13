@@ -12,6 +12,12 @@
       </div>
     </div>
     <div v-else>
+      <InstructionCard class="mb-4 shadow pulse" :title="'GUIDE '">
+      
+        <p index="40px" class="text-white font-rubok text-base font-semibold">
+          Here is a list of available applications based on the selected year.
+        </p>
+      </InstructionCard> 
       <div v-if="applications.length > 0">
         <ul
           role="list"

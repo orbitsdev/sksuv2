@@ -1,5 +1,18 @@
 
 <template>
+
+  
+  <InstructionCard  class="mb-4 shadow pulse" :title="'Guide'">
+    
+
+    
+    <p index="40px" class="text-white font-rubok text-base font-semibold">
+      Each year holds different universities or campuses, meaning that you can manage officers based on the university or location where you assign
+    </p>     
+
+
+    
+  </InstructionCard> 
   <div class="py-6">
 
     <div v-if="isFetching" class="flex items-center justify-center h-96">

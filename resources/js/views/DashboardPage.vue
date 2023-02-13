@@ -89,7 +89,10 @@
                 >
                   <!-- Heroicon name: outline/folder -->
 
-                  <i class="fa-solid fa-calendar text-xl mr-4"></i>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-calendar text-xl mr-4"></i>
+                  </div>
 
                   Manage Year
                 </router-link>
@@ -99,7 +102,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <i class="fa-solid fa-school-flag text-xl mr-4"></i>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-school-flag text-xl mr-4"></i>
+                  </div>
                   Manage University
                 </router-link>
 
@@ -108,7 +114,10 @@
                   href="#"
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
+                <div class="w-9">
+
                   <i class="fa-solid fa-users text-xl mr-4"></i>
+                </div> 
                   Manage Users
                 </router-link>
 
@@ -118,7 +127,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <i class="fa-solid fa-list-check text-xl mr-4"></i>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-list-check text-xl mr-4"></i>
+                  </div>
                   Manage Applications Form
                 </router-link>
               </div>
@@ -130,21 +142,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <svg
-                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                    />
-                  </svg>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-building-user  text-xl mr-4"></i>
+                  </div>
                   Manage Organization
                 </router-link>
 
@@ -154,21 +155,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <svg
-                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                    />
-                  </svg>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-clipboard-user text-xl mr-4"></i>
+                  </div>
                   Manage Officers
                 </router-link>
                 <router-link
@@ -177,21 +167,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <svg
-                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                    />
-                  </svg>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-folder-open text-xl mr-4"></i>
+                  </div>
 
                   Officers Documents
                 </router-link>
@@ -201,21 +180,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <svg
-                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                    />
-                  </svg>
+                 <div class="w-9">
+
+                   <i class="fa-solid fa-handshake-simple text-xl   mr-4"></i>
+                  </div>
 
                   Endorsed Documents
                 </router-link>
@@ -227,21 +195,11 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <svg
-                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                    />
-                  </svg>
+                  <div class="w-9">
+
+                    <i class="fa-solid fa-file-signature text-xl   mr-4"></i>
+                   </div>
+                
                   Applications
                 </router-link>
                 <router-link
@@ -250,21 +208,10 @@
                   class="text-white hover:bg-green-600 group flex items-center px-2 py-2 text-base font-medium rounded-md font-rubik"
                 >
                   <!-- Heroicon name: outline/folder -->
-                  <svg
-                    class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                    />
-                  </svg>
+                  <div class="w-9">
+
+                    <i class="fa-solid fa-id-card-clip text-xl   mr-4"></i>
+                  </div>
                   Monitor Application
                 </router-link>
               </div>
@@ -453,6 +400,10 @@ export default {
     ...mapGetters(["User"]),
   },
   created() {
+  
+  },
+
+  mounted() {
     this.getUserDetails();
   },
   methods: {
@@ -461,33 +412,13 @@ export default {
     },
 
     checkUserAccount() {
-      if (this.$route.path == "/dashboard") {
-        if (this.User.hasRoleOf(["guest"])) {
-          this.$router.push({
-            name: "waiting-page",
-          });
-        }
+    
+    
 
-        //     if (this.User.schools.length == 0) {
-        //         this.$router.push({
-        //             name: "getting-started"
-        //         });
-        //     }
-
-        //     // redirect student to default page
-        //     if (this.User.hasRoleOf(["sbo-student"])) {
-        //         this.$router.push({
-        //             name: "application-from-osas"
-        //         });
-        //     }
-        // }
-
-        // if (this.User.hasRoleOf(["osas"])) {
-        //     this.$router.push({
-        //         name: "manage-school-year"
-        //     });
-        // }
+      if (this.User.hasRoleOf(["guest"])) {
+        this.$router.replace({ name: "waiting-page" });
       }
+      
     },
     async logoutUser() {
       this.isLogout = true;
@@ -516,11 +447,11 @@ export default {
         });
     },
     async getUserDetails() {
+      this.isScreenLoading = true;
       const token = localStorage.getItem("token");
 
       if (token != null) {
         if (this.$store.state.User == null) {
-          this.isScreenLoading = true;
 
           this.$store
             .dispatch("getUser")
@@ -537,8 +468,9 @@ export default {
               this.isScreenLoading = false;
             });
         } else {
-          console.log("has data");
+          // this.getUserDetails();
           this.checkUserAccount();
+          this.isScreenLoading = false;
         }
       }
     },

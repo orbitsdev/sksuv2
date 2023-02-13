@@ -220,7 +220,7 @@ export default {
     this.getAllCampusAdvisers();
     this.getAllSchoolYears();
     // this.loadSchool();
-    this.getUserWhereIsNotCampusAdviser();
+    this.getUsers();
   },
 
   data() {
@@ -288,7 +288,7 @@ export default {
           this.selecated_campuse_adviser = null;
           this.school_id = null;
           this.getAllCampusAdvisers();
-          this.getUserWhereIsNotCampusAdviser();
+          this.getUsers();
         })
         .catch((err) => {
           this.hasRequestError =
@@ -342,7 +342,7 @@ export default {
           this.showDeleteConfirmation = false;
           this.selectedAdvisers = [];
           this.getAllCampusAdvisers();
-          this.getUserWhereIsNotCampusAdviser();
+          this.getUsers();
         })
         .catch((err) => {
           this.hasRequestError =
@@ -415,10 +415,10 @@ export default {
         });
     },
 
-    async getUserWhereIsNotCampusAdviser() {
+    async getUsers() {
       this.isAvailabeUserFetching = true;
       await axiosApi
-        .get("api/campus-available-users")
+        .get("api/available-users")
         .then((res) => {
           this.users = res.data.data;
 
@@ -447,7 +447,7 @@ export default {
       await axiosApi
         .post("api/campus/campus-adviser", campus_sbo_data)
         .then((res) => {
-          // console.log(res.data.data ===1);
+         console.log(res.data);
           
 
           if (res.data.data ===1) {
@@ -462,10 +462,10 @@ export default {
             
             this.getAllSchoolYears();
             this.getAllCampusAdvisers();
-            this.getUserWhereIsNotCampusAdviser();
+            this.getUsers();
           }
 
-          console.log(res.data.data);
+          // console.log(res.data.data);
         })
         .catch((err) => {
           this.hasRequestError =

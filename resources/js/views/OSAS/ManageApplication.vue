@@ -1,4 +1,4 @@
-
+use App\Models\SchoolYear;
 <template>
   <BaseCard :subtitle="'Manage Form'">
     <template #header>
@@ -24,7 +24,7 @@
         </template>
       </BaseTableSetup>
       <BaseTable
-        :thdata="['', 'Title', 'Body', 'Approvers ', 'Status', '']"
+        :thdata="['', 'Title', 'Body', 'Approvers ', '']"
         :isFetching="isFetching"
       >
         <template #data>
@@ -48,7 +48,7 @@
                 </div>
               </div>
             </td>
-            <td class="whitespace-nowrap py-4 align-top ">
+            <td class="whitespace-nowrap py-4 align-top">
               <p class="mb-2 font-bold uppercase">Requestments</p>
 
               <div v-if="item.fields.length > 0">
@@ -64,7 +64,7 @@
               </div>
 
               <div v-if="item.requirements.length > 0">
-                <w-divider class="my6 my-2 mr-6"></w-divider>
+                <w-divider class="my6 my-2 mr-10"></w-divider>
                 <p class="mb-2 font-bold uppercase">Requestments</p>
                 <div class="grid grid-cols-1 gap-1 break-words">
                   <div v-for="requirement in item.requirements" :key="requirement.id">
@@ -82,7 +82,7 @@
               </div>
             </td>
 
-            <td class="whitespace-nowrap py-4 align-top pr-2">
+            <td class="whitespace-nowrap py-4 align-top">
               <div
                 class="grid grid-cols-1 gap-1 break-words"
                 v-if="item.application_form_approvals.length > 0"
@@ -99,30 +99,26 @@
                 None
               </StatusCard>
             </td>
-            <td class="whitespace-nowrap py-4 align-top pr-2 ">
-              <StatusCard class="capitalize bg-sky-700 text-white">
-                {{ item.status }}
-              </StatusCard>
-            </td>
+           
 
             <td
-              class="align-top relative whitespace-nowrap py-4 pl-3  text-right text-sm font-medium  px-2 "
+              class="align-top relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
             >
             <div class="grid grid-cols-1">          
-              <button
+              <!-- <button
                 :disabled="selectedApplicationForms.length > 0"
                 @click="makeApplicationPublic(item)"
                 type="button"
                 class="mb-1 z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
                 Make {{ item.status == "private" ? "Public" : "Private" }}
-              </button>
+              </button> -->
 
               <button
                 @click="showSampleForm(item.id)"
                 class="mb-1 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
-                View Form
+              <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>  View 
               </button>
               <button
                 :disabled="selectedApplicationForms.length > 0"
@@ -130,7 +126,7 @@
                 type="button"
                 class="mb-1 z-0 items-center rounded-md border outline:none border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-30 mr-1"
               >
-                <i class="fa-regular fa-pen-to-square"></i>
+                <i class="fa-regular fa-pen-to-square mr-2 "></i> Update
               </button>
             </div>
             </td>
@@ -368,15 +364,15 @@
       <BaseDialog
         class="bg-gray-200"
         :show="selectedApplicationToView != null"
-        :width="'600'"
+        :width="'800'"
         :preventClose="true"
       >
         <template #c-content>
-          <h1 class="mb-4 text-lg font-bold">( View only )</h1>
+            <p class="font-rubik my-2 text-lg text-green-700 font-bold"> View Only </p>
 
           <FormComponent :id="selectedApplicationToView" />
           <div class="">
-            <TableButton mode class="mr-2" @click="selectedApplicationToView = null">
+            <TableButton mode class="mt-4" @click="selectedApplicationToView = null">
               Close
             </TableButton>
           </div>

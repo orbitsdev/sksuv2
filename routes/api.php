@@ -110,7 +110,7 @@ Route::post('/change-user-password', [AccountController::class, 'changePassword'
     
     // Manage VPA
     Route::get('available-users', [VpaController::class, 'getUsers']);
-    Route::get('vpa/create', [VpaController::class, 'create']);
+    Route::get('vpa', [VpaController::class, 'getVpa']);
     Route::post('vpa/search', [VpaController::class, 'search']);
     Route::post('vpa/create', [VpaController::class, 'create']);
     Route::post('vpa/delete-selected', [VpaController::class, 'deleteSelected']);
@@ -197,7 +197,7 @@ Route::post('/change-user-password', [AccountController::class, 'changePassword'
     Route::post('manage-campus-director/delete-selected', [CampusDirectorController::class, 'deleteSelected']);
     
     //Manage Campus Deans
-    Route::get('manage-campus-dean/get-all-campus-dean', [CampusDeanController::class, 'getAllCampusDirectors']);
+    Route::get('manage-campus-dean/get-all-campus-dean', [CampusDeanController::class, 'getAllDeans']);
     Route::post('manage-campus-dean/create', [CampusDeanController::class, 'create']);
     Route::post('manage-campus-dean/delete-selected', [CampusDeanController::class, 'deleteSelected']);
     

@@ -1,4 +1,19 @@
 <template>
+
+
+  <InstructionCard  v-if="User.hasRoleOf(['sbo-adviser'])"  class="mb-4 shadow pulse" :title="'Note '">
+    
+
+    
+    <p index="40px" class="text-white font-rubok text-base font-semibold">
+      -  Be aware deleting a university will also delete all related data.
+    </p>     
+    <p index="40px" class="text-white font-rubok text-base font-semibold">
+      -  There should be atleast one university exist before you can create an organization.
+    </p> 
+
+    
+  </InstructionCard> 
   <BaseCard :subtitle="'Manage Organizations'">
    
     <template #header>
@@ -208,6 +223,7 @@
 
 <script>
 import axiosApi from "../../api/axiosApi";
+import { mapGetters } from "vuex";
 
 export default {
   created() {
@@ -241,6 +257,11 @@ export default {
       isSchoolYearFetching:false,
       requestHasError:null,
     };
+  },
+
+
+  computed: {
+    ...mapGetters(["User"]),
   },
 
   watch: {

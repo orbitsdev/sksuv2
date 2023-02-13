@@ -74,8 +74,8 @@
     </div>
     <div class="pt-2">
       <div class="flex justify-end">
-        <LinearLoader v-if="isUploading" />
-        <div v-else class="flex justify-center items-center">
+        <!-- <LinearLoader v-if="isUploading" /> -->
+        <div class="flex justify-center items-center">
           <button
             @click="handleClose"
             type="button"

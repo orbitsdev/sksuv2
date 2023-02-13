@@ -338,6 +338,8 @@ export default {
          
         })
         .then((res) => {
+
+          console.log(res.data);
           this.getOfficers();
           this.getStudent();
           this.selectedOfficers = [];
@@ -389,7 +391,8 @@ export default {
       await axiosApi
         .post("api/manage-officer/create-officer", newOfficer)
         .then((res) => {
-            console.log(res.data);
+          
+            // console.log(res.data);
 
               if (res.data.data ===1) {
                 this.hasWarning = '" A user with this name already exists. Please try a different one"';

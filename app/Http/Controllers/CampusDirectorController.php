@@ -21,6 +21,7 @@ class CampusDirectorController extends Controller
         $is_user_exist = $school_year->campus_directors()->where('user_id', $request->input('user_id'))->where('school_id', $request->input('school_id'))->first();
         $user = User::where('id', $request->input('user_id'))->first();
         $guest =         Role::where('name', 'guest')->first();
+        
         $adviser =         Role::where('name', 'campus-director')->first();
 
         $user->roles()->sync($adviser->id);
@@ -42,7 +43,23 @@ class CampusDirectorController extends Controller
     public function deleteSelected(Request $request)
     {
 
-        $campus_directors = CampusDirector::whereIn('id', $request->input('campus_directors_id'))->with('user')->delete();
+        $campus_directors = CampusDirector::whereIn('id', $request->input('campus_directors_id'))->with('user')->get();
+
+            
+        $guest =  Role::where('name', 'guest')->first();
+
+      
+
+        foreach($campus_directors as $adviser){
+            
+            if(count($adviser->user->campus_directors) <= 1){
+                $adviser->user->roles()->sync($guest->id);
+                
+            }
+            
+        }
+        
+      CampusDirector::whereIn('id', $request->input('campus_directors_id'))->with('user')->delete();
         return response()->json(['success',]);
     }
 

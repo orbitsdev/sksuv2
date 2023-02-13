@@ -90,6 +90,18 @@ class RoleSeeder extends Seeder
                 'role' => 'guest'
             ],
             [
+               'first_name'=> 'student1',
+               'last_name'=> 'account',
+                'email' => 'student1@gmail.com',
+                'role' => 'guest'
+            ],
+            [
+               'first_name'=> 'student2',
+               'last_name'=> 'account',
+                'email' => 'student2@gmail.com',
+                'role' => 'guest'
+            ],
+            [
                'first_name'=> 'developer',
                'last_name'=> 'account',
                 'email' => 'developer@gmail.com',

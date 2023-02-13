@@ -1,11 +1,14 @@
 <template>
-  <!-- This example requires Tailwind CSS v3.0+ -->
-  <div
+
+
+
+  <LoadingScreen v-if="isScreenLoading" />
+  <div v-else
     class="sksuparent relative min-h-screen max-h-screen bg-gray-900 flex items-center justify-center relative"
   >
     <div class="absolute top-8 right-10">
       <button
-      @click="logoutUser"
+        @click="logoutUser"
         class="flex items-center jusitfy-center hover:bg-white py-4 px-4 transition rounded ease-in-out hover:text-green-700"
       >
         <i class="fa-solid fa-right-from-bracket text-2xl mr-2"></i>
@@ -22,14 +25,19 @@
           @SKSU PROJECT
         </h1>
         <p class="text-2xl font-rubik mt-8 uppercase">
-          " Your currently account type is guest "
+          " Your current account type is guest "
         </p>
         <p class="mt-10 text-lg leading-8 text-white font-rubik">
           To access your preferred position, you will need to be authorized by an
           administrator. Please reach out to either the developer or the administrator to
           request authorization. We appreciate your patience while we work to provide you
-          with the best possible experience on our platform.
+          with the best possible experience on our platform. 
+
+          <!-- {{ User }}
+
+          {{ User.hasRoleOf(["guest"]) }} -->
         </p>
+    
       </div>
     </div>
   </div>
@@ -51,13 +59,10 @@
 </template>
 
 <script>
-
 import axiosApi from "../api/axiosApi";
 import { mapGetters } from "vuex";
 export default {
-  created() {
-    this.getUserDetails();
-  },
+  created() {},
   computed: {
     ...mapGetters(["User"]),
   },
@@ -68,56 +73,81 @@ export default {
       isFetching: false,
       isLogout: false,
       requestError: null,
+      isScreenLoading: false,
     };
   },
 
+  mounted() {
+    this.getUserDetails();
+  },
+
   methods: {
-   
     async getUserDetails() {
+      // const token = localStorage.getItem("token");
 
-const token = localStorage.getItem('token');
+      // if(token != null){
 
-if(token !=  null){
-
-  if(this.$store.state.User == null){
-    this.isScreenLoading = true;
-
-    this.$store.dispatch('getUser').then(res=>{         
-     this.$store.commit('setUser', res);
-     console.log("from fetch");
-     this.checkUserAccount();
+      //   console.log('token is not null');
+      
+      //   console.log(this.User.hasRoleOf(["guest"]));
 
 
-   }).catch(err=>{
+      //   if(!this.User.hasRoleOf(["guest"])){
+      //     window.location.href = "/dashboard";
+      //   }
 
-    this.requestError = err;
-    this.$store.dispatch('logoutUser');
-   }).finally(()=>{
+      // }else{  
 
-    this.isScreenLoading = false;
+      //   console.log('token is null');
+      //   console.log(this.User.hasRoleOf(["guest"]));
 
 
-   });
 
-  }else{
-    this.checkUserAccount();
-    
-  }
-}
+      // }
+       
+      this.isScreenLoading = true;
+      const token = localStorage.getItem("token");
 
-},
+      if (token != null) {
 
-checkUserAccount(){
 
-if(!this.User.hasRoleOf(['guest'])){
+        if (this.$store.state.User == null) {
+          this.$store
+            .dispatch("getUser")
+            .then((res) => {
+              this.$store.commit("setUser", res);
+              console.log("from fetch");
+              this.checkUserAccount();
+            })
+            .catch((err) => {
+              this.requestError = err;
+              this.$store.dispatch("logoutUser");
+            })
+            .finally(() => {
+              this.isScreenLoading = false;
+            });
+        } else {
+          this.checkUserAccount();
+          this.isScreenLoading = false;
+        }
+      }
+    },
 
-    this.$router.push({ name: 'dashboard'});
-  
-}
+    checkUserAccount() {
+      if (!this.User.hasRoleOf(["guest"])) {
+        window.location.href = "/dashboard";
+        // this.$router.replace({ name: "dashboard" });
+      }
 
-},
-  
-async logoutUser() {
+      // console.log(this.User.hasRoleOf(['guest']));
+
+      // if(!this.User.hasRoleOf(['guest'])){
+
+      //     this.$router.replace({ name: "dashboard" });
+      // }
+    },
+
+    async logoutUser() {
       this.isLogout = true;
       await axiosApi
         .post("api/logout")
@@ -139,14 +169,17 @@ async logoutUser() {
           this.isLogout = false;
         });
     },
-
   },
 };
 </script>
 
 <style scoped>
 .sksuparent {
-  background-image: linear-gradient(90.9deg, rgb(20, 83, 45) 0.5%, rgb(22, 163, 74) 99.7%);
+  background-image: linear-gradient(
+    90.9deg,
+    rgb(20, 83, 45) 0.5%,
+    rgb(22, 163, 74) 99.7%
+  );
 
   color: white;
   padding: 20px;

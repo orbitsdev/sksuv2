@@ -3,8 +3,10 @@
     <template #header>
       <BaseTableSetup>
         <template #searchs-area>
+ 
+
           <TableButton class="mr-2" @click="showTheForm">
-            Create Requirements
+            <i class="fa-solid fa-plus mr-1"></i> ADD REQUIREMENTS
           </TableButton>
           <BaseSearchInput :placeholder="'Search Requirements ...'" v-model="search" />
         </template>

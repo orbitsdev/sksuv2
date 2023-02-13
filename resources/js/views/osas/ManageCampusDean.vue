@@ -18,7 +18,7 @@ use App\Models\CampusSboAdviser;
         <template #actions-area>
           <TableButton
             @click="showDeleteConfirmation = true"
-            v-if="selctedDeans.length > 0"
+            v-if="seleted_deans.length > 0"
             mode
           >
             <i class="fa-regular fa-trash-can mr-1"></i>
@@ -36,7 +36,7 @@ use App\Models\CampusSboAdviser;
         <tr v-for="item in campus_deans" :key="item.id">
           <td class="relative w-12 px-6 sm:w-16 sm:px-8">
             <input
-              v-model="selctedDeans"
+              v-model="seleted_deans"
               :value="item.id"
               type="checkbox"
               class="absolute left-4 top-1/2 -mt-2 h-4 w-4 accent-green-600 text-white rounded border-gray-200 sm:left-6"
@@ -89,7 +89,7 @@ use App\Models\CampusSboAdviser;
     <teleport to="#app">
       <BaseDialog :show="showMainForm" :width="'500'" :preventClose="true">
         <template #c-content>
-          <!-- {{ selecated_campuse_adviser }} -->
+          <!-- {{ selected_dean }} -->
           <section class="mt-2">
             <div>
               <p class="text-base font-bold">Select School Year</p>
@@ -127,7 +127,7 @@ use App\Models\CampusSboAdviser;
               <NoDataCard v-if="users.length <= 0">Empty </NoDataCard>
               <select
                 v-else
-                v-model="selecated_campuse_adviser"
+                v-model="selected_dean"
                 class="block w-full py-2 px-3 pr-8 rounded-md bg-white border border-gray-400 focus:outline-none focus:shadow-outline-green focus:border-green-500 sm:text-sm sm:leading-5"
               >
                 <option v-for="user in users" :key="user.id" :value="user.id">
@@ -145,7 +145,7 @@ use App\Models\CampusSboAdviser;
             <div v-else>
               <div
                 v-if="
-                  selecated_campuse_adviser == null ||
+                  selected_dean == null ||
                   selecated_school == null ||
                   selected_school_year == null
                 "
@@ -154,7 +154,7 @@ use App\Models\CampusSboAdviser;
                 <TableButton v-if="isUpdatingMode" class="" @click="updateCampusAdviser">
                   Update
                 </TableButton>
-                <TableButton v-else class="" @click="addCampusDirector">
+                <TableButton v-else class="" @click="addDean">
                   Save
                 </TableButton>
               </div>
@@ -181,7 +181,7 @@ use App\Models\CampusSboAdviser;
             </div>
             <button
               v-else
-              @click="deleteSelectedCampusAdviser"
+              @click="deleteSelected"
               class="col-span-1 transition duration-150 ease-in-out hover:bg-red-600 bg-red-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
             >
               Yes
@@ -208,10 +208,10 @@ use App\Models\CampusSboAdviser;
 import axiosApi from "../../api/axiosApi";
 export default {
   created() {
-    this.getCampusDeans();
+    this.getDeans();
     this.getAllSchoolYears();
     // this.loadSchool();
-    this.getUserWhereIsNotCampusAdviser();
+    this.getUsers();
   },
 
   data() {
@@ -234,7 +234,7 @@ export default {
       schools: [],
       school_years: [],
 
-      selecated_campuse_adviser: null,
+      selected_dean: null,
       selecated_school: null,
       selected_school_year: null,
 
@@ -242,18 +242,19 @@ export default {
       isAvailabeUserFetching: false,
       isSchoolFetching: false,
 
-      selctedDeans: [],
+      seleted_deans: [],
       selectedCampusAdviser: null,
       showDeleteConfirmation: false,
       isDeleting: false,
       isUpdatingMode: false,
       hasWarning: null,
+      isFetchingUser: false,
     };
   },
 
   watch: {
     search(oldeValue, newValue) {
-      this.searchCampusAdviser();
+      this.searchDean();
     },
   },
 
@@ -290,20 +291,20 @@ export default {
       this.showMainForm = true;
     },
 
-    async deleteSelectedCampusAdviser() {
+    async deleteSelected() {
       this.isDeleting = true;
 
       await axiosApi
         .post("api/manage-campus-dean/delete-selected", {
-          campus_deans_id: this.selctedDeans,
+          campus_deans_id: this.seleted_deans,
         })
         .then((res) => {
           console.log(res);
 
           this.showDeleteConfirmation = false;
-          this.selctedDeans = [];
-          this.getCampusDeans();
-          this.getUserWhereIsNotCampusAdviser();
+          this.seleted_deans = [];
+          this.getDeans();
+          this.getUsers();
         })
         .catch((err) => {
           this.hasRequestError =
@@ -314,7 +315,7 @@ export default {
         });
     },
 
-    async getCampusDeans() {
+    async getDeans() {
       this.isFetching = true;
 
       await axiosApi
@@ -356,51 +357,33 @@ export default {
           this.isSchoolYearFetching = false;
         });
     },
-    async loadSchool() {
-      this.isSchoolFetching = true;
-      await axiosApi
-        .get("api/schools")
-        .then((res) => {
-          this.schools = res.data.data;
+  
+    async getUsers() {
+      this.isFetchingUser = true;
 
-          if (this.schools.length > 0) {
-            this.selecated_school = this.schools[0].id;
-          }
-        })
-        .catch((err) => {
-          this.hasRequestError =
-            '"Oops! It seems like there was an error when fetching schools. o and try again. if you think it it was the system please do contact the developer';
-        })
-        .finally(() => {
-          this.isSchoolFetching = false;
-        });
+await axiosApi
+  .get("api/available-users")
+  .then((res) => {
+    this.users = res.data.data;
+
+    if (this.users.length > 0) {
+      this.selected_dean = this.users[0].id;
+    }
+  })
+  .catch((err) => {
+    this.hasRequestError =
+      '"Oops! It seems like there was an error when  fetchin available users school year, Please check your network connection. o and try again. if you think it it was the system please do contact the developer';
+  })
+  .finally(() => {
+    this.isSchoolYearFetching = false;
+  });
     },
 
-    async getUserWhereIsNotCampusAdviser() {
-      this.isAvailabeUserFetching = true;
-      await axiosApi
-        .get("api/campus-available-users")
-        .then((res) => {
-          this.users = res.data.data;
-
-          if (this.users.length > 0) {
-            this.selecated_campuse_adviser = this.users[0].id;
-          }
-        })
-        .catch((err) => {
-          this.hasRequestError =
-            '"Oops! It seems like there was an error when fetching avvalabe users. o and try again. if you think it it was the system please do contact the developer';
-        })
-        .finally(() => {
-          this.isAvailabeUserFetching = false;
-        });
-    },
-
-    async addCampusDirector() {
+    async addDean() {
       this.isSaving = true;
 
       let campus_director_data = {
-        user_id: this.selecated_campuse_adviser,
+        user_id: this.selected_dean,
         school_id: this.selecated_school,
         school_year_id: this.selected_school_year,
       };
@@ -419,11 +402,9 @@ export default {
           else {
             this.showMainForm = false;
 
-            
-            
             this.getAllSchoolYears();
-            this.getCampusDeans();
-            this.getUserWhereIsNotCampusAdviser();
+            this.getDeans();
+            this.getUsers();
           }
 
           console.log(res.data.data);
@@ -444,31 +425,7 @@ export default {
       this.showForm = true;
     },
 
-    async makeUsersAsSboAdviser() {
-      const selectedId = [];
-      this.selectedSboAdvisers.forEach((user) => {
-        selectedId.push(user.id);
-      });
-
-      this.isSaving = true;
-      await axiosApi
-        .post("api/sbo-advisers/make-user-as-adviser", {
-          usersid: selectedId,
-        })
-        .then((res) => {
-          console.log(res.data.data);
-          this.loadSboAdvisers();
-          this.showForm = false;
-          this.selectedSboAdvisers = [];
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.isSaving = false;
-        });
-    },
-
+  
     customConfirmationDialog({
       title = "Are you sure?",
       text = "You won't be able to revert this!",
@@ -491,7 +448,7 @@ export default {
         }
       });
     },
-    async searchCampusAdviser() {
+    async searchDean() {
       axiosApi
         .post("api/campus/campus-adviser/search", {
           search: this.search,
@@ -501,25 +458,13 @@ export default {
         });
     },
 
-    async filterSbo() {
-      await axiosApi
-        .post("api/sbo-advisers/filter", {
-          filter: this.filterBy,
-        })
-        .then((res) => {
-          this.sboadvisers = res.data.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    async loadSboAdvisers() {
+    async getDeans() {
       this.isFetching = true;
       await axiosApi
-        .get("api/sbo-advisers")
+        .get("api/manage-campus-dean/get-all-campus-dean")
         .then((res) => {
           // console.log(res.data);
-          this.sboadvisers = res.data.data;
+          this.campus_deans = res.data.data;
         })
         .catch((err) => {
           this.requestError = err;
