@@ -39,8 +39,7 @@ class School extends Model
     }
 
  
-
-
+    
     public function sboOfficers()
     {
         return $this->hasManyThrough(
