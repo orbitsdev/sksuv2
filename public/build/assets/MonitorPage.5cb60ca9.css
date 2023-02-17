@@ -1,0 +1,1 @@
+.animation-pulse[data-v-a6e3b3e0]:before{animation:pulse-a6e3b3e0 2s infinite;border-radius:50%!important}@keyframes pulse-a6e3b3e0{0%{transform:scale(.8);box-shadow:0 0 #17c025}70%{transform:scale(.9);box-shadow:0 0 0 60px #e53e3e00}to{transform:scale(.8)}}
