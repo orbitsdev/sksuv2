@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91cb720f15d1599ce086a20637e92f47",
+    "content-hash": "58b3df12d90f85f9345a172f2228b2d9",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -4559,30 +4559,30 @@
         },
         {
             "name": "spatie/laravel-google-cloud-storage",
-            "version": "2.0.5",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-google-cloud-storage.git",
-                "reference": "a019f6cbf4885b20f383dd91e03bb8568df14763"
+                "reference": "fac8511d03db1310a8d43b918d54e34992c62241"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-google-cloud-storage/zipball/a019f6cbf4885b20f383dd91e03bb8568df14763",
-                "reference": "a019f6cbf4885b20f383dd91e03bb8568df14763",
+                "url": "https://api.github.com/repos/spatie/laravel-google-cloud-storage/zipball/fac8511d03db1310a8d43b918d54e34992c62241",
+                "reference": "fac8511d03db1310a8d43b918d54e34992c62241",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^9.0",
-                "illuminate/filesystem": "^9.0",
-                "illuminate/support": "^9.0",
+                "illuminate/contracts": "^9.0|^10.0",
+                "illuminate/filesystem": "^9.0|^10.0",
+                "illuminate/support": "^9.0|^10.0",
                 "league/flysystem-google-cloud-storage": "^3.0.15",
                 "php": "^8.0"
             },
             "require-dev": {
                 "brianium/paratest": "^6.4",
                 "nunomaduro/collision": "^6.1",
-                "orchestra/testbench": "^7.0",
-                "phpunit/phpunit": "^9.5",
+                "orchestra/testbench": "^7.0|^8.0",
+                "phpunit/phpunit": "^9.6",
                 "spatie/laravel-ray": "^1.29",
                 "vimeo/psalm": "^4.18"
             },
@@ -4622,7 +4622,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-google-cloud-storage/issues",
-                "source": "https://github.com/spatie/laravel-google-cloud-storage/tree/2.0.5"
+                "source": "https://github.com/spatie/laravel-google-cloud-storage/tree/2.2.0"
             },
             "funding": [
                 {
@@ -4630,7 +4630,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-28T15:58:32+00:00"
+            "time": "2023-02-09T16:02:52+00:00"
         },
         {
             "name": "symfony/console",
