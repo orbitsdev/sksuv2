@@ -1,6 +1,6 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app.a30414ce.js",
+    "file": "assets/app.1c991082.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -53,7 +53,7 @@
     ]
   },
   "resources/js/testproject/GoogleDriveUploadPage.vue": {
-    "file": "assets/GoogleDriveUploadPage.736f23ba.js",
+    "file": "assets/GoogleDriveUploadPage.6cab15e1.js",
     "src": "resources/js/testproject/GoogleDriveUploadPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -61,7 +61,7 @@
     ]
   },
   "resources/js/views/GetStartedPage.vue": {
-    "file": "assets/GetStartedPage.e6425a6e.js",
+    "file": "assets/GetStartedPage.c112fee6.js",
     "src": "resources/js/views/GetStartedPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -69,7 +69,7 @@
     ]
   },
   "resources/js/views/LoginPage.vue": {
-    "file": "assets/LoginPage.72ddb4df.js",
+    "file": "assets/LoginPage.5e0979cb.js",
     "src": "resources/js/views/LoginPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -77,7 +77,7 @@
     ]
   },
   "resources/js/views/RegisterPage.vue": {
-    "file": "assets/RegisterPage.8a4507b6.js",
+    "file": "assets/RegisterPage.c477029b.js",
     "src": "resources/js/views/RegisterPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -85,7 +85,7 @@
     ]
   },
   "resources/js/views/SocialAccountTokenCatcher.vue": {
-    "file": "assets/SocialAccountTokenCatcher.b262a35c.js",
+    "file": "assets/SocialAccountTokenCatcher.24a59f86.js",
     "src": "resources/js/views/SocialAccountTokenCatcher.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -93,7 +93,7 @@
     ]
   },
   "resources/js/views/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword.f25ac86a.js",
+    "file": "assets/ForgotPassword.2656ceb8.js",
     "src": "resources/js/views/ForgotPassword.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -104,7 +104,7 @@
     ]
   },
   "resources/js/views/SetNewPasswordPage.vue": {
-    "file": "assets/SetNewPasswordPage.fe1366d4.js",
+    "file": "assets/SetNewPasswordPage.50a79018.js",
     "src": "resources/js/views/SetNewPasswordPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -115,7 +115,7 @@
     ]
   },
   "resources/js/views/PasswordRequestSent.vue": {
-    "file": "assets/PasswordRequestSent.2b5d7a16.js",
+    "file": "assets/PasswordRequestSent.8c8ade47.js",
     "src": "resources/js/views/PasswordRequestSent.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -126,7 +126,7 @@
     ]
   },
   "resources/js/views/GettingStarted.vue": {
-    "file": "assets/GettingStarted.2f2db6bb.js",
+    "file": "assets/GettingStarted.787cad98.js",
     "src": "resources/js/views/GettingStarted.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -137,7 +137,7 @@
     ]
   },
   "resources/js/views/WaitingPage.vue": {
-    "file": "assets/WaitingPage.3702697a.js",
+    "file": "assets/WaitingPage.ac13b652.js",
     "src": "resources/js/views/WaitingPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -148,7 +148,7 @@
     ]
   },
   "resources/js/views/NoAuthorizePage.vue": {
-    "file": "assets/NoAuthorizePage.4aba0921.js",
+    "file": "assets/NoAuthorizePage.1e6ceac6.js",
     "src": "resources/js/views/NoAuthorizePage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -156,7 +156,7 @@
     ]
   },
   "resources/js/views/FormPage.vue": {
-    "file": "assets/FormPage.234b86fa.js",
+    "file": "assets/FormPage.cccf992e.js",
     "src": "resources/js/views/FormPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -164,7 +164,7 @@
     ]
   },
   "resources/js/views/DashboardPage.vue": {
-    "file": "assets/DashboardPage.72b5cfdb.js",
+    "file": "assets/DashboardPage.3305d419.js",
     "src": "resources/js/views/DashboardPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -175,7 +175,7 @@
     ]
   },
   "resources/js/views/osas/ManageSchoolYear.vue": {
-    "file": "assets/ManageSchoolYear.8928bb68.js",
+    "file": "assets/ManageSchoolYear.c7215810.js",
     "src": "resources/js/views/osas/ManageSchoolYear.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -183,7 +183,7 @@
     ]
   },
   "resources/js/views/osas/UniversityPageTab.vue": {
-    "file": "assets/UniversityPageTab.f9f9320c.js",
+    "file": "assets/UniversityPageTab.6cc89197.js",
     "src": "resources/js/views/osas/UniversityPageTab.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -194,7 +194,7 @@
     ]
   },
   "resources/js/views/osas/ManageSchool.vue": {
-    "file": "assets/ManageSchool.9ea94512.js",
+    "file": "assets/ManageSchool.7c07f4a9.js",
     "src": "resources/js/views/osas/ManageSchool.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -202,7 +202,7 @@
     ]
   },
   "resources/js/views/osas/ManageDepartment.vue": {
-    "file": "assets/ManageDepartment.0b2570b9.js",
+    "file": "assets/ManageDepartment.d59c371e.js",
     "src": "resources/js/views/osas/ManageDepartment.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -210,7 +210,7 @@
     ]
   },
   "resources/js/views/osas/ManageAccountTab.vue": {
-    "file": "assets/ManageAccountTab.6611865a.js",
+    "file": "assets/ManageAccountTab.87fbc764.js",
     "src": "resources/js/views/osas/ManageAccountTab.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -221,7 +221,7 @@
     ]
   },
   "resources/js/views/osas/ManageAccountPassword.vue": {
-    "file": "assets/ManageAccountPassword.bcbddc20.js",
+    "file": "assets/ManageAccountPassword.a725c9a1.js",
     "src": "resources/js/views/osas/ManageAccountPassword.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -229,7 +229,7 @@
     ]
   },
   "resources/js/views/osas/SboAdviserUser.vue": {
-    "file": "assets/SboAdviserUser.04175806.js",
+    "file": "assets/SboAdviserUser.df80710e.js",
     "src": "resources/js/views/osas/SboAdviserUser.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -237,7 +237,7 @@
     ]
   },
   "resources/js/views/osas/ManageCampusDirector.vue": {
-    "file": "assets/ManageCampusDirector.f5ede9dc.js",
+    "file": "assets/ManageCampusDirector.f77c72e8.js",
     "src": "resources/js/views/osas/ManageCampusDirector.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -245,7 +245,7 @@
     ]
   },
   "resources/js/views/osas/ManageCampusDean.vue": {
-    "file": "assets/ManageCampusDean.4cf82837.js",
+    "file": "assets/ManageCampusDean.bf10b936.js",
     "src": "resources/js/views/osas/ManageCampusDean.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -253,7 +253,7 @@
     ]
   },
   "resources/js/views/osas/ManageVpa.vue": {
-    "file": "assets/ManageVpa.da7e1c5a.js",
+    "file": "assets/ManageVpa.2c4d315c.js",
     "src": "resources/js/views/osas/ManageVpa.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -261,7 +261,7 @@
     ]
   },
   "resources/js/views/osas/ManageApplicationTab.vue": {
-    "file": "assets/ManageApplicationTab.1bf4a97a.js",
+    "file": "assets/ManageApplicationTab.90e6d3e1.js",
     "src": "resources/js/views/osas/ManageApplicationTab.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -272,7 +272,7 @@
     ]
   },
   "resources/js/views/osas/ManageRequirement.vue": {
-    "file": "assets/ManageRequirement.a6b05d7b.js",
+    "file": "assets/ManageRequirement.7d6df7e0.js",
     "src": "resources/js/views/osas/ManageRequirement.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -280,7 +280,7 @@
     ]
   },
   "resources/js/views/osas/ManageApplication.vue": {
-    "file": "assets/ManageApplication.d4d48432.js",
+    "file": "assets/ManageApplication.9cebc360.js",
     "src": "resources/js/views/osas/ManageApplication.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -291,7 +291,7 @@
     ]
   },
   "resources/js/views/osas/ManageSboAdviser.vue": {
-    "file": "assets/ManageSboAdviser.8f106428.js",
+    "file": "assets/ManageSboAdviser.f66e2987.js",
     "src": "resources/js/views/osas/ManageSboAdviser.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -302,7 +302,7 @@
     ]
   },
   "resources/js/views/osas/SboAdviser.vue": {
-    "file": "assets/SboAdviser.3cb824c7.js",
+    "file": "assets/SboAdviser.8d591c5a.js",
     "src": "resources/js/views/osas/SboAdviser.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -310,7 +310,7 @@
     ]
   },
   "resources/js/views/osas/SboAdviserRequest.vue": {
-    "file": "assets/SboAdviserRequest.0b08522e.js",
+    "file": "assets/SboAdviserRequest.aac857b2.js",
     "src": "resources/js/views/osas/SboAdviserRequest.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -318,7 +318,7 @@
     ]
   },
   "resources/js/views/sboadviser/MakeRequestPage.vue": {
-    "file": "assets/MakeRequestPage.25271b67.js",
+    "file": "assets/MakeRequestPage.cf16beae.js",
     "src": "resources/js/views/sboadviser/MakeRequestPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -326,7 +326,7 @@
     ]
   },
   "resources/js/views/sboadviser/SchoolYearPage.vue": {
-    "file": "assets/SchoolYearPage.e0cda3d9.js",
+    "file": "assets/SchoolYearPage.cbc88cac.js",
     "src": "resources/js/views/sboadviser/SchoolYearPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -334,7 +334,7 @@
     ]
   },
   "resources/js/views/sboadviser/SchoolPage.vue": {
-    "file": "assets/SchoolPage.120ba2e4.js",
+    "file": "assets/SchoolPage.022694fa.js",
     "src": "resources/js/views/sboadviser/SchoolPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -345,7 +345,7 @@
     ]
   },
   "resources/js/views/sboadviser/ManageOfficersPage.vue": {
-    "file": "assets/ManageOfficersPage.2fe7a25d.js",
+    "file": "assets/ManageOfficersPage.c59676ce.js",
     "src": "resources/js/views/sboadviser/ManageOfficersPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -356,7 +356,7 @@
     ]
   },
   "resources/js/views/sboadviser/SchoolsDocuementPage.vue": {
-    "file": "assets/SchoolsDocuementPage.5a532966.js",
+    "file": "assets/SchoolsDocuementPage.d8dfc60f.js",
     "src": "resources/js/views/sboadviser/SchoolsDocuementPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -364,7 +364,7 @@
     ]
   },
   "resources/js/views/sboadviser/SchoolContainEndorsedDocumentPage.vue": {
-    "file": "assets/SchoolContainEndorsedDocumentPage.f5930910.js",
+    "file": "assets/SchoolContainEndorsedDocumentPage.3df45c79.js",
     "src": "resources/js/views/sboadviser/SchoolContainEndorsedDocumentPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -372,7 +372,7 @@
     ]
   },
   "resources/js/views/sboadviser/DocumentPage.vue": {
-    "file": "assets/DocumentPage.24c27a37.js",
+    "file": "assets/DocumentPage.26993f25.js",
     "src": "resources/js/views/sboadviser/DocumentPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -380,7 +380,7 @@
     ]
   },
   "resources/js/views/sbostudent/SchoolYearApplicationPage.vue": {
-    "file": "assets/SchoolYearApplicationPage.05750dfb.js",
+    "file": "assets/SchoolYearApplicationPage.18424967.js",
     "src": "resources/js/views/sbostudent/SchoolYearApplicationPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -388,7 +388,7 @@
     ]
   },
   "resources/js/views/sbostudent/ApplicationFormPage.vue": {
-    "file": "assets/ApplicationFormPage.dd400633.js",
+    "file": "assets/ApplicationFormPage.ca2a5fe8.js",
     "src": "resources/js/views/sbostudent/ApplicationFormPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -399,7 +399,7 @@
     ]
   },
   "resources/js/views/sbostudent/FillupFormPage.vue": {
-    "file": "assets/FillupFormPage.949a33b3.js",
+    "file": "assets/FillupFormPage.acfb978a.js",
     "src": "resources/js/views/sbostudent/FillupFormPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -407,7 +407,7 @@
     ]
   },
   "resources/js/views/sbostudent/SchoolYearMonitorPage.vue": {
-    "file": "assets/SchoolYearMonitorPage.485017c2.js",
+    "file": "assets/SchoolYearMonitorPage.6288757a.js",
     "src": "resources/js/views/sbostudent/SchoolYearMonitorPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -415,7 +415,7 @@
     ]
   },
   "resources/js/views/sbostudent/MonitorPage.vue": {
-    "file": "assets/MonitorPage.1f3c52ab.js",
+    "file": "assets/MonitorPage.57f7bf2c.js",
     "src": "resources/js/views/sbostudent/MonitorPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -426,7 +426,7 @@
     ]
   },
   "resources/js/views/sbostudent/ApplicationPage.vue": {
-    "file": "assets/ApplicationPage.cbda18b2.js",
+    "file": "assets/ApplicationPage.f58642b0.js",
     "src": "resources/js/views/sbostudent/ApplicationPage.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -434,77 +434,77 @@
     ]
   },
   "resources/js/views/campusdirector/CampusDirectorSchoolsEndorsmentDocuementPage.vue": {
-    "file": "assets/CampusDirectorSchoolsEndorsmentDocuementPage.26b40ca3.js",
+    "file": "assets/CampusDirectorSchoolsEndorsmentDocuementPage.8d83444b.js",
     "src": "resources/js/views/campusdirector/CampusDirectorSchoolsEndorsmentDocuementPage.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "resources/js/views/ForgotPassword.css": {
-    "file": "assets/ForgotPassword.c28ce52f.css",
-    "src": "resources/js/views/ForgotPassword.css"
-  },
-  "resources/js/views/PasswordRequestSent.css": {
-    "file": "assets/PasswordRequestSent.2c20ab6a.css",
-    "src": "resources/js/views/PasswordRequestSent.css"
-  },
-  "resources/js/views/sbostudent/MonitorPage.css": {
-    "file": "assets/MonitorPage.5cb60ca9.css",
-    "src": "resources/js/views/sbostudent/MonitorPage.css"
-  },
-  "resources/js/views/sbostudent/ApplicationFormPage.css": {
-    "file": "assets/ApplicationFormPage.68222f8e.css",
-    "src": "resources/js/views/sbostudent/ApplicationFormPage.css"
+  "resources/css/app.css": {
+    "file": "assets/app.9bd0694a.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
   },
   "resources/js/views/GettingStarted.css": {
     "file": "assets/GettingStarted.beb2668a.css",
     "src": "resources/js/views/GettingStarted.css"
   },
-  "resources/js/views/osas/ManageAccountTab.css": {
-    "file": "assets/ManageAccountTab.2f7d3bc8.css",
-    "src": "resources/js/views/osas/ManageAccountTab.css"
-  },
-  "resources/js/views/osas/ManageSboAdviser.css": {
-    "file": "assets/ManageSboAdviser.6110a3f8.css",
-    "src": "resources/js/views/osas/ManageSboAdviser.css"
-  },
-  "resources/js/views/osas/ManageApplicationTab.css": {
-    "file": "assets/ManageApplicationTab.d3d8d807.css",
-    "src": "resources/js/views/osas/ManageApplicationTab.css"
-  },
-  "resources/js/views/DashboardPage.css": {
-    "file": "assets/DashboardPage.b2c00807.css",
-    "src": "resources/js/views/DashboardPage.css"
-  },
-  "resources/js/views/osas/UniversityPageTab.css": {
-    "file": "assets/UniversityPageTab.ef409c44.css",
-    "src": "resources/js/views/osas/UniversityPageTab.css"
+  "resources/js/views/ForgotPassword.css": {
+    "file": "assets/ForgotPassword.c28ce52f.css",
+    "src": "resources/js/views/ForgotPassword.css"
   },
   "resources/js/views/SetNewPasswordPage.css": {
     "file": "assets/SetNewPasswordPage.f6b40343.css",
     "src": "resources/js/views/SetNewPasswordPage.css"
   },
-  "resources/js/views/osas/ManageApplication.css": {
-    "file": "assets/ManageApplication.dc4ce683.css",
-    "src": "resources/js/views/osas/ManageApplication.css"
+  "resources/js/views/PasswordRequestSent.css": {
+    "file": "assets/PasswordRequestSent.2c20ab6a.css",
+    "src": "resources/js/views/PasswordRequestSent.css"
+  },
+  "resources/js/views/osas/ManageSboAdviser.css": {
+    "file": "assets/ManageSboAdviser.6110a3f8.css",
+    "src": "resources/js/views/osas/ManageSboAdviser.css"
+  },
+  "resources/js/views/sbostudent/MonitorPage.css": {
+    "file": "assets/MonitorPage.5cb60ca9.css",
+    "src": "resources/js/views/sbostudent/MonitorPage.css"
   },
   "resources/js/views/sboadviser/SchoolPage.css": {
     "file": "assets/SchoolPage.cd627725.css",
     "src": "resources/js/views/sboadviser/SchoolPage.css"
   },
-  "resources/js/views/WaitingPage.css": {
-    "file": "assets/WaitingPage.cc3e639e.css",
-    "src": "resources/js/views/WaitingPage.css"
-  },
   "resources/js/views/sboadviser/ManageOfficersPage.css": {
     "file": "assets/ManageOfficersPage.13e72bf2.css",
     "src": "resources/js/views/sboadviser/ManageOfficersPage.css"
   },
-  "resources/sass/app.scss": {
-    "file": "assets/app.5005f49e.css",
-    "src": "resources/sass/app.scss",
-    "isEntry": true
+  "resources/js/views/osas/ManageAccountTab.css": {
+    "file": "assets/ManageAccountTab.2f7d3bc8.css",
+    "src": "resources/js/views/osas/ManageAccountTab.css"
+  },
+  "resources/js/views/WaitingPage.css": {
+    "file": "assets/WaitingPage.cc3e639e.css",
+    "src": "resources/js/views/WaitingPage.css"
+  },
+  "resources/js/views/sbostudent/ApplicationFormPage.css": {
+    "file": "assets/ApplicationFormPage.68222f8e.css",
+    "src": "resources/js/views/sbostudent/ApplicationFormPage.css"
+  },
+  "resources/js/views/osas/UniversityPageTab.css": {
+    "file": "assets/UniversityPageTab.ef409c44.css",
+    "src": "resources/js/views/osas/UniversityPageTab.css"
+  },
+  "resources/js/views/osas/ManageApplicationTab.css": {
+    "file": "assets/ManageApplicationTab.d3d8d807.css",
+    "src": "resources/js/views/osas/ManageApplicationTab.css"
+  },
+  "resources/js/views/osas/ManageApplication.css": {
+    "file": "assets/ManageApplication.dc4ce683.css",
+    "src": "resources/js/views/osas/ManageApplication.css"
+  },
+  "resources/js/views/DashboardPage.css": {
+    "file": "assets/DashboardPage.b2c00807.css",
+    "src": "resources/js/views/DashboardPage.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.f9b41d75.css",
