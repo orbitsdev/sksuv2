@@ -446,41 +446,33 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
-  "resources/js/views/GettingStarted.css": {
-    "file": "assets/GettingStarted.beb2668a.css",
-    "src": "resources/js/views/GettingStarted.css"
-  },
-  "resources/js/views/ForgotPassword.css": {
-    "file": "assets/ForgotPassword.c28ce52f.css",
-    "src": "resources/js/views/ForgotPassword.css"
-  },
-  "resources/js/views/SetNewPasswordPage.css": {
-    "file": "assets/SetNewPasswordPage.f6b40343.css",
-    "src": "resources/js/views/SetNewPasswordPage.css"
-  },
-  "resources/js/views/PasswordRequestSent.css": {
-    "file": "assets/PasswordRequestSent.2c20ab6a.css",
-    "src": "resources/js/views/PasswordRequestSent.css"
-  },
-  "resources/js/views/osas/ManageSboAdviser.css": {
-    "file": "assets/ManageSboAdviser.6110a3f8.css",
-    "src": "resources/js/views/osas/ManageSboAdviser.css"
+  "resources/js/views/osas/ManageAccountTab.css": {
+    "file": "assets/ManageAccountTab.2f7d3bc8.css",
+    "src": "resources/js/views/osas/ManageAccountTab.css"
   },
   "resources/js/views/sbostudent/MonitorPage.css": {
     "file": "assets/MonitorPage.5cb60ca9.css",
     "src": "resources/js/views/sbostudent/MonitorPage.css"
   },
+  "resources/js/views/osas/ManageApplication.css": {
+    "file": "assets/ManageApplication.dc4ce683.css",
+    "src": "resources/js/views/osas/ManageApplication.css"
+  },
+  "resources/js/views/GettingStarted.css": {
+    "file": "assets/GettingStarted.beb2668a.css",
+    "src": "resources/js/views/GettingStarted.css"
+  },
   "resources/js/views/sboadviser/SchoolPage.css": {
     "file": "assets/SchoolPage.cd627725.css",
     "src": "resources/js/views/sboadviser/SchoolPage.css"
   },
-  "resources/js/views/sboadviser/ManageOfficersPage.css": {
-    "file": "assets/ManageOfficersPage.13e72bf2.css",
-    "src": "resources/js/views/sboadviser/ManageOfficersPage.css"
+  "resources/js/views/SetNewPasswordPage.css": {
+    "file": "assets/SetNewPasswordPage.f6b40343.css",
+    "src": "resources/js/views/SetNewPasswordPage.css"
   },
-  "resources/js/views/osas/ManageAccountTab.css": {
-    "file": "assets/ManageAccountTab.2f7d3bc8.css",
-    "src": "resources/js/views/osas/ManageAccountTab.css"
+  "resources/js/views/osas/ManageApplicationTab.css": {
+    "file": "assets/ManageApplicationTab.d3d8d807.css",
+    "src": "resources/js/views/osas/ManageApplicationTab.css"
   },
   "resources/js/views/WaitingPage.css": {
     "file": "assets/WaitingPage.cc3e639e.css",
@@ -490,21 +482,29 @@
     "file": "assets/ApplicationFormPage.68222f8e.css",
     "src": "resources/js/views/sbostudent/ApplicationFormPage.css"
   },
+  "resources/js/views/DashboardPage.css": {
+    "file": "assets/DashboardPage.b2c00807.css",
+    "src": "resources/js/views/DashboardPage.css"
+  },
+  "resources/js/views/sboadviser/ManageOfficersPage.css": {
+    "file": "assets/ManageOfficersPage.13e72bf2.css",
+    "src": "resources/js/views/sboadviser/ManageOfficersPage.css"
+  },
+  "resources/js/views/osas/ManageSboAdviser.css": {
+    "file": "assets/ManageSboAdviser.6110a3f8.css",
+    "src": "resources/js/views/osas/ManageSboAdviser.css"
+  },
   "resources/js/views/osas/UniversityPageTab.css": {
     "file": "assets/UniversityPageTab.ef409c44.css",
     "src": "resources/js/views/osas/UniversityPageTab.css"
   },
-  "resources/js/views/osas/ManageApplicationTab.css": {
-    "file": "assets/ManageApplicationTab.d3d8d807.css",
-    "src": "resources/js/views/osas/ManageApplicationTab.css"
+  "resources/js/views/ForgotPassword.css": {
+    "file": "assets/ForgotPassword.c28ce52f.css",
+    "src": "resources/js/views/ForgotPassword.css"
   },
-  "resources/js/views/osas/ManageApplication.css": {
-    "file": "assets/ManageApplication.dc4ce683.css",
-    "src": "resources/js/views/osas/ManageApplication.css"
-  },
-  "resources/js/views/DashboardPage.css": {
-    "file": "assets/DashboardPage.b2c00807.css",
-    "src": "resources/js/views/DashboardPage.css"
+  "resources/js/views/PasswordRequestSent.css": {
+    "file": "assets/PasswordRequestSent.2c20ab6a.css",
+    "src": "resources/js/views/PasswordRequestSent.css"
   },
   "resources/js/app.css": {
     "file": "assets/app.f9b41d75.css",
