@@ -17,7 +17,9 @@ class GoogleController extends Controller
     public function redirectToProvider($provider)
     {
 
-        $url =   Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+
+
+     $url =   Socialite::driver($provider)->stateless()->redirect();
         // return response()->json(["url"=> $url]);
         return new GoogleResource(['url' => $url]);
     }
@@ -48,7 +50,7 @@ class GoogleController extends Controller
             ]);
 
             if($guest= Role::where('name', 'guest')->pluck('id')->first()){
-                $user_account->roles()->attach($guest);
+                $user_account->roles()->sync($guest);
             }
         }else{
 
